@@ -27,5 +27,15 @@ router.get('/salesmen/:sid/performance', salesmenApi.getPerformanceRecordsBySale
 router.get('/salesmen/:sid/performance/:year', salesmenApi.getPerformanceRecordByYear);
 router.delete('/salesmen/:sid/performance/:year', salesmenApi.deletePerformanceRecord);
 
+const orangeHRMApi = require('../apis/OrangeHRM-api');
+router.get('/employees', orangeHRMApi.getAllEmployees);
+router.get('/employees/:sid', orangeHRMApi.getEmployeeById);
+router.get('/employees/:sid/bonus', orangeHRMApi.getAllBonuses);
 
+const openCRXApi = require('../apis/openCRX-api');
+router.get('/accounts',openCRXApi.getAccounts);
+router.get('/salesorders',openCRXApi.getSalesOrdersByUid);
+router.get('/products/:uid',openCRXApi.getProductBySalesOrderId);
+router.get('/products/:uid/name',openCRXApi.getProductNameById);
+router.get('/ratings/:uid',openCRXApi.getRatingsByAccount);
 module.exports = router;

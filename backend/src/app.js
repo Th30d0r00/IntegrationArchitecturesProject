@@ -8,6 +8,9 @@ const cookieSession = require('cookie-session');
 const multer = require('multer');
 const upload = multer();
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 const crypto = require('crypto');
 const cors = require('cors');
 
@@ -26,6 +29,8 @@ app.set('environment', environment);
 app.use(express.json()); //adds support for json encoded bodies
 app.use(express.urlencoded({extended: true})); //adds support url encoded bodies
 app.use(upload.array()); //adds support multipart/form-data bodies
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 app.use(cookieSession({
     secret: crypto.randomBytes(32).toString('hex'),
