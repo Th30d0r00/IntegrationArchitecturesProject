@@ -2,6 +2,7 @@ const salesmenService = require('../services/salesmen-service')
 const Salesman = require("../models/Salesman");
 const PerformanceRecord = require("../models/PerformanceRecord");
 
+
 /**
  * Endpoint, which creates a new salesman
  * @param req express request
@@ -10,9 +11,9 @@ const PerformanceRecord = require("../models/PerformanceRecord");
  */
 exports.createSalesman = async function (req, res) {
     const db = req.app.get('db');
-    const { sid, firstname, lastname } = req.body;
+    const { code, sid, firstname, lastname, jobTitle, department, supervisor } = req.body;
 
-    const newSalesman = new Salesman(sid, firstname, lastname);
+    const newSalesman = new Salesman(code, sid, firstname, lastname, jobTitle, department, supervisor);
 
     try {
         await salesmenService.add(db, newSalesman);

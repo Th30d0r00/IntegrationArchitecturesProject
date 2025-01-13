@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
@@ -18,6 +18,10 @@ import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { ExamplePageComponent } from './pages/example-page/example-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import {MatTableModule} from '@angular/material/table';
+import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.component';
+import { SpecificSalesmanPageComponent } from './pages/specific-salesman-page/specific-salesman-page.component';
+import { PerformanceRecordPageComponent } from './pages/performance-record-page/performance-record-page.component';
+import { AddPerformanceRecordPageComponent } from './pages/add-performance-record-page/add-performance-record-page.component';
 
 @NgModule({
     declarations: [
@@ -27,7 +31,11 @@ import {MatTableModule} from '@angular/material/table';
         LandingPageComponent,
         MenuBarComponent,
         ExamplePageComponent,
-        NotFoundPageComponent
+        NotFoundPageComponent,
+        SalesmenPageComponent,
+        SpecificSalesmanPageComponent,
+        PerformanceRecordPageComponent,
+        AddPerformanceRecordPageComponent,
     ],
     imports: [
         BrowserModule,
@@ -40,7 +48,8 @@ import {MatTableModule} from '@angular/material/table';
         MatCardModule,
         MatToolbarModule,
         MatIconModule,
-        MatTableModule
+        MatTableModule,
+        ReactiveFormsModule
     ],
     providers: [],
     bootstrap: [AppComponent]

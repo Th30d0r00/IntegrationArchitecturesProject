@@ -1,5 +1,5 @@
 /**
- * inserts a new salesman into database & hashes its password
+ * inserts a new salesman into database
  * @param db target database
  * @param {Salesman} salesman new salesman
  * @return {Promise<any>}
@@ -73,8 +73,13 @@ exports.getPerformanceRecords = async function (db, sid) {
  */
 
 exports.getPerformanceRecordByYear = async function (db, sid, year) {
-    return (await db.collection('salesmen').findOne({sid: sid, 'performance.year': year}, {projection: {performance: {$elemMatch: {year: year}}}}));
-}
+    const result = await db.collection('salesmen').findOne(
+        { sid: sid, 'performance.year': year },
+        { projection: { performance: { $elemMatch: { year: year } } } }
+    );
+
+    return result?.performance?.[0] || null;
+};
 
 /**
  * deletes a performance record of a salesman by year

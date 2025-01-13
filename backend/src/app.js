@@ -44,7 +44,8 @@ app.use(cors({
     credentials: true
 }));
 
-const apiRouter = require('./routes/api-routes'); //get api-router from routes/api
+const apiRouter = require('./routes/api-routes');
+const {loadEmployeesToDB} = require("./services/employee-service");
 app.use('/api', apiRouter); //mount api-router at path "/api"
 // !!!! attention all middlewares, mounted after the router wont be called for any requests
 
@@ -69,10 +70,12 @@ async function initDb(db){
     if(await db.collection('users').count() < 1){ //if no user exists create admin user
         const userService = require('./services/user-service');
         const User = require("./models/User");
+        const {loadEmployeesToDB} = require("./services/employee-service"); //get api-router from routes/api
 
         const adminPassword = environment.defaultAdminPassword;
         await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true));
 
         console.log('created admin user with password: '+adminPassword);
     }
+    await loadEmployeesToDB(db);
 }

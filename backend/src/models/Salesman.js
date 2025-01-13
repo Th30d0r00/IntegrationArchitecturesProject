@@ -5,10 +5,15 @@
  * @param {string} lastname
  */
 class Salesman{
-    constructor(sid, firstname, lastname) {
+    constructor(code ,sid, firstname, lastname, jobTitle, department, supervisor) {
+        this.code = code;
         this.sid = sid;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.jobTitle = jobTitle;
+        this.department = department;
+        this.supervisor = supervisor;
+
     }
 }
 

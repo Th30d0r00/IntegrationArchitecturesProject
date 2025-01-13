@@ -1,0 +1,28 @@
+import { Injectable } from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {environment} from '../../../environments/environment';
+import {Observable} from 'rxjs';
+import {SalesmenDatapoint} from '../interfaces/salesmen-datapoint';
+import {PerformanceDatapoint} from '../interfaces/performance-datapoint';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SalesmenService {
+
+    constructor(private http: HttpClient) { }
+
+    getSalesmen(): Observable<HttpResponse<SalesmenDatapoint[]>>{
+        return this.http.get<SalesmenDatapoint[]>(environment.apiEndpoint + '/api/salesmen', {observe: 'response', withCredentials: true});
+    }
+
+    getSalesmanById(sid: number): Observable<HttpResponse<SalesmenDatapoint>> {
+        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands,max-len
+        return this.http.get<SalesmenDatapoint>(environment.apiEndpoint + '/api/salesmen/' + sid, {observe: 'response', withCredentials: true});
+    }
+
+    getSalesmanPerformanceByYear(sid: number, year: number): Observable<HttpResponse<PerformanceDatapoint>> {
+        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands,max-len
+        return this.http.get<PerformanceDatapoint>(environment.apiEndpoint + '/api/salesmen/' + sid + '/performance/' + year, {observe: 'response', withCredentials: true});
+    }
+}

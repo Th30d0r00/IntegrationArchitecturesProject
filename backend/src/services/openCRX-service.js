@@ -10,6 +10,7 @@ const config = {
     auth: credentials
 };
 
+//type fehlt noch: Legalentity oder Contact, governmentId, vielleicht rating noch hinzufügen statt in einer eigenen funktion
 async function fetchAllAccounts() {
     try {
         const response = await axios.get(`${baseURL}/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account`, config);

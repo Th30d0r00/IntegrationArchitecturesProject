@@ -4,7 +4,6 @@ const { getAccessToken } = require('./token-service');
 
 const baseURL = 'https://sepp-hrm.inf.h-brs.de/symfony/web/index.php';
 
-// Fehlerbehandlung für alle API-Aufrufe
 async function getAllEmployees() {
     try {
         const accessToken = await getAccessToken();
@@ -25,8 +24,10 @@ async function getAllEmployees() {
         return employees.map(employee => ({
             code: employee.code || 'Unknown',
             employeeId: employee.employeeId || 'Unknown',
-            fullName: employee.fullName || 'Unknown',
+            firstName: employee.firstName || 'Unknown',
+            lastName: employee.lastName || 'Unknown',
             jobTitle: employee.jobTitle || 'Unknown',
+            unit: employee.unit || 'Unknown',
             supervisor: employee.supervisor || 'Unknown',
         }));
 
@@ -56,14 +57,39 @@ async function getEmployeeById(sid) {
         return {
             code: employeeData.code || 'Unknown',
             employeeId: employeeData.employeeId || 'Unknown',
-            fullName: employeeData.fullName || 'Unknown',
+            firstName: employeeData.firstName || 'Unknown',
+            lastName: employeeData.lastName || 'Unknown',
             jobTitle: employeeData.jobTitle || 'Unknown',
+            unit: employeeData.unit || 'Unknown',
             supervisor: employeeData.supervisor || 'Unknown',
         };
 
     } catch (error) {
         console.error(`Error fetching employee with SID ${sid}:`, error.message);
         throw new Error(`Failed to fetch employee ${sid}: ${error.message}`);
+    }
+}
+
+async function addBonus(sid, year, bonus) {
+    try {
+        const accessToken = await getAccessToken();
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json',
+            }
+        };
+        console.log(sid, year, bonus);
+        const body = {
+            year: year,
+            value: bonus,
+        };
+        const response = await axios.post(`${baseURL}/api/v1/employee/${sid}/bonussalary`, body, config);
+        return response.data;
+    } catch (error) {
+        console.error('Error adding bonus:', error.message);
+        throw new Error(`Failed to add bonus for employee ${sid}: ${error.message}`);
     }
 }
 
@@ -100,5 +126,6 @@ async function getAllBonuses(sid) {
 module.exports = {
     getAllEmployees,
     getEmployeeById,
+    addBonus,
     getAllBonuses,
 };

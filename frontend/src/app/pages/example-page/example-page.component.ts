@@ -20,9 +20,11 @@ export class ExamplePageComponent implements OnInit {
 
     fetchPeople(): void{
         this.peopleDemoService.getPeople().subscribe((response): void => {
+            console.log(response.body);
             if (response.status === 200){
                 this.people = response.body;
             }
+            console.log(this.people);
         });
     }
 }

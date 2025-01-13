@@ -1,5 +1,5 @@
 // src/controllers/orangehrm-controller.js
-const { getAllEmployees, getEmployeeById, getAllBonuses } = require('../services/orangehrm-service');
+const { getAllEmployees, getEmployeeById, addBonus, getAllBonuses } = require('../services/orangehrm-service');
 
 exports.getAllEmployees = async (req, res) => {
     try {
@@ -22,6 +22,18 @@ exports.getEmployeeById = async (req, res) => {
     }
 };
 
+exports.addBonus = async (req, res) => {
+    const { sid } = req.params;
+    const {year, value} = req.body;
+    try {
+        const bonus = await addBonus(sid, year, value);
+        res.status(200).json(bonus);
+    } catch (error) {
+        console.error('Error adding bonus:', error);
+        res.status(500).json({ message: 'Error adding bonus' });
+    }
+}
+
 exports.getAllBonuses = async (req, res) => {
     const { sid } = req.params;
     try {
@@ -32,3 +44,5 @@ exports.getAllBonuses = async (req, res) => {
         res.status(500).json({ message: 'Error fetching bonuses' });
     }
 };
+
+

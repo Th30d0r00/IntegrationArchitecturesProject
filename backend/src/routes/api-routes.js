@@ -30,6 +30,7 @@ router.delete('/salesmen/:sid/performance/:year', salesmenApi.deletePerformanceR
 const orangeHRMApi = require('../apis/OrangeHRM-api');
 router.get('/employees', orangeHRMApi.getAllEmployees);
 router.get('/employees/:sid', orangeHRMApi.getEmployeeById);
+router.post('/employees/:sid/bonus', orangeHRMApi.addBonus);
 router.get('/employees/:sid/bonus', orangeHRMApi.getAllBonuses);
 
 const openCRXApi = require('../apis/openCRX-api');

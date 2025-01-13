@@ -1,0 +1,38 @@
+<div class="container">
+    <h1>Bonus Computation Sheet</h1>
+    <div class="info-box">
+        <div *ngIf="salesman">
+            <p><strong>Name:</strong> {{ salesman.firstname }} {{ salesman.lastname }}</p>
+            <p><strong>SID:</strong> {{ salesman.sid }}</p>
+            <p><strong>Department:</strong> {{salesman.department}}</p>
+        </div>
+        <div class="form-group">
+            <label for="year"><strong>Year:</strong></label>
+            <input id="year" formControlName="year" type="number" min="2000" max="2099" />
+        </div>
+    </div>
+    <p>Fill in the actual values for each Category to calculate the bonus.</p>
+    <p><strong>B.) Social Performance Evaluation</strong></p>
+    <form [formGroup]="recordForm" (ngSubmit)="onSubmit()">
+        <table>
+            <thead>
+            <tr>
+                <th>Category</th>
+                <th>Target Value</th>
+                <th>Actual Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let competence of competencesControls; let i = index">
+                <td>{{ competence.value.name }}</td>
+                <td>{{ competence.value.targetValue }}</td>
+                <td>
+                    <!-- Binden an das 'actualValue' FormControl -->
+                    <input [formControl]="competence.get('actualValue')" type="number" />
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="submit" [disabled]="recordForm.invalid">Submit</button>
+    </form>
+</div>
