@@ -1,5 +1,4 @@
 const { getAllEmployees } = require('./orangehrm-service');
-const {app} = require("express/lib/request");
 
 async function loadEmployeesToDB(db) {
     try {
@@ -10,7 +9,10 @@ async function loadEmployeesToDB(db) {
         for (const employee of employees) {
 
             const existingSalesman = await db.collection('salesmen').findOne({
-                $or: [{ sid: employee.employeeId }, { code: employee.code }]
+                $or: [
+                    { sid: parseInt(employee.employeeId, 10) },
+                    { code: parseInt(employee.code, 10) }
+                ]
             });
 
             if (!existingSalesman) {
@@ -24,7 +26,6 @@ async function loadEmployeesToDB(db) {
                     department: employee.unit,
                     supervisor: Array.isArray(employee.supervisor) ? employee.supervisor[0]?.name : employee.supervisor
                 };
-                console.log('New Salesman:', salesman);
 
                 salesmanDocuments.push(salesman);
             }
