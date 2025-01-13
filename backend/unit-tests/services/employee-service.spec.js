@@ -1,7 +1,7 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
 const { loadEmployeesToDB } = require('../../src/services/employee-service'); // Dein Service
-const hrm = require('../../src/services/orangehrm-service'); // Das Modul mit der getAllEmployees Methode
+const hrm = require('../../src/services/orangeHRM-service'); // Das Modul mit der getAllEmployees Methode
 
 describe('loadEmployeesToDB', function () {
     let dbStub;
