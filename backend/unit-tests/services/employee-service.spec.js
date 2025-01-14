@@ -1,14 +1,14 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
-const { loadEmployeesToDB } = require('../../src/services/employee-service'); // Dein Service
-const hrm = require('../../src/services/orangeHRM-service'); // Das Modul mit der getAllEmployees Methode
+const { loadEmployeesToDB } = require('../../src/services/employee-service');
+const hrm = require('../../src/services/orangeHRM-service');
 
 describe('loadEmployeesToDB', function () {
     let dbStub;
     let getAllEmployeesStub;
 
     beforeEach(() => {
-        // Mock für die Datenbankverbindung
+
         dbStub = {
             collection: sinon.stub().returns({
                 findOne: sinon.stub().resolves(null),
@@ -16,7 +16,7 @@ describe('loadEmployeesToDB', function () {
             })
         };
 
-        // Stub für getAllEmployees Methode
+
         getAllEmployeesStub = sinon.stub(hrm, 'getAllEmployees').resolves([
             {
                 code: '12345',
@@ -40,15 +40,15 @@ describe('loadEmployeesToDB', function () {
     });
 
     afterEach(() => {
-        sinon.restore(); // Restore stubs
+        sinon.restore();
     });
 
     describe('Service is online (reachable)', function () {
         it('should load employees into the database', async () => {
-            await loadEmployeesToDB(dbStub); // Funktionsaufruf
+            await loadEmployeesToDB(dbStub);
 
             const insertedData = dbStub.collection().insertMany.getCall(0).args[0];
-            expect(insertedData).to.be.an('array').with.lengthOf(15); // Überprüfen der Länge von insertedData
+            expect(insertedData).to.be.an('array').with.lengthOf(15);
 
             /*expect(insertedData[0]).to.include({
                 code: 12345,
