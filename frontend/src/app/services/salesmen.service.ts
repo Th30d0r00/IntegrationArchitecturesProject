@@ -4,6 +4,8 @@ import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {SalesmenDatapoint} from '../interfaces/salesmen-datapoint';
 import {PerformanceDatapoint} from '../interfaces/performance-datapoint';
+import {PeformanceRecord} from '../models/PeformanceRecord';
+import {Competence} from "../models/Competence";
 
 @Injectable({
     providedIn: 'root'
@@ -25,4 +27,11 @@ export class SalesmenService {
         // eslint-disable-next-line @typescript-eslint/restrict-plus-operands,max-len
         return this.http.get<PerformanceDatapoint>(environment.apiEndpoint + '/api/salesmen/' + sid + '/performance/' + year, {observe: 'response', withCredentials: true});
     }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
+    addPerformanceRecord(sid: number, record: { sid: number; year: number; competences: Competence[]}) {
+        const url = `/api/salesmen/${sid}/performance`;
+        return this.http.post(url, record);
+    }
+
 }

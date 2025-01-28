@@ -1,7 +1,8 @@
 class PerformanceRecord {
-    constructor(sid, year, competences) {
+    constructor(sid, year,totalBonus, competences) {
         this.sid = sid;
         this.year = year;
+        this.totalBonus = totalBonus;
         this.competences = competences;
     }
 }

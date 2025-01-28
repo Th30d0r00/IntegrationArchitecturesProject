@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SalesmenService } from '../../services/salesmen.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {SalesmenDatapoint} from '../../interfaces/salesmen-datapoint';
+import {Competence} from '../../models/Competence';
+import {PeformanceRecord} from '../../models/PeformanceRecord';
 
 @Component({
     selector: 'app-add-performance-record-page',
@@ -24,7 +26,8 @@ export class AddPerformanceRecordPageComponent implements OnInit {
 
     constructor(
         private salesmenService: SalesmenService,
-        private route: ActivatedRoute) {
+        private route: ActivatedRoute,
+        private router: Router) {
     }
 
     ngOnInit(): void {
@@ -38,6 +41,7 @@ export class AddPerformanceRecordPageComponent implements OnInit {
 
     private initializeForm(): void {
         this.recordForm = new FormGroup({
+            year: new FormControl(new Date().getFullYear(), [Validators.required, Validators.min(2000), Validators.max(2099)]),
             competences: new FormArray(this.competences.map(competence => new FormGroup({
                 name: new FormControl(competence.name),
                 targetValue: new FormControl(competence.targetValue),
@@ -56,10 +60,7 @@ export class AddPerformanceRecordPageComponent implements OnInit {
 
 
     onSubmit(): void {
-        if (this.recordForm.valid) {
-            alert('Formular erfolgreich übermittelt!');
-        }
-        console.log(this.formAsJson);
+        this.savePerformanceRecord();
     }
 
     fetchSalesmanDetails(sid: number): void {
@@ -67,5 +68,39 @@ export class AddPerformanceRecordPageComponent implements OnInit {
             this.salesman = response.body;
             console.log(this.salesman);
         });
+    }
+
+    savePerformanceRecord(): void {
+        if (this.recordForm.valid) {
+            const sid = this.route.snapshot.paramMap.get('sid');
+            if (sid) {
+
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                const year = this.recordForm.get('year')?.value;
+
+                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+                const competences: Competence[] = this.competencesControls.map(competence => new Competence(
+                    '',
+                    competence.value.name,
+                    competence.value.targetValue,
+                    competence.value.actualValue,
+                    0,
+                    ''
+                ));
+
+                const performanceRecord = new PeformanceRecord(
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                    '', parseInt(sid, 10), year, competences, 0, false);
+
+                console.log(performanceRecord);
+
+                this.salesmenService.addPerformanceRecord(parseInt(sid, 10), performanceRecord).subscribe(response => {
+                    console.log('API Response:', response);
+                    alert('Leistungsdaten erfolgreich gespeichert!');
+                    this.router.navigate(['/salesmen', sid]);
+                });
+            }
+
+        }
     }
 }

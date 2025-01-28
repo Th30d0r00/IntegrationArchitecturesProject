@@ -1,14 +1,27 @@
-function calculateBonus(socialPerformanceRecord) {
+// Nochmal drüber diskutieren, ob das so passt. GGf. Berechnung verändern
+function calculateBonus(competences) {
     let totalBonus = 0;
-    socialPerformanceRecord.forEach((record) => {
-        const { targetValue, actualValue, bonus } = record;
+
+    competences.forEach((competence) => {
+        const { targetValue, actualValue } = competence;
+
+        let calculatedBonus = 0;
+
         if (actualValue >= targetValue) {
-            totalBonus += bonus;
+            calculatedBonus = 100;
         } else {
             const performanceRatio = actualValue / targetValue;
-            totalBonus += bonus * performanceRatio;
+            calculatedBonus = 100 * performanceRatio;
         }
+
+        competence.bonus = Math.round(calculatedBonus);
+
+        totalBonus += calculatedBonus;
     });
-    return totalBonus;
+
+    return {
+        totalBonus: Math.round(totalBonus),
+        competences
+    };
 }
 module.exports = {calculateBonus};

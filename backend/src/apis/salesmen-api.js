@@ -1,6 +1,7 @@
 const salesmenService = require('../services/salesmen-service')
 const Salesman = require("../models/Salesman");
 const PerformanceRecord = require("../models/PerformanceRecord");
+const {calculateBonus} = require("../services/bonus-service");
 
 
 /**
@@ -106,10 +107,13 @@ exports.addPerformanceRecord = async function (req, res) {
         const { year, competences } = req.body;
         const sid = parseInt(req.params.sid);
 
-        // Neues PerformanceRecord-Objekt erstellen
-        const record = new PerformanceRecord(sid, year, competences);
 
-        // In die Datenbank einfügen
+        const { totalBonus, competences: updatedCompetences } = calculateBonus(competences);
+
+        const record = new PerformanceRecord(sid, year, totalBonus, updatedCompetences);
+
+        console.log("PerformanceRecord with calculated Bonus:", record);
+
         await salesmenService.addPerformanceRecord(db, sid, record);
         res.status(201).json({ message: 'Performance record added', record });
     } catch (err) {

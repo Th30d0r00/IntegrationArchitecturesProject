@@ -1,4 +1,4 @@
-const { getAllEmployees } = require('./orangehrm-service');
+const { getAllEmployees } = require('./orangeHRM-service');
 
 async function loadEmployeesToDB(db) {
     try {
