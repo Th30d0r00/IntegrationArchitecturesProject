@@ -110,7 +110,7 @@ exports.addPerformanceRecord = async function (req, res) {
 
         const { totalBonus, competences: updatedCompetences } = calculateBonus(competences);
 
-        const record = new PerformanceRecord(sid, year, totalBonus, updatedCompetences);
+        const record = new PerformanceRecord(sid, year, totalBonus, updatedCompetences, false);
 
         console.log("PerformanceRecord with calculated Bonus:", record);
 
@@ -169,6 +169,31 @@ exports.getPerformanceRecordByYear = async function (req, res) {
         res.status(500).json({ message: 'Failed to retrieve performance record', error: err.message });
     }
 };
+
+/**
+ * Endpoint which retrieves all salesman who have unapproved performance records
+ * @param req express request
+ * @param res express response
+ * @return {Promise<void>}
+ */
+
+exports.getSalesmenWithUnapprovedPerformanceRecords = async function (req, res) {
+    const db = req.app.get('db');
+    console.log("getSalesmenWithUnapprovedPerformanceRecords");
+
+    try {
+        const salesmen = await salesmenService.getAllUnapprovedRecords(db);
+
+        if (salesmen) {
+            res.json(salesmen);
+        } else {
+            res.status(404).json({ message: 'No salesmen found' });
+        }
+    } catch (err) {
+        console.error('Error retrieving salesmen:', err);
+        res.status(500).json({ message: 'Failed to retrieve salesmen', error: err.message });
+    }
+}
 
 /**
  * Endpoint, which deletes a specific performance record by year for a salesman

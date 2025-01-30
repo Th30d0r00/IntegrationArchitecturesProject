@@ -31,6 +31,36 @@ exports.getAll = async function (db) {
 }
 
 /**
+ * retrieves all salesmen who hava an unnapproved performance record
+ * @param db target database
+ * @return {Promise<any>}
+ */
+
+exports.getAllUnapprovedRecords = async function (db) {
+    return await db.collection('salesmen').aggregate([
+        // Entpackt das performance-Array -> Jeder Eintrag wird zu einem eigenen Dokument
+        { $unwind: "$performance" },
+
+        // Filtern: Nur Performance-Records, die ceoApproval = false haben
+        { $match: { "performance.ceoApproval": false } },
+
+        // Nur die relevanten Felder zurückgeben
+        {
+            $project: {
+                _id: 0,
+                firstname: 1,
+                lastname: 1,
+                sid: 1,
+                department: 1,
+                year: "$performance.year",  // Jahr des Performance-Records
+            }
+        }
+    ]).toArray();
+};
+
+
+
+/**
  * deletes a salesman by its sid
  * @param db target database
  * @param {string} id salesman sid

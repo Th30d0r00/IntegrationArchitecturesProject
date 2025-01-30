@@ -9,6 +9,7 @@ import {SalesmenPageComponent} from './pages/salesmen-page/salesmen-page.compone
 import {SpecificSalesmanPageComponent} from './pages/specific-salesman-page/specific-salesman-page.component';
 import {PerformanceRecordPageComponent} from './pages/performance-record-page/performance-record-page.component';
 import {AddPerformanceRecordPageComponent} from './pages/add-performance-record-page/add-performance-record-page.component';
+import {PerformanceRecordApprovalListPageComponent} from './pages/performance-record-approval-list-page/performance-record-approval-list-page.component';
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -27,6 +28,7 @@ const routes: Routes = [
     {path: 'salesmen/:sid', component: SpecificSalesmanPageComponent, canActivate: [AuthGuardService]},
     {path: 'performance-record/:sid/:year', component: PerformanceRecordPageComponent, canActivate: [AuthGuardService]},
     {path: 'add-performance-record/:sid', component: AddPerformanceRecordPageComponent, canActivate: [AuthGuardService]},
+    {path: 'approval-list', component: PerformanceRecordApprovalListPageComponent, canActivate: [AuthGuardService]},
     {path: '', redirectTo: '/salesmen', pathMatch: 'full'},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
 ];

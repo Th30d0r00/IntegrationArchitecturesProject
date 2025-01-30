@@ -22,6 +22,8 @@ import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.compo
 import { SpecificSalesmanPageComponent } from './pages/specific-salesman-page/specific-salesman-page.component';
 import { PerformanceRecordPageComponent } from './pages/performance-record-page/performance-record-page.component';
 import { AddPerformanceRecordPageComponent } from './pages/add-performance-record-page/add-performance-record-page.component';
+import { PerformanceRecordApprovalListPageComponent } from './pages/performance-record-approval-list-page/performance-record-approval-list-page.component';
+import { ApprovePerformanceRecordPageComponent } from './pages/approve-performance-record-page/approve-performance-record-page.component';
 
 @NgModule({
     declarations: [
@@ -36,6 +38,8 @@ import { AddPerformanceRecordPageComponent } from './pages/add-performance-recor
         SpecificSalesmanPageComponent,
         PerformanceRecordPageComponent,
         AddPerformanceRecordPageComponent,
+        PerformanceRecordApprovalListPageComponent,
+        ApprovePerformanceRecordPageComponent,
     ],
     imports: [
         BrowserModule,

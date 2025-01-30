@@ -5,7 +5,8 @@ import {Observable} from 'rxjs';
 import {SalesmenDatapoint} from '../interfaces/salesmen-datapoint';
 import {PerformanceDatapoint} from '../interfaces/performance-datapoint';
 import {PeformanceRecord} from '../models/PeformanceRecord';
-import {Competence} from "../models/Competence";
+import {Competence} from '../models/Competence';
+import {SalesmenDatapointWithPerformanceYear} from "../interfaces/salesmen-datapoint-performance-year";
 
 @Injectable({
     providedIn: 'root'
@@ -32,6 +33,11 @@ export class SalesmenService {
     addPerformanceRecord(sid: number, record: { sid: number; year: number; competences: Competence[]}) {
         const url = `/api/salesmen/${sid}/performance`;
         return this.http.post(url, record);
+    }
+
+    getSalesmenWithUnapprovedRecords(): Observable<HttpResponse<SalesmenDatapointWithPerformanceYear[]>> {
+        return this.http.get<SalesmenDatapointWithPerformanceYear[]>(environment.apiEndpoint + '/api/unapprovedSalesmenRecords',
+            {observe: 'response', withCredentials: true});
     }
 
 }
