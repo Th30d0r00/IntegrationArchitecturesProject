@@ -27,7 +27,7 @@
     <ng-container matColumnDef="records">
         <th mat-header-cell *matHeaderCellDef>Performance Record</th>
         <td mat-cell *matCellDef="let salesman">
-            <a [routerLink]="['/salesmen/unapprovedRecord', salesman.sid]">Record</a>
+            <a [routerLink]="['/approve-performance-record', salesman.sid, salesman.year]">Record</a>
         </td>
     </ng-container>
 

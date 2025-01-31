@@ -26,7 +26,9 @@ router.post('/salesmen/:sid/performance', salesmenApi.addPerformanceRecord);
 router.get('/salesmen/:sid/performance', salesmenApi.getPerformanceRecordsBySalesmanId);
 router.get('/salesmen/:sid/performance/:year', salesmenApi.getPerformanceRecordByYear);
 router.delete('/salesmen/:sid/performance/:year', salesmenApi.deletePerformanceRecord);
+router.put('/salesmen/:sid/performance/:year', salesmenApi.approvePerformanceRecord);
 router.get('/unapprovedSalesmenRecords', salesmenApi.getSalesmenWithUnapprovedPerformanceRecords);
+
 
 const orangeHRMApi = require('../apis/OrangeHRM-api');
 router.get('/employees', orangeHRMApi.getAllEmployees);

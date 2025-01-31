@@ -7,7 +7,8 @@ export class PeformanceRecord {
         public year: number,
         public competences: Competence[],
         public totalBonus: number,
-        public ceoApproval: boolean
+        public ceoApproval: boolean,
+        public remark: string
     ) { }
 }
 

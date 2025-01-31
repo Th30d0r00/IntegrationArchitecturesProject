@@ -27,6 +27,7 @@ exports.addBonus = async (req, res) => {
     const {year, value} = req.body;
     try {
         const bonus = await addBonus(sid, year, value);
+        console.log('Bonus added:', bonus);
         res.status(200).json(bonus);
     } catch (error) {
         console.error('Error adding bonus:', error);

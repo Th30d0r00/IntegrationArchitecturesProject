@@ -5,6 +5,5 @@ export class Competence {
         public targetValue: number,
         public actualValue: number,
         public bonus: number,
-        public remark: string
     ) { }
 }

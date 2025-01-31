@@ -4,9 +4,8 @@ import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {SalesmenDatapoint} from '../interfaces/salesmen-datapoint';
 import {PerformanceDatapoint} from '../interfaces/performance-datapoint';
-import {PeformanceRecord} from '../models/PeformanceRecord';
 import {Competence} from '../models/Competence';
-import {SalesmenDatapointWithPerformanceYear} from "../interfaces/salesmen-datapoint-performance-year";
+import {SalesmenDatapointWithPerformanceYear} from '../interfaces/salesmen-datapoint-performance-year';
 
 @Injectable({
     providedIn: 'root'
@@ -31,7 +30,7 @@ export class SalesmenService {
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
     addPerformanceRecord(sid: number, record: { sid: number; year: number; competences: Competence[]}) {
-        const url = `/api/salesmen/${sid}/performance`;
+        const url = environment.apiEndpoint + `/api/salesmen/${sid}/performance`;
         return this.http.post(url, record);
     }
 
@@ -39,5 +38,15 @@ export class SalesmenService {
         return this.http.get<SalesmenDatapointWithPerformanceYear[]>(environment.apiEndpoint + '/api/unapprovedSalesmenRecords',
             {observe: 'response', withCredentials: true});
     }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
+    approvePerformanceRecord(sid: number, year: number, ceoApproval: boolean, remark: string) {
+        const url = `/api/salesmen/${sid}/performance/${year}`;
+        const record = { ceoApproval, remark };
+
+        return this.http.put(url, record);
+    }
+
+
 
 }

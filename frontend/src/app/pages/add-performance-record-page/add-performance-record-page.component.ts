@@ -84,13 +84,12 @@ export class AddPerformanceRecordPageComponent implements OnInit {
                     competence.value.name,
                     competence.value.targetValue,
                     competence.value.actualValue,
-                    0,
-                    ''
+                    0
                 ));
 
                 const performanceRecord = new PeformanceRecord(
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                    '', parseInt(sid, 10), year, competences, 0, false);
+                    '', parseInt(sid, 10), year, competences, 0, false, '');
 
                 console.log(performanceRecord);
 

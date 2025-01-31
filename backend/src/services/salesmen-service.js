@@ -112,6 +112,28 @@ exports.getPerformanceRecordByYear = async function (db, sid, year) {
 };
 
 /**
+ * updates a performance record of a salesman with CEO approval and remark
+ * @param db target database
+ * @param {string} sid salesman sid
+ * @param {string} year year of the record
+ * @param {boolean} ceoApproval CEO approval
+ * @param {string} remark remark
+ */
+
+exports.approvePerformanceRecord = async function (db, sid, year, ceoApproval, remark) {
+    return (await db.collection('salesmen').updateOne(
+        { sid: sid, 'performance.year': year },
+        {
+            $set: {
+                'performance.$.ceoApproval': ceoApproval,
+                'performance.$.remark': remark
+            }
+        }
+    ));
+};
+
+
+/**
  * deletes a performance record of a salesman by year
  * @param db target database
  * @param {string} sid salesman sid

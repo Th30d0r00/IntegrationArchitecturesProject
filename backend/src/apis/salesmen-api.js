@@ -196,6 +196,33 @@ exports.getSalesmenWithUnapprovedPerformanceRecords = async function (req, res) 
 }
 
 /**
+ * Endpoint which approves a performance record for a specific salesman with remarks
+ * @param req express request
+ * @param res express response
+ * @return {Promise<void>}
+ */
+
+exports.approvePerformanceRecord = async function (req, res) {
+    const db = req.app.get('db');
+    const sid = parseInt(req.params.sid, 10);
+    const year = parseInt(req.params.year, 10);
+    const {ceoApproval, remark} = req.body;
+
+    try {
+        const result = await salesmenService.approvePerformanceRecord(db, sid, year, ceoApproval, remark);
+
+        if (result.modifiedCount > 0) {
+            res.json({ message: 'Performance record approved' });
+        } else {
+            res.status(404).json({ message: 'Performance record not found' });
+        }
+    } catch (err) {
+        console.error('Error approving performance record:', err);
+        res.status(500).json({ message: 'Failed to approve performance record', error: err.message });
+    }
+}
+
+/**
  * Endpoint, which deletes a specific performance record by year for a salesman
  * @param req express request
  * @param res express response
