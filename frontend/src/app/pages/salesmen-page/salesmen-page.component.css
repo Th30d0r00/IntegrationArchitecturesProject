@@ -1,3 +1,88 @@
-table{
-    width: 100%;
+/* Google Fonts einbinden */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.salesman-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(to right, #f1f1f1, #f9f9f9);
+    border-radius: 8px;
+}
+
+.salesman-card {
+    margin: 16px;
+    width: 250px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+.salesman-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+mat-card-header {
+    background-color: #f1f1f1;
+    border-radius: 8px;
+}
+
+mat-card-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+mat-card-subtitle {
+    font-size: 1em;
+    color: #666;
+}
+mat-card-content {
+    padding: 16px;
+}
+
+.view-details-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #3f51b5;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.view-details-btn:hover {
+    background-color: #0056b3;
+}
+
+.view-details-btn mat-icon {
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .salesman-grid {
+        padding: 10px;
+    }
+
+    .salesman-card {
+        margin: 8px;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .view-details-btn {
+        padding: 6px 12px;
+    }
 }

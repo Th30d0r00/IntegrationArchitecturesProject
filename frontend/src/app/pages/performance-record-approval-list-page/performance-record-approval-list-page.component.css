@@ -1,3 +1,60 @@
-table{
+table.mat-elevation-z8 {
     width: 100%;
+    margin: 20px 0;
+    font-family: 'Roboto', sans-serif;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+th.mat-header-cell {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 2px solid #ddd;
+}
+
+td.mat-cell {
+    font-size: 14px;
+    padding: 10px 16px;
+    border-bottom: 1px solid #f4f4f4;
+    text-align: left;
+    color: #333;
+}
+
+tr.mat-row:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.record-link {
+    color: #3f51b5;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.record-link:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+tr.mat-header-row,
+tr.mat-row {
+    padding: 10px 0;
+}
+
+tr.mat-row:last-child {
+    border-bottom: none;
 }

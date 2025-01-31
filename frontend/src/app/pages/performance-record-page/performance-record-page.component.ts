@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PerformanceDatapoint} from '../../interfaces/performance-datapoint';
 import {ActivatedRoute} from '@angular/router';
 import {SalesmenService} from '../../services/salesmen.service';
+import {SalesmenDatapoint} from "../../interfaces/salesmen-datapoint";
 
 @Component({
     selector: 'app-performance-record-page',
@@ -11,7 +12,8 @@ import {SalesmenService} from '../../services/salesmen.service';
 export class PerformanceRecordPageComponent implements OnInit {
 
     performanceData: PerformanceDatapoint;
-    displayedColumns = ['competence', 'target', 'actual', 'bonus', 'comment'];
+    salesman: SalesmenDatapoint;
+    displayedColumns = ['competence', 'target', 'actual', 'bonus'];
     constructor(
         private route: ActivatedRoute,
         private salesmenService: SalesmenService
@@ -22,6 +24,7 @@ export class PerformanceRecordPageComponent implements OnInit {
         const year = this.route.snapshot.paramMap.get('year');
         if (sid && year) {
             this.fetchPerformanceData(parseInt(sid, 10), parseInt(year, 10));
+            this.fetchSalesmanDetails(parseInt(sid, 10));
         }
     }
 
@@ -31,5 +34,12 @@ export class PerformanceRecordPageComponent implements OnInit {
             console.log(this.performanceData);
         });
     }
+    fetchSalesmanDetails(sid: number): void {
+        this.salesmenService.getSalesmanById(sid).subscribe((response) => {
+            this.salesman = response.body;
+            console.log(this.salesman);
+        });
+    }
+
 
 }

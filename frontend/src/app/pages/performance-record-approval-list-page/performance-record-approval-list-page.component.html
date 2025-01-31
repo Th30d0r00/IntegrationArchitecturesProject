@@ -27,11 +27,10 @@
     <ng-container matColumnDef="records">
         <th mat-header-cell *matHeaderCellDef>Performance Record</th>
         <td mat-cell *matCellDef="let salesman">
-            <a [routerLink]="['/approve-performance-record', salesman.sid, salesman.year]">Record</a>
+            <a [routerLink]="['/approve-performance-record', salesman.sid, salesman.year]" class="record-link">View Record</a>
         </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-

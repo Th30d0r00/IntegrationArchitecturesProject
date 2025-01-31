@@ -17,6 +17,7 @@ export interface Performance {
 export interface SalesmenDatapoint {
     id: string;
     sid: number;
+    code: number;
     lastname: string;
     firstname: string;
     department: string;

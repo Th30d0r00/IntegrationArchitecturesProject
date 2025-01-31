@@ -1,27 +1,32 @@
-<div *ngIf="salesman">
-    <h2>{{ salesman.firstname }} {{ salesman.lastname }}</h2>
-    <p><strong>SID:</strong> {{ salesman.sid }}</p>
-    <p><strong>Performance Records:</strong></p>
+<div *ngIf="salesman" class="salesman-details-container">
+    <div class="salesman-header">
+        <h2>{{ salesman.firstname }} {{ salesman.lastname }}</h2>
+        <p><strong>Employee ID:</strong> {{ salesman.code }}</p>
+        <button mat-raised-button color="primary" [routerLink]="['/add-performance-record', salesman.sid]" class="add-record-btn">
+            Add Performance Record
+        </button>
+    </div>
 
-    <button mat-raised-button color="primary" [routerLink]="['/add-performance-record', salesman.sid]">Add Performance Record</button>
+    <div class="performance-records">
+        <h2>Performance Records:</h2>
 
-    <table mat-table [dataSource]="salesman.performance" class="mat-elevation-z8 cdk-table">
-        <ng-container matColumnDef="year">
-            <th mat-header-cell *matHeaderCellDef> Year </th>
-            <td mat-cell *matCellDef="let perf"> {{ perf.year }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="record">
-            <th mat-header-cell *matHeaderCellDef> Record </th>
-            <td mat-cell *matCellDef="let perf">
-                <a [routerLink]="['/performance-record', salesman.sid, perf.year]">View Record</a>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+        <div class="performance-cards">
+            <mat-card *ngFor="let perf of salesman.performance" class="performance-card">
+                <mat-card-header>
+                    <mat-card-title>Year: {{ perf.year }}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>
+                        <a [routerLink]="['/performance-record', salesman.sid, perf.year]" class="view-record-link">
+                            View Record
+                        </a>
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
 </div>
+
 <div *ngIf="!salesman">
     <p>Loading...</p>
 </div>

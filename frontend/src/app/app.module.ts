@@ -24,6 +24,7 @@ import { PerformanceRecordPageComponent } from './pages/performance-record-page/
 import { AddPerformanceRecordPageComponent } from './pages/add-performance-record-page/add-performance-record-page.component';
 import { PerformanceRecordApprovalListPageComponent } from './pages/performance-record-approval-list-page/performance-record-approval-list-page.component';
 import { ApprovePerformanceRecordPageComponent } from './pages/approve-performance-record-page/approve-performance-record-page.component';
+import {MatGridListModule} from "@angular/material/grid-list";
 
 @NgModule({
     declarations: [
@@ -53,7 +54,8 @@ import { ApprovePerformanceRecordPageComponent } from './pages/approve-performan
         MatToolbarModule,
         MatIconModule,
         MatTableModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatGridListModule
     ],
     providers: [],
     bootstrap: [AppComponent]

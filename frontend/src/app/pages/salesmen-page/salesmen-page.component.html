@@ -1,4 +1,24 @@
-<table mat-table [dataSource]="salesmen" class="mat-elevation-z8 cdk-table">
+<!--kacheln oder tabelle?-->
+<mat-grid-list cols="5" rowHeight="250px" gutterSize="16px" class="salesman-grid">
+    <mat-grid-tile *ngFor="let salesman of salesmen">
+        <mat-card class="salesman-card">
+            <mat-card-header>
+                <mat-card-title>{{ salesman.firstname }} {{ salesman.lastname }}</mat-card-title>
+                <mat-card-subtitle>Employee ID: {{ salesman.code }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p><strong>Department:</strong> {{ salesman.department }}</p>
+            </mat-card-content>
+            <mat-card-actions>
+                <a mat-button [routerLink]="['/salesmen', salesman.sid]" class="view-details-btn">
+                    <mat-icon>info</mat-icon> View Details
+                </a>
+            </mat-card-actions>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
+
+<!--<table mat-table [dataSource]="salesmen" class="mat-elevation-z8 cdk-table">
     <ng-container matColumnDef="firstname">
         <th mat-header-cell *matHeaderCellDef> First Name </th>
         <td mat-cell *matCellDef="let salesman"> {{ salesman.firstname }} </td>
@@ -28,5 +48,5 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+</table>-->
 

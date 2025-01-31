@@ -1,37 +1,55 @@
-<p><strong>Social Performance Evaluation</strong></p>
+<div class="container">
+    <h1>Performance Evaluation</h1>
 
-<div *ngIf="performanceData">
-    <h2>SID: {{ performanceData.sid }}, Year: {{ performanceData.year }}</h2>
+    <fieldset>
+        <legend><strong>General Information</strong></legend>
+        <div class="info-box">
+            <div *ngIf="salesman">
+                <p><strong>Name: </strong>{{ salesman.firstname }} {{ salesman.lastname }}</p>
+                <p><strong>EmployeeID: </strong>{{ salesman.code }}</p>
+                <p><strong>Department: </strong>{{ salesman.department }}</p>
+                <p><strong>Year: </strong>{{ performanceData?.year }}</p>
+            </div>
+        </div>
+    </fieldset>
 
-    <table mat-table [dataSource]="performanceData.competences" class="mat-elevation-z8">
-        <ng-container matColumnDef="competence">
-            <th mat-header-cell *matHeaderCellDef>Competence</th>
-            <td mat-cell *matCellDef="let competence"> {{ competence.name }} </td>
-        </ng-container>
+    <fieldset>
+        <legend><strong>B.) Social Performance Evaluation</strong></legend>
+        <table>
+            <thead>
+            <tr>
+                <th>Competence</th>
+                <th>Target Value</th>
+                <th>Actual Value</th>
+                <th>Bonus</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let competence of performanceData.competences">
+                <td>{{ competence.name }}</td>
+                <td>{{ competence.targetValue }}</td>
+                <td>{{ competence.actualValue }}</td>
+                <td>{{ competence.bonus }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
 
-        <ng-container matColumnDef="target">
-            <th mat-header-cell *matHeaderCellDef>Target Value</th>
-            <td mat-cell *matCellDef="let competence"> {{ competence.targetValue }} </td>
-        </ng-container>
+    <div class="total-bonus-container">
+        <p><strong>Total Bonus (parts A and B): </strong>{{ performanceData.totalBonus }}</p>
+    </div>
 
-        <ng-container matColumnDef="actual">
-            <th mat-header-cell *matHeaderCellDef>Actual Value</th>
-            <td mat-cell *matCellDef="let competence"> {{ competence.actualValue }} </td>
-        </ng-container>
+    <fieldset>
+        <legend><strong>Remarks</strong></legend>
+        <p>{{ performanceData.remark }}</p>
+    </fieldset>
 
-        <ng-container matColumnDef="bonus">
-            <th mat-header-cell *matHeaderCellDef>Bonus</th>
-            <td mat-cell *matCellDef="let competence"> {{ competence.bonus }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="comment">
-            <th mat-header-cell *matHeaderCellDef>Comment</th>
-            <td mat-cell *matCellDef="let competence"> {{ competence.comment }} </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+    <fieldset class="ceo-approval-container">
+        <legend><strong>CEO Approval</strong></legend>
+        <p class="ceo-approval-status" [ngClass]="{ 'approved': performanceData.ceoApproval, 'not-approved': !performanceData.ceoApproval }">
+            {{ performanceData.ceoApproval ? 'Yes' : 'No' }}
+        </p>
+    </fieldset>
 </div>
 
 <div *ngIf="!performanceData">

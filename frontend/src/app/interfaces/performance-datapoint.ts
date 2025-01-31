@@ -3,6 +3,8 @@ export interface PerformanceDatapoint {
     year: number;
     competences: Competence[];
     totalBonus: number;
+    remark: string;
+    ceoApproval: boolean;
 }
 
 export interface Competence {
@@ -11,5 +13,4 @@ export interface Competence {
     targetValue: number;
     actualValue: number;
     bonus: number;
-    comment: string;
 }

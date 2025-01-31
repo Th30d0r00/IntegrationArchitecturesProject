@@ -95,7 +95,7 @@ export class AddPerformanceRecordPageComponent implements OnInit {
 
                 this.salesmenService.addPerformanceRecord(parseInt(sid, 10), performanceRecord).subscribe(response => {
                     console.log('API Response:', response);
-                    alert('Leistungsdaten erfolgreich gespeichert!');
+                    alert('Peformance record added!');
                     this.router.navigate(['/salesmen', sid]);
                 });
             }
