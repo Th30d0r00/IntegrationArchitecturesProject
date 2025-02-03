@@ -1,4 +1,5 @@
 const axios = require('axios');
+const {getProductBySalesOrderId} = require("../apis/openCRX-api");
 
 const baseURL = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX';
 const credentials = {
@@ -20,11 +21,12 @@ async function fetchAllAccounts() {
             const name = account.fullName || 'Unknown';
             const jobRole = account.jobRole || 'Unknown';
             const vcard = account.vcard || '';
+            const governmentId = account.governmentId || 'Unknown';
 
             const uidMatch = vcard.match(/UID:([^\n]+)/);
             const uid = uidMatch ? uidMatch[1].trim() : 'UID nicht gefunden';
 
-            return { name, jobRole, uid };
+            return { name, jobRole, uid ,governmentId };
         });
 
     } catch (error) {
@@ -155,6 +157,102 @@ async function getRatingsByAccount(id) {
     }
 }
 
+async function getSalesOrdersByAccountAndYear(governmentId, year) {
+    try {
+        console.log('Fetching sales orders for account:', governmentId, 'in year:', year);
+        const accounts = await fetchAllAccounts();
+        const salesOrders = await getSalesOrders();
+
+        const account = accounts.find(account => Number(account.governmentId) === Number(governmentId));
+        if (!account) {
+            throw new Error('Account not found');
+        }
+
+        // Sales Orders filtern
+        const salesOrdersForAccountAndYear = salesOrders
+            .filter(salesOrder => salesOrder.salesmanUid === account.uid && salesOrder.year === year)
+            .map(salesOrder => ({
+                identity: salesOrder.identity,
+                year: salesOrder.year,
+                customerUid: salesOrder.customer
+            }));
+
+        console.log('Filtered Sales Orders:', salesOrdersForAccountAndYear);
+
+        // Produkte & Customer-Namen abrufen
+        const salesOrdersWithDetails = await Promise.all(
+            salesOrdersForAccountAndYear.map(async (salesOrder) => {
+                const products = await getProductsBySalesOrderId(salesOrder.identity);
+
+                // Produktnamen abrufen und hinzufügen
+                const productsWithNames = await Promise.all(
+                    products.map(async (product) => {
+                        const productName = await getProductNameById(product.product);
+                        return { ...product, productName };
+                    })
+                );
+
+                // Customer-Name abrufen
+                const customer = accounts.find(acc => acc.uid === salesOrder.customerUid);
+                const customerName = customer ? customer.name : 'Unknown';
+
+                // Rating abrufen
+                const rating = await getRatingsByAccount(customer?.uid || '');
+
+                return {
+                    ...salesOrder,
+                    customerName,
+                    rating: mapRatingToMessage(rating),
+                    products: productsWithNames
+                };
+            })
+        );
+
+        console.log('Sales Orders with Products and Customer Names:', salesOrdersWithDetails);
+
+        // **Produkte gruppieren**
+        const groupedProducts = groupSalesByProduct(salesOrdersWithDetails);
+        console.log('Grouped Products:', groupedProducts);
+
+        return groupedProducts;
+    } catch (error) {
+        console.error('Error fetching sales orders:', error.message);
+        throw new Error('Failed to fetch sales orders.');
+    }
+}
+
+// Funktion zum Gruppieren nach Produkt
+function groupSalesByProduct(salesOrders) {
+    const productMap = {};
+
+    salesOrders.forEach(order => {
+        order.products.forEach(product => {
+            if (!productMap[product.product]) {
+                productMap[product.product] = {
+                    productName: product.productName,
+                    productDescription: product.productDescription,
+                    clients: []
+                };
+            }
+
+            productMap[product.product].clients.push({
+                customerName: order.customerName,
+                rating: order.rating,
+                quantity: product.quantity
+            });
+        });
+    });
+
+    return Object.keys(productMap).map(productId => ({
+        productId,
+        productName: productMap[productId].productName,
+        productDescription: productMap[productId].productDescription,
+        clients: productMap[productId].clients
+    }));
+}
+
+
+
 //Vielleicht nochmal überlegen welches Rating was bedeutet?
 function mapRatingToMessage(rating) {
     switch (rating) {
@@ -171,4 +269,5 @@ function mapRatingToMessage(rating) {
     }
 }
 
-module.exports = { fetchAllAccounts, getSalesOrders, getProductsBySalesOrderId, getProductNameById,getRatingsByAccount};
+module.exports = { fetchAllAccounts, getSalesOrders, getProductsBySalesOrderId, getProductNameById,getRatingsByAccount
+    ,getSalesOrdersByAccountAndYear };

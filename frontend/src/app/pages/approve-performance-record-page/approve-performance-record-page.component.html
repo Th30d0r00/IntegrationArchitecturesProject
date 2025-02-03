@@ -14,6 +14,39 @@
     </fieldset>
 
     <fieldset>
+        <legend><strong>A.) Orders Evaluation</strong></legend>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name of Product</th>
+                    <th>Client</th>
+                    <th>Client Ranking</th>
+                    <th>Items</th>
+                    <th>Bonus</th>
+                </tr>
+            </thead>
+            <tr *ngFor="let order of salesOrders">
+                <td>
+                    <!-- Display the product name -->
+                    {{ order.productName }}
+                </td>
+                <td *ngFor="let client of order.clients">
+                    <!-- Display the client name -->
+                    {{ client.customerName }}
+                </td>
+                <td *ngFor="let client of order.clients">
+                    <!-- Display the client ranking -->
+                    {{ client.rating }}
+                </td>
+                <td *ngFor="let client of order.clients">
+                    <!-- Display the ordered quantity (items) -->
+                    {{ client.quantity }}
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <fieldset>
         <legend><strong>B.) Social Performance Evaluation</strong></legend>
         <table>
             <thead>

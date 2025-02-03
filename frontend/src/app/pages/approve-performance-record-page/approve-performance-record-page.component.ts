@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SalesmenService} from '../../services/salesmen.service';
 import {SalesmenDatapoint} from '../../interfaces/salesmen-datapoint';
 import {BonusService} from '../../services/bonus.service';
+import {ProductSalesDatapoint} from '../../interfaces/productsSales-datapoint';
 
 @Component({
     selector: 'app-approve-performance-record-page',
@@ -14,6 +15,7 @@ export class ApprovePerformanceRecordPageComponent implements OnInit {
 
     performanceData: PerformanceDatapoint;
     salesman: SalesmenDatapoint;
+    salesOrders: ProductSalesDatapoint[];
     remark = '';
     displayedColumns = ['competence', 'target', 'actual', 'bonus'];
     constructor(
@@ -24,12 +26,25 @@ export class ApprovePerformanceRecordPageComponent implements OnInit {
     ) {
     }
 
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
         const sid = this.route.snapshot.paramMap.get('sid');
         const year = this.route.snapshot.paramMap.get('year');
+
         if (sid && year) {
-            this.fetchSalesmanDetails(parseInt(sid, 10));
-            this.fetchPerformanceData(parseInt(sid, 10), parseInt(year, 10));
+            try {
+                const salesmanResponse = await this.salesmenService.getSalesmanById(parseInt(sid, 10)).toPromise();
+                this.salesman = salesmanResponse.body;
+
+                console.log(this.salesman); // Debugging
+
+                this.fetchPerformanceData(parseInt(sid, 10), parseInt(year, 10));
+
+                this.fetchSalesOrders(this.salesman.code, parseInt(year, 10));
+                console.log(this.salesOrders);
+                console.log('All data fetched');
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         }
     }
 
@@ -44,6 +59,13 @@ export class ApprovePerformanceRecordPageComponent implements OnInit {
         this.salesmenService.getSalesmanPerformanceByYear(sid, year).subscribe((response) => {
             this.performanceData = response.body;
             console.log(this.performanceData);
+        });
+    }
+
+    fetchSalesOrders(governmentId: number, year: number): void {
+        this.salesmenService.getSalesOrdersByGovernmentIdAndYear(governmentId, year).subscribe((response) => {
+            this.salesOrders = response.body;
+            console.log(this.salesOrders); // Debugging
         });
     }
 

@@ -6,6 +6,7 @@ import {SalesmenDatapoint} from '../interfaces/salesmen-datapoint';
 import {PerformanceDatapoint} from '../interfaces/performance-datapoint';
 import {Competence} from '../models/Competence';
 import {SalesmenDatapointWithPerformanceYear} from '../interfaces/salesmen-datapoint-performance-year';
+import {ProductSalesDatapoint} from "../interfaces/productsSales-datapoint";
 
 @Injectable({
     providedIn: 'root'
@@ -46,6 +47,15 @@ export class SalesmenService {
 
         return this.http.put(url, record);
     }
+
+    getSalesOrdersByGovernmentIdAndYear(gid: number, year: number): Observable<HttpResponse<ProductSalesDatapoint[]>> {
+        const url = `${environment.apiEndpoint}/api/salesorders/${gid}/${year}`;
+        return this.http.get<ProductSalesDatapoint[]>(url, {
+            observe: 'response',
+            withCredentials: true
+        });
+    }
+
 
 
 

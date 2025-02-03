@@ -6,11 +6,44 @@
         <div class="info-box">
             <div *ngIf="salesman">
                 <p><strong>Name: </strong>{{ salesman.firstname }} {{ salesman.lastname }}</p>
-                <p><strong>EmployeeID: </strong>{{ salesman.code }}</p>
+                <p><strong>Employee ID: </strong>{{ salesman.code }}</p>
                 <p><strong>Department: </strong>{{ salesman.department }}</p>
                 <p><strong>Year: </strong>{{ performanceData?.year }}</p>
             </div>
         </div>
+    </fieldset>
+
+    <fieldset>
+        <legend><strong>A.) Orders Evaluation</strong></legend>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name of Product</th>
+                    <th>Client</th>
+                    <th>Client Ranking</th>
+                    <th>Items</th>
+                    <th>Bonus</th>
+                </tr>
+            </thead>
+            <tr *ngFor="let order of salesOrders">
+                <td>
+                    <!-- Anzeige des Produktnamens -->
+                    {{ order.productName }}
+                </td>
+                <td *ngFor="let client of order.clients">
+                    <!-- Anzeige des Kundennamens -->
+                    {{ client.customerName }}
+                </td>
+                <td *ngFor="let client of order.clients">
+                    <!-- Anzeige des Kunden-Rankings -->
+                    {{ client.rating }}
+                </td>
+                <td *ngFor="let client of order.clients">
+                    <!-- Anzeige der bestellten Menge (items) -->
+                    {{ client.quantity }}
+                </td>
+            </tr>
+        </table>
     </fieldset>
 
     <fieldset>

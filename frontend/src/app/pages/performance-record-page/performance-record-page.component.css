@@ -24,14 +24,14 @@ table {
     margin-top: 10px;
 }
 
+th {
+    background-color: #f4f4f4;
+}
+
 th, td {
     padding: 8px;
     text-align: left;
     border: 1px solid #ddd;
-}
-
-th {
-    color: white;
 }
 
 .total-bonus-container {

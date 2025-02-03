@@ -104,13 +104,13 @@ exports.deleteSalesman = async function (req, res) {
 exports.addPerformanceRecord = async function (req, res) {
     try {
         const db = req.app.get('db');
-        const { year, competences } = req.body;
+        const { year, competences, productSales } = req.body;
         const sid = parseInt(req.params.sid);
 
 
         const { totalBonus, competences: updatedCompetences } = calculateBonus(competences);
 
-        const record = new PerformanceRecord(sid, year, totalBonus, updatedCompetences, false);
+        const record = new PerformanceRecord(sid, year, totalBonus,productSales, updatedCompetences, false);
 
         console.log("PerformanceRecord with calculated Bonus:", record);
 

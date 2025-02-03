@@ -42,4 +42,5 @@ router.get('/salesorders',openCRXApi.getSalesOrdersByUid);
 router.get('/products/:uid',openCRXApi.getProductBySalesOrderId);
 router.get('/products/:uid/name',openCRXApi.getProductNameById);
 router.get('/ratings/:uid',openCRXApi.getRatingsByAccount);
+router.get('/salesorders/:governmentId/:year',openCRXApi.getSalesOrdersByAccountAndYear);
 module.exports = router;

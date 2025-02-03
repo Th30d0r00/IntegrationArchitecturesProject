@@ -1,4 +1,6 @@
-const {fetchAllAccounts, getSalesOrders, getProductsBySalesOrderId, getProductNameById, getRatingsByAccount} = require('../services/openCRX-service');
+const {fetchAllAccounts, getSalesOrders, getProductsBySalesOrderId, getProductNameById, getRatingsByAccount,
+    getSalesOrdersByAccountAndYear
+} = require('../services/openCRX-service');
 
 exports.getAccounts = async function (req, res) {
     try {
@@ -52,5 +54,16 @@ exports.getRatingsByAccount = async function (req, res) {
     } catch (error) {
         console.error('Error fetching rating:', error);
         res.status(500).json({ message: 'Error fetching rating' });
+    }
+}
+
+exports.getSalesOrdersByAccountAndYear = async function (req, res) {
+    try {
+        const salesOrders = await getSalesOrdersByAccountAndYear(req.params.governmentId, req.params.year);
+        console.log('Sales Orders successfully retrieved:', salesOrders);
+        res.status(200).json(salesOrders);
+    } catch (error) {
+        console.error('Error fetching sales orders:', error);
+        res.status(500).json({ message: 'Error fetching sales orders' });
     }
 }

@@ -5,6 +5,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SalesmenDatapoint} from '../../interfaces/salesmen-datapoint';
 import {Competence} from '../../models/Competence';
 import {PeformanceRecord} from '../../models/PeformanceRecord';
+import {ProductSalesDatapoint} from "../../interfaces/productsSales-datapoint";
+import {ProductsSales} from "../../models/ProductsSales";
+import {ClientPurchase} from "../../models/ClientPurchase";
 
 @Component({
     selector: 'app-add-performance-record-page',
@@ -14,6 +17,7 @@ import {PeformanceRecord} from '../../models/PeformanceRecord';
 export class AddPerformanceRecordPageComponent implements OnInit {
     recordForm: FormGroup;
     salesman: SalesmenDatapoint;
+    salesOrders: ProductSalesDatapoint[];
 
     competences = [
         { id: 1, name: 'Leadership', targetValue: 4 },
@@ -54,10 +58,6 @@ export class AddPerformanceRecordPageComponent implements OnInit {
         return (this.recordForm.get('competences') as FormArray).controls as FormGroup[];
     }
 
-    get formAsJson(): string {
-        return JSON.stringify(this.recordForm.value, null, 2);
-    }
-
 
     onSubmit(): void {
         this.savePerformanceRecord();
@@ -70,36 +70,73 @@ export class AddPerformanceRecordPageComponent implements OnInit {
         });
     }
 
+    fetchOrderDetails(gid: number, year: number): void {
+        this.salesmenService.getSalesOrdersByGovernmentIdAndYear(gid, year).subscribe((response) => {
+            this.salesOrders = response.body;
+            console.log('Sales Orders:', this.salesOrders);
+            console.log(response.body);
+        });
+    }
+
     savePerformanceRecord(): void {
         if (this.recordForm.valid) {
             const sid = this.route.snapshot.paramMap.get('sid');
             if (sid) {
-
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 const year = this.recordForm.get('year')?.value;
 
-                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+                // Mapping der Competences
                 const competences: Competence[] = this.competencesControls.map(competence => new Competence(
-                    '',
+                    '',                         // Ersetze das leere String mit der tatsächlichen ID, falls nötig
                     competence.value.name,
                     competence.value.targetValue,
                     competence.value.actualValue,
                     0
                 ));
 
+                // Mapping der Sales Orders zu ProductsSales
+                const productsSales = this.salesOrders.map(order => new ProductsSales(
+                    order.productId,
+                    order.productName,
+                    order.productDescription,
+                    order.clients.map(client => new ClientPurchase(
+                        client.customerName,
+                        client.rating,
+                        client.quantity
+                    )) // Mappe die Clients zu ClientPurchase
+                ));
+
+                console.log('ProductsSales:', productsSales);
+
+                // Erstelle das PerformanceRecord-Objekt
                 const performanceRecord = new PeformanceRecord(
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                    '', parseInt(sid, 10), year, competences, 0, false, '');
+                    '',                          // ID ist leer, es wird beim Hinzufügen durch API erstellt
+                    parseInt(sid, 10),            // Salesman ID (sid)
+                    year,                         // Jahr
+                    productsSales,                // ProductsSales (Array)
+                    competences,                  // Competences (Array)
+                    0,                            // Total Bonus
+                    false,                        // CEO Approval (Standardmäßig false)
+                    ''                            // Remark (Leer, bis später definiert)
+                );
 
                 console.log(performanceRecord);
 
+                // Speichern des PerformanceRecords
                 this.salesmenService.addPerformanceRecord(parseInt(sid, 10), performanceRecord).subscribe(response => {
                     console.log('API Response:', response);
-                    alert('Peformance record added!');
+                    alert('Performance record added!');
                     this.router.navigate(['/salesmen', sid]);
                 });
             }
+        }
+    }
 
+
+    onGetOrderEvaluation(): void {
+        const year = this.recordForm.get('year')?.value;
+        if (this.salesman && this.salesman.code) {
+            // fetchOrderDetails mit dem governmentId (code) und Jahr aus der Formulardaten
+            this.fetchOrderDetails(this.salesman.code, year);
         }
     }
 }
