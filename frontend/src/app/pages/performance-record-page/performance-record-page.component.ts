@@ -4,6 +4,7 @@ import { SalesmenService } from '../../services/salesmen.service';
 import { SalesmenDatapoint } from '../../interfaces/salesmen-datapoint';
 import { ProductSalesDatapoint } from '../../interfaces/productsSales-datapoint';
 import { PerformanceDatapoint } from '../../interfaces/performance-datapoint';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'app-performance-record-page',
@@ -45,15 +46,19 @@ export class PerformanceRecordPageComponent implements OnInit {
     }
 
     fetchPerformanceData(sid: number, year: number): void {
-        this.salesmenService.getSalesmanPerformanceByYear(sid, year).subscribe((response) => {
-            this.performanceData = response.body;
-        });
+        this.salesmenService.getSalesmanPerformanceByYear(sid, year).subscribe(
+            (response: HttpResponse<PerformanceDatapoint>): void => {
+                this.performanceData = response.body;
+            }
+        );
     }
 
     fetchSalesOrders(governmentId: number, year: number): void {
-        this.salesmenService.getSalesOrdersByGovernmentIdAndYear(governmentId, year).subscribe((response) => {
-            this.salesOrders = response.body;
-            console.log(this.salesOrders); // Debugging
-        });
+        this.salesmenService.getSalesOrdersByGovernmentIdAndYear(governmentId, year).subscribe(
+            (response: HttpResponse<ProductSalesDatapoint[]>): void => {
+                this.salesOrders = response.body;
+                console.log(this.salesOrders); // Debugging
+            }
+        );
     }
 }

@@ -75,8 +75,8 @@
                 </thead>
                 <tbody>
                 <tr *ngFor="let competence of competencesControls; let i = index">
-                    <td>{{ competence.value.name }}</td>
-                    <td>{{ competence.value.targetValue }}</td>
+                    <td>{{ competence.get('name')?.value }}</td>
+                    <td>{{ competence.get('targetValue')?.value }}</td>
                     <td>
                         <input
                             [formControl]="competence.get('actualValue')"
@@ -85,7 +85,6 @@
                             min="0"
                             max="4"
                         />
-                        <!-- Optionale Fehlermeldung -->
                         <div *ngIf="competence.get('actualValue')?.invalid && competence.get('actualValue')?.touched" class="error">
                             <small *ngIf="competence.get('actualValue')?.errors?.['required']">Value is required.</small>
                             <small *ngIf="competence.get('actualValue')?.errors?.['min']">Value must be 0 or greater.</small>

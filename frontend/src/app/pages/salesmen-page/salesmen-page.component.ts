@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SalesmenService} from '../../services/salesmen.service';
 import {SalesmenDatapoint} from '../../interfaces/salesmen-datapoint';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'app-salesmen-page',
@@ -19,16 +20,15 @@ export class SalesmenPageComponent implements OnInit {
     }
 
     fetchSalesmen(): void {
-        this.salesmenService.getSalesmen().subscribe((response): void => {
-            console.log(response.body);
-            if (response.status === 200 && response.body) {
-                this.salesmen = response.body;
-            } else {
-                this.salesmen = [];
+        this.salesmenService.getSalesmen().subscribe(
+            (response: HttpResponse<SalesmenDatapoint[]>): void => {
+                console.log(response.body);
+                this.salesmen = response.status === 200 && response.body ? response.body : [];
+                console.log(this.salesmen);
             }
-            console.log(this.salesmen);
-        });
+        );
     }
+
 
 
 }

@@ -6,7 +6,7 @@ import {SalesmenDatapoint} from '../interfaces/salesmen-datapoint';
 import {PerformanceDatapoint} from '../interfaces/performance-datapoint';
 import {Competence} from '../models/Competence';
 import {SalesmenDatapointWithPerformanceYear} from '../interfaces/salesmen-datapoint-performance-year';
-import {ProductSalesDatapoint} from "../interfaces/productsSales-datapoint";
+import {ProductSalesDatapoint} from '../interfaces/productsSales-datapoint';
 
 @Injectable({
     providedIn: 'root'
@@ -15,37 +15,35 @@ export class SalesmenService {
 
     constructor(private http: HttpClient) { }
 
-    getSalesmen(): Observable<HttpResponse<SalesmenDatapoint[]>>{
-        return this.http.get<SalesmenDatapoint[]>(environment.apiEndpoint + '/api/salesmen', {observe: 'response', withCredentials: true});
+    getSalesmen(): Observable<HttpResponse<SalesmenDatapoint[]>> {
+        const url = `${environment.apiEndpoint}/api/salesmen`;
+        return this.http.get<SalesmenDatapoint[]>(url, { observe: 'response', withCredentials: true });
     }
 
     getSalesmanById(sid: number): Observable<HttpResponse<SalesmenDatapoint>> {
-        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands,max-len
-        return this.http.get<SalesmenDatapoint>(environment.apiEndpoint + '/api/salesmen/' + sid, {observe: 'response', withCredentials: true});
+        const url = `${environment.apiEndpoint}/api/salesmen/${sid}`;
+        return this.http.get<SalesmenDatapoint>(url, { observe: 'response', withCredentials: true });
     }
 
     getSalesmanPerformanceByYear(sid: number, year: number): Observable<HttpResponse<PerformanceDatapoint>> {
-        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands,max-len
-        return this.http.get<PerformanceDatapoint>(environment.apiEndpoint + '/api/salesmen/' + sid + '/performance/' + year, {observe: 'response', withCredentials: true});
+        const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance/${year}`;
+        return this.http.get<PerformanceDatapoint>(url, { observe: 'response', withCredentials: true });
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
-    addPerformanceRecord(sid: number, record: { sid: number; year: number; competences: Competence[]}) {
-        const url = environment.apiEndpoint + `/api/salesmen/${sid}/performance`;
-        return this.http.post(url, record);
+    addPerformanceRecord(sid: number, record: { sid: number; year: number; competences: Competence[] }): Observable<HttpResponse<any>> {
+        const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance`;
+        return this.http.post<any>(url, record, { observe: 'response' });
     }
 
     getSalesmenWithUnapprovedRecords(): Observable<HttpResponse<SalesmenDatapointWithPerformanceYear[]>> {
-        return this.http.get<SalesmenDatapointWithPerformanceYear[]>(environment.apiEndpoint + '/api/unapprovedSalesmenRecords',
-            {observe: 'response', withCredentials: true});
+        const url = `${environment.apiEndpoint}/api/unapprovedSalesmenRecords`;
+        return this.http.get<SalesmenDatapointWithPerformanceYear[]>(url, { observe: 'response', withCredentials: true });
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
-    approvePerformanceRecord(sid: number, year: number, ceoApproval: boolean, remark: string) {
-        const url = `/api/salesmen/${sid}/performance/${year}`;
+    approvePerformanceRecord(sid: number, year: number, ceoApproval: boolean, remark: string): Observable<HttpResponse<any>> {
+        const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance/${year}`;
         const record = { ceoApproval, remark };
-
-        return this.http.put(url, record);
+        return this.http.put<any>(url, record, { observe: 'response' });
     }
 
     getSalesOrdersByGovernmentIdAndYear(gid: number, year: number): Observable<HttpResponse<ProductSalesDatapoint[]>> {

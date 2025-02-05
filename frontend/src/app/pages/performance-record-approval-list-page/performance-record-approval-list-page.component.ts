@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SalesmenService} from '../../services/salesmen.service';
 import {SalesmenDatapointWithPerformanceYear} from '../../interfaces/salesmen-datapoint-performance-year';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'app-performance-record-approval-list-page',
@@ -18,7 +19,8 @@ export class PerformanceRecordApprovalListPageComponent implements OnInit {
     }
 
     fetchSalesmen(): void {
-        this.salesmenService.getSalesmenWithUnapprovedRecords().subscribe((response): void => {
+        this.salesmenService.getSalesmenWithUnapprovedRecords().subscribe
+        ((response: HttpResponse<SalesmenDatapointWithPerformanceYear[]>): void => {
             console.log(response.body);
             if (response.status === 200 && response.body) {
                 this.salesmen = response.body;
@@ -28,5 +30,6 @@ export class PerformanceRecordApprovalListPageComponent implements OnInit {
             console.log(this.salesmen);
         });
     }
+
 
 }

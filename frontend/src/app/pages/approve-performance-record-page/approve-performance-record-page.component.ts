@@ -5,6 +5,7 @@ import {SalesmenService} from '../../services/salesmen.service';
 import {SalesmenDatapoint} from '../../interfaces/salesmen-datapoint';
 import {BonusService} from '../../services/bonus.service';
 import {ProductSalesDatapoint} from '../../interfaces/productsSales-datapoint';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'app-approve-performance-record-page',
@@ -32,10 +33,7 @@ export class ApprovePerformanceRecordPageComponent implements OnInit {
 
         if (sid && year) {
             try {
-                const salesmanResponse = await this.salesmenService.getSalesmanById(parseInt(sid, 10)).toPromise();
-                this.salesman = salesmanResponse.body;
-
-                console.log(this.salesman); // Debugging
+                await this.fetchSalesmanDetails(parseInt(sid, 10));
 
                 this.fetchPerformanceData(parseInt(sid, 10), parseInt(year, 10));
 
@@ -48,28 +46,33 @@ export class ApprovePerformanceRecordPageComponent implements OnInit {
         }
     }
 
-    fetchSalesmanDetails(sid: number): void {
-        this.salesmenService.getSalesmanById(sid).subscribe((response) => {
+    async fetchSalesmanDetails(sid: number): Promise<void> {
+        try {
+            const response = await this.salesmenService.getSalesmanById(sid).toPromise();
             this.salesman = response.body;
             console.log(this.salesman);
-        });
+        } catch (error) {
+            console.error('Error fetching salesman details:', error);
+            throw error;
+        }
     }
 
     fetchPerformanceData(sid: number, year: number): void {
-        this.salesmenService.getSalesmanPerformanceByYear(sid, year).subscribe((response) => {
+        this.salesmenService.getSalesmanPerformanceByYear(sid, year).subscribe((response: HttpResponse<PerformanceDatapoint>): void => {
             this.performanceData = response.body;
             console.log(this.performanceData);
         });
     }
 
+
     fetchSalesOrders(governmentId: number, year: number): void {
-        this.salesmenService.getSalesOrdersByGovernmentIdAndYear(governmentId, year).subscribe((response) => {
-            this.salesOrders = response.body;
-            console.log(this.salesOrders); // Debugging
-        });
+        this.salesmenService.getSalesOrdersByGovernmentIdAndYear(governmentId, year)
+            .subscribe((response: HttpResponse<ProductSalesDatapoint[]>): void => {
+                this.salesOrders = response.body;
+                console.log(this.salesOrders); // Debugging
+            });
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
     approveRecord(): void {
         if (this.salesman && this.performanceData) {
             const { sid } = this.salesman;
@@ -77,15 +80,14 @@ export class ApprovePerformanceRecordPageComponent implements OnInit {
             const ceoApproval = true;
             const remark = this.remark;
 
-            // Genehmigung des Performance Records
             this.salesmenService.approvePerformanceRecord(sid, year, ceoApproval, remark).subscribe(
-                (response) => {
+                (response: HttpResponse<any>): void => {
                     console.log('Record approved:', response);
                     alert('Performance Record approved!');
 
                     this.addBonus(sid, year, totalBonus);
                 },
-                (error) => {
+                (error: any): void => {
                     console.error('Error approving record:', error);
                 }
             );
@@ -94,11 +96,11 @@ export class ApprovePerformanceRecordPageComponent implements OnInit {
 
     private addBonus(sid: number, year: number, bonus: number): void {
         this.bonusService.addBonus(sid, year, bonus).subscribe(
-            (bonusResponse) => {
+            (bonusResponse: HttpResponse<any>): void => {
                 console.log('Bonus updated:', bonusResponse);
-                this.router.navigate(['/approval-list']);
+                void this.router.navigate(['/approval-list']);
             },
-            (bonusError) => {
+            (bonusError: any): void => {
                 console.error('Error updating bonus:', bonusError);
             }
         );

@@ -5,9 +5,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SalesmenDatapoint} from '../../interfaces/salesmen-datapoint';
 import {Competence} from '../../models/Competence';
 import {PeformanceRecord} from '../../models/PeformanceRecord';
-import {ProductSalesDatapoint} from "../../interfaces/productsSales-datapoint";
-import {ProductsSales} from "../../models/ProductsSales";
-import {ClientPurchase} from "../../models/ClientPurchase";
+import {ProductSalesDatapoint} from '../../interfaces/productsSales-datapoint';
+import {ProductsSales} from '../../models/ProductsSales';
+import {ClientPurchase} from '../../models/ClientPurchase';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'app-add-performance-record-page',
@@ -45,12 +46,15 @@ export class AddPerformanceRecordPageComponent implements OnInit {
 
     private initializeForm(): void {
         this.recordForm = new FormGroup({
-            year: new FormControl(new Date().getFullYear(), [Validators.required, Validators.min(2000), Validators.max(2099)]),
-            competences: new FormArray(this.competences.map(competence => new FormGroup({
-                name: new FormControl(competence.name),
-                targetValue: new FormControl(competence.targetValue),
-                actualValue: new FormControl('', [Validators.required, Validators.min(0), Validators.max(4)])
-            })))
+            year: new FormControl(new Date().getFullYear()),
+            competences: new FormArray(
+                this.competences.map((competence): FormGroup => new FormGroup({
+                    name: new FormControl(competence.name),
+                    targetValue: new FormControl(competence.targetValue),
+                    // eslint-disable-next-line @typescript-eslint/unbound-method
+                    actualValue: new FormControl('', [Validators.required, Validators.min(0), Validators.max(4)])
+                }))
+            )
         });
     }
 
@@ -58,84 +62,94 @@ export class AddPerformanceRecordPageComponent implements OnInit {
         return (this.recordForm.get('competences') as FormArray).controls as FormGroup[];
     }
 
-
     onSubmit(): void {
         this.savePerformanceRecord();
     }
 
     fetchSalesmanDetails(sid: number): void {
-        this.salesmenService.getSalesmanById(sid).subscribe((response) => {
+        this.salesmenService.getSalesmanById(sid).subscribe((response: HttpResponse<SalesmenDatapoint>): void => {
             this.salesman = response.body;
             console.log(this.salesman);
         });
     }
 
     fetchOrderDetails(gid: number, year: number): void {
-        this.salesmenService.getSalesOrdersByGovernmentIdAndYear(gid, year).subscribe((response) => {
-            this.salesOrders = response.body;
-            console.log('Sales Orders:', this.salesOrders);
-            console.log(response.body);
-        });
+        this.salesmenService.getSalesOrdersByGovernmentIdAndYear(gid, year).subscribe(
+            (response: HttpResponse<ProductSalesDatapoint[]>): void => {
+                this.salesOrders = response.body;
+                console.log('Sales Orders:', this.salesOrders);
+                console.log(response.body);
+            });
     }
+
 
     savePerformanceRecord(): void {
         if (this.recordForm.valid) {
             const sid = this.route.snapshot.paramMap.get('sid');
             if (sid) {
-                const year = this.recordForm.get('year')?.value;
+                const year = this.recordForm.get('year')?.value as number;
 
-                // Mapping der Competences
-                const competences: Competence[] = this.competencesControls.map(competence => new Competence(
-                    '',                         // Ersetze das leere String mit der tatsächlichen ID, falls nötig
-                    competence.value.name,
-                    competence.value.targetValue,
-                    competence.value.actualValue,
-                    0
-                ));
+                const competences: Competence[] = this.competencesControls.map((competence: FormGroup): Competence => {
+                    const value = competence.value as Competence;
 
-                // Mapping der Sales Orders zu ProductsSales
-                const productsSales = this.salesOrders.map(order => new ProductsSales(
+                    return new Competence(
+                        '',
+                        value.name,
+                        value.targetValue,
+                        value.actualValue,
+                        0
+                    );
+                });
+
+                const productsSales = this.salesOrders.map((order: ProductsSales): ProductsSales => new ProductsSales(
                     order.productId,
                     order.productName,
                     order.productDescription,
-                    order.clients.map(client => new ClientPurchase(
+                    order.clients.map((client: ClientPurchase): ClientPurchase => new ClientPurchase(
                         client.customerName,
                         client.rating,
                         client.quantity
-                    )) // Mappe die Clients zu ClientPurchase
+                    ))
                 ));
+
 
                 console.log('ProductsSales:', productsSales);
 
-                // Erstelle das PerformanceRecord-Objekt
                 const performanceRecord = new PeformanceRecord(
-                    '',                          // ID ist leer, es wird beim Hinzufügen durch API erstellt
-                    parseInt(sid, 10),            // Salesman ID (sid)
-                    year,                         // Jahr
-                    productsSales,                // ProductsSales (Array)
-                    competences,                  // Competences (Array)
-                    0,                            // Total Bonus
-                    false,                        // CEO Approval (Standardmäßig false)
-                    ''                            // Remark (Leer, bis später definiert)
+                    '',
+                    parseInt(sid, 10),
+                    year,
+                    productsSales,
+                    competences,
+                    0,
+                    false,
+                    ''
                 );
 
                 console.log(performanceRecord);
 
                 // Speichern des PerformanceRecords
-                this.salesmenService.addPerformanceRecord(parseInt(sid, 10), performanceRecord).subscribe(response => {
-                    console.log('API Response:', response);
-                    alert('Performance record added!');
-                    this.router.navigate(['/salesmen', sid]);
-                });
+                this.salesmenService.addPerformanceRecord(parseInt(sid, 10), performanceRecord).subscribe(
+                    (response: HttpResponse<any>): void => { // Antworttyp explizit angeben
+                        console.log('API Response:', response);
+                        alert('Performance record added!');
+                        void this.router.navigate(['/salesmen', sid]);
+                    },
+                    (error: any): void => {
+                        console.error('Error adding performance record:', error);
+                        alert('An error occurred while adding the performance record.');
+                    }
+                );
+
             }
         }
     }
 
 
     onGetOrderEvaluation(): void {
-        const year = this.recordForm.get('year')?.value;
+        const year = this.recordForm.get('year')?.value as number;
+
         if (this.salesman && this.salesman.code) {
-            // fetchOrderDetails mit dem governmentId (code) und Jahr aus der Formulardaten
             this.fetchOrderDetails(this.salesman.code, year);
         }
     }
