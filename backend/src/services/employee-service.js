@@ -1,4 +1,6 @@
 const { getAllEmployees } = require('./orangeHRM-service');
+const {add} = require('./user-service');
+const User = require("../models/User");
 
 async function loadEmployeesToDB(db) {
     try {
@@ -43,4 +45,37 @@ async function loadEmployeesToDB(db) {
     }
 }
 
-module.exports = { loadEmployeesToDB };
+async function createUsersFromEmployees(db) {
+    try {
+        const employees = await db.collection('salesmen').find().toArray();
+
+        for (const employee of employees) {
+            const existingUser = await db.collection('users').findOne({
+                username: employee.code.toString()
+            });
+
+            if (!existingUser) {
+                const user = new User(
+                    employee.code.toString(),
+                    employee.firstname,
+                    employee.lastname,
+                    '',
+                    'password',
+                    false,
+                    employee.department
+                );
+
+                await add(db, user);
+            }
+        }
+
+        console.log('Users successfully created from Employees.');
+
+    } catch (error) {
+        console.error('Error when creating Users from Employees:', error.message);
+        throw new Error(`Error when creating Users from Employees: ${error.message}`);
+    }
+}
+
+module.exports = { loadEmployeesToDB, createUsersFromEmployees };
+

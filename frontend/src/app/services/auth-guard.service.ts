@@ -1,30 +1,45 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import {AuthService} from './auth.service';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { UserService } from './user.service';
+import { AuthService } from './auth.service';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { User } from '../models/User';
 
 /**
- * this service implements the CanActivate interface
- * it enables angular router, to check whether a user is allowed to access a page or not
+ * This service implements the CanActivate interface
+ * It enables Angular router to check whether a user is allowed to access a page or not
  */
 @Injectable({
     providedIn: 'root'
 })
 export class AuthGuardService {
 
-    constructor(private authService: AuthService, private router: Router) { }
+    constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
 
-    canActivate(): Observable<boolean> {
-    // mapping isLoggedIn():Observable to this function:
-        return this.authService.isLoggedIn()
-            .pipe(
-                map((state): boolean => {
-                    if (!state) { // go back to login, if user is not allowed to enter
-                        void this.router.navigate(['login']);
-                    }
-                    return state;
-                })
-            );
+    canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+        return this.authService.isLoggedIn().pipe(
+            switchMap((loggedIn: boolean): Observable<boolean> => {
+                // Umleitung auf die Login-Seite, wenn der Benutzer nicht angemeldet ist
+                if (!loggedIn) {
+                    void this.router.navigate(['login']);
+                    return of(false);
+                }
+
+                // Abfrage der Benutzerdaten nach dem Login
+                return this.userService.getOwnUser().pipe(
+                    map((user: User): boolean => {
+                        const requiredRoles = route.data?.roles as string[];
+                        if (requiredRoles && !requiredRoles.includes(user.role)) {
+                            // Wenn die Rolle des Benutzers nicht übereinstimmt, weiterleiten
+                            void this.router.navigate(['unauthorized']);
+                            return false;
+                        }
+
+                        return true;
+                    })
+                );
+            })
+        );
     }
 }

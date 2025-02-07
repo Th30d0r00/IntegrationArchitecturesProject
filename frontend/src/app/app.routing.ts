@@ -12,6 +12,7 @@ import {AddPerformanceRecordPageComponent} from './pages/add-performance-record-
 // eslint-disable-next-line max-len
 import {PerformanceRecordApprovalListPageComponent} from './pages/performance-record-approval-list-page/performance-record-approval-list-page.component';
 import {ApprovePerformanceRecordPageComponent} from './pages/approve-performance-record-page/approve-performance-record-page.component';
+import {UnauthorizedPageComponent} from './pages/unauthorized-page/unauthorized-page.component';
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -26,12 +27,20 @@ const routes: Routes = [
     {path: 'login', component: LoginPageComponent},
     {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
     {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
-    {path: 'salesmen', component: SalesmenPageComponent, canActivate: [AuthGuardService]},
-    {path: 'salesmen/:sid', component: SpecificSalesmanPageComponent, canActivate: [AuthGuardService]},
-    {path: 'performance-record/:sid/:year', component: PerformanceRecordPageComponent, canActivate: [AuthGuardService]},
-    {path: 'add-performance-record/:sid', component: AddPerformanceRecordPageComponent, canActivate: [AuthGuardService]},
-    {path: 'approval-list', component: PerformanceRecordApprovalListPageComponent, canActivate: [AuthGuardService]},
-    {path: 'approve-performance-record/:sid/:year', component: ApprovePerformanceRecordPageComponent, canActivate: [AuthGuardService]},
+    {path: 'salesmen', component: SalesmenPageComponent, canActivate: [AuthGuardService],
+        data: { roles: ['admin', 'HR', 'Leader'] }},
+    {path: 'salesmen/:sid', component: SpecificSalesmanPageComponent, canActivate: [AuthGuardService],
+        data: { roles: ['admin', 'HR', 'Leader'] }},
+    {path: 'performance-record/:sid/:year', component: PerformanceRecordPageComponent, canActivate: [AuthGuardService],
+        data: { roles: ['admin', 'HR', 'Leader'] }},
+    {path: 'add-performance-record/:sid', component: AddPerformanceRecordPageComponent, canActivate: [AuthGuardService],
+        data: { roles: ['admin', 'HR'] }},
+    { path: 'approval-list', component: PerformanceRecordApprovalListPageComponent, canActivate: [AuthGuardService],
+        data: { roles: ['admin', 'Leader'] }
+    },
+    {path: 'approve-performance-record/:sid/:year', component: ApprovePerformanceRecordPageComponent, canActivate: [AuthGuardService],
+        data: { roles: ['admin', 'Leader'] }},
+    {path: 'unauthorized', component: UnauthorizedPageComponent},
     {path: '', redirectTo: '/salesmen', pathMatch: 'full'},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
 ];
