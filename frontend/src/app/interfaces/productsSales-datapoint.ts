@@ -9,4 +9,5 @@ export interface ClientPurchase {
     customerName: string;
     rating: string;
     quantity: number;
+    bonus: number;
 }

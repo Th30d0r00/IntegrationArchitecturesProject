@@ -108,7 +108,8 @@ export class AddPerformanceRecordPageComponent implements OnInit {
                     order.clients.map((client: ClientPurchase): ClientPurchase => new ClientPurchase(
                         client.customerName,
                         client.rating,
-                        client.quantity
+                        client.quantity,
+                        0
                     ))
                 ));
 
@@ -121,6 +122,8 @@ export class AddPerformanceRecordPageComponent implements OnInit {
                     year,
                     productsSales,
                     competences,
+                    0,
+                    0,
                     0,
                     false,
                     ''

@@ -15,7 +15,6 @@ export class PerformanceRecordPageComponent implements OnInit {
 
     performanceData: PerformanceDatapoint;
     salesman: SalesmenDatapoint;
-    salesOrders: ProductSalesDatapoint[];
     displayedColumns = ['competence', 'target', 'actual', 'bonus'];
 
     constructor(
@@ -32,12 +31,10 @@ export class PerformanceRecordPageComponent implements OnInit {
                 const salesmanResponse = await this.salesmenService.getSalesmanById(parseInt(sid, 10)).toPromise();
                 this.salesman = salesmanResponse.body;
 
-                console.log(this.salesman); // Debugging
+                console.log(this.salesman);
 
                 this.fetchPerformanceData(parseInt(sid, 10), parseInt(year, 10));
 
-                this.fetchSalesOrders(this.salesman.code, parseInt(year, 10));
-                console.log(this.salesOrders);
                 console.log('All data fetched');
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -49,15 +46,6 @@ export class PerformanceRecordPageComponent implements OnInit {
         this.salesmenService.getSalesmanPerformanceByYear(sid, year).subscribe(
             (response: HttpResponse<PerformanceDatapoint>): void => {
                 this.performanceData = response.body;
-            }
-        );
-    }
-
-    fetchSalesOrders(governmentId: number, year: number): void {
-        this.salesmenService.getSalesOrdersByGovernmentIdAndYear(governmentId, year).subscribe(
-            (response: HttpResponse<ProductSalesDatapoint[]>): void => {
-                this.salesOrders = response.body;
-                console.log(this.salesOrders); // Debugging
             }
         );
     }

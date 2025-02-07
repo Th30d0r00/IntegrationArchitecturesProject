@@ -25,25 +25,27 @@
                     <th>Bonus</th>
                 </tr>
             </thead>
-            <tr *ngFor="let order of salesOrders">
+            <tr *ngFor="let product of performanceData.productSales">
                 <td>
-                    <!-- Anzeige des Produktnamens -->
-                    {{ order.productName }}
+                    {{ product.productName }}
                 </td>
-                <td *ngFor="let client of order.clients">
-                    <!-- Anzeige des Kundennamens -->
+                <td *ngFor="let client of product.clients">
                     {{ client.customerName }}
                 </td>
-                <td *ngFor="let client of order.clients">
-                    <!-- Anzeige des Kunden-Rankings -->
+                <td *ngFor="let client of product.clients">
                     {{ client.rating }}
                 </td>
-                <td *ngFor="let client of order.clients">
-                    <!-- Anzeige der bestellten Menge (items) -->
+                <td *ngFor="let client of product.clients">
                     {{ client.quantity }}
+                </td>
+                <td *ngFor="let client of product.clients">
+                    {{ client.bonus }}
                 </td>
             </tr>
         </table>
+        <div class="bonus-container">
+            <p><strong>Total Bonus for part A): </strong>{{performanceData.bonusA}}</p>
+        </div>
     </fieldset>
 
     <fieldset>
@@ -66,9 +68,12 @@
             </tr>
             </tbody>
         </table>
+        <div class="bonus-container">
+            <p><strong>Total Bonus for part B): </strong>{{performanceData.bonusB}}</p>
+        </div>
     </fieldset>
 
-    <div class="total-bonus-container">
+    <div class="bonus-container">
         <p><strong>Total Bonus (parts A and B): </strong>{{ performanceData.totalBonus }}</p>
     </div>
 

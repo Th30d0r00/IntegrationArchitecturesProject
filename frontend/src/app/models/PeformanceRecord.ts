@@ -8,6 +8,8 @@ export class PeformanceRecord {
         public year: number,
         public productSales: ProductsSales[],
         public competences: Competence[],
+        public bonusA: number,
+        public bonusB: number,
         public totalBonus: number,
         public ceoApproval: boolean,
         public remark: string

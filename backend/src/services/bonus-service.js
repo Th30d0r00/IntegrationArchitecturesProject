@@ -1,6 +1,27 @@
 // Nochmal drüber diskutieren, ob das so passt. GGf. Berechnung verändern
-function calculateBonus(competences) {
-    let totalBonus = 0;
+
+function calculateBonusPartA(productSales) {
+
+    let bonusA = 0;
+
+    productSales.forEach((product) => {
+        product.clients.forEach((client) => {
+            const { rating } = client;
+            const bonus = clientRatingmapping[rating];
+            client.bonus = bonus;
+            bonusA += bonus;
+        });
+    });
+
+    return {
+        bonusA: bonusA,
+        productSales
+    };
+
+}
+
+function calculateBonusPartB(competences) {
+    let bonusB = 0;
 
     competences.forEach((competence) => {
         const { targetValue, actualValue } = competence;
@@ -16,12 +37,22 @@ function calculateBonus(competences) {
 
         competence.bonus = Math.round(calculatedBonus);
 
-        totalBonus += calculatedBonus;
+        bonusB += calculatedBonus;
     });
 
     return {
-        totalBonus: Math.round(totalBonus),
+        bonusB: Math.round(bonusB),
         competences
     };
 }
-module.exports = {calculateBonus};
+
+clientRatingmapping = {
+    "excellent": 700,
+    "very good": 500,
+    "good": 200,
+    "satisfactory": 100,
+    "sufficient": 50,
+}
+
+module.exports = {calculateBonusPartA, calculateBonusPartB};
+

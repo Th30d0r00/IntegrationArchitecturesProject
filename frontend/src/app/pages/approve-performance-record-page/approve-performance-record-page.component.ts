@@ -16,7 +16,6 @@ export class ApprovePerformanceRecordPageComponent implements OnInit {
 
     performanceData: PerformanceDatapoint;
     salesman: SalesmenDatapoint;
-    salesOrders: ProductSalesDatapoint[];
     remark = '';
     displayedColumns = ['competence', 'target', 'actual', 'bonus'];
     constructor(
@@ -37,8 +36,6 @@ export class ApprovePerformanceRecordPageComponent implements OnInit {
 
                 this.fetchPerformanceData(parseInt(sid, 10), parseInt(year, 10));
 
-                this.fetchSalesOrders(this.salesman.code, parseInt(year, 10));
-                console.log(this.salesOrders);
                 console.log('All data fetched');
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -62,15 +59,6 @@ export class ApprovePerformanceRecordPageComponent implements OnInit {
             this.performanceData = response.body;
             console.log(this.performanceData);
         });
-    }
-
-
-    fetchSalesOrders(governmentId: number, year: number): void {
-        this.salesmenService.getSalesOrdersByGovernmentIdAndYear(governmentId, year)
-            .subscribe((response: HttpResponse<ProductSalesDatapoint[]>): void => {
-                this.salesOrders = response.body;
-                console.log(this.salesOrders); // Debugging
-            });
     }
 
     approveRecord(): void {

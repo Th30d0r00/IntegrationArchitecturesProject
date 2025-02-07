@@ -51,14 +51,13 @@ button {
     display: block;
     margin: 20px auto 0;
     padding: 10px 15px;
-    background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #ff9800;
 }
 
 button:disabled {

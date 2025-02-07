@@ -1,7 +1,7 @@
 const salesmenService = require('../services/salesmen-service')
 const Salesman = require("../models/Salesman");
 const PerformanceRecord = require("../models/PerformanceRecord");
-const {calculateBonus} = require("../services/bonus-service");
+const {calculateBonusPartA,calculateBonusPartB} = require("../services/bonus-service");
 
 
 /**
@@ -107,10 +107,17 @@ exports.addPerformanceRecord = async function (req, res) {
         const { year, competences, productSales } = req.body;
         const sid = parseInt(req.params.sid);
 
+        const { bonusA, productSales: updatedProductSales } = calculateBonusPartA(productSales);
 
-        const { totalBonus, competences: updatedCompetences } = calculateBonus(competences);
+        console.log("BonusA:", bonusA);
 
-        const record = new PerformanceRecord(sid, year, totalBonus,productSales, updatedCompetences, false);
+        const { bonusB, competences: updatedCompetences } = calculateBonusPartB(competences);
+
+        console.log("BonusB:", bonusB);
+
+        const totalBonus = bonusA + bonusB;
+
+        const record = new PerformanceRecord(sid, year, bonusA, bonusB,totalBonus, updatedProductSales, updatedCompetences, false);
 
         console.log("PerformanceRecord with calculated Bonus:", record);
 

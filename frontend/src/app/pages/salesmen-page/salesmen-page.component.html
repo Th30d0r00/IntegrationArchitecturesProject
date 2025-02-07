@@ -3,6 +3,7 @@
     <mat-grid-tile *ngFor="let salesman of salesmen">
         <mat-card class="salesman-card">
             <mat-card-header>
+                <mat-icon mat-card-avatar class="salesman-avatar">person</mat-icon>
                 <mat-card-title>{{ salesman.firstname }} {{ salesman.lastname }}</mat-card-title>
                 <mat-card-subtitle>Employee ID: {{ salesman.code }}</mat-card-subtitle>
             </mat-card-header>
@@ -17,6 +18,7 @@
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
+
 
 <!--<table mat-table [dataSource]="salesmen" class="mat-elevation-z8 cdk-table">
     <ng-container matColumnDef="firstname">

@@ -1,15 +1,21 @@
 <div *ngIf="salesman" class="salesman-details-container">
     <div class="salesman-header">
-        <h2>{{ salesman.firstname }} {{ salesman.lastname }}</h2>
-        <p><strong>Employee ID:</strong> {{ salesman.code }}</p>
+        <div class="salesman-info">
+            <div>
+                <h2>{{ salesman.firstname }} {{ salesman.lastname }}</h2>
+                <p class="employee-id"><strong>Employee ID:</strong> {{ salesman.code }}</p>
+            </div>
+        </div>
         <button mat-raised-button color="primary" [routerLink]="['/add-performance-record', salesman.sid]" class="add-record-btn">
-            Add Performance Record
+            ➕ Add Performance Record
         </button>
     </div>
 
-    <div class="performance-records">
-        <h2>Performance Records:</h2>
+    <div class="performance-title-box">
+        <h2>📊 Performance Records</h2>
+    </div>
 
+    <div class="performance-records">
         <div class="performance-cards">
             <mat-card *ngFor="let perf of salesman.performance" class="performance-card">
                 <mat-card-header>
@@ -18,7 +24,7 @@
                 <mat-card-content>
                     <p>
                         <a [routerLink]="['/performance-record', salesman.sid, perf.year]" class="view-record-link">
-                            View Record
+                            🔍 View Record
                         </a>
                     </p>
                 </mat-card-content>
