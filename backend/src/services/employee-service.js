@@ -5,31 +5,30 @@ const User = require("../models/User");
 async function loadEmployeesToDB(db) {
     try {
         const employees = await getAllEmployees();
-
         const salesmanDocuments = [];
 
         for (const employee of employees) {
+            if (employee.unit === "Sales") { // Only add employees from the "Sales" department
+                const existingSalesman = await db.collection('salesmen').findOne({
+                    $or: [
+                        { sid: parseInt(employee.employeeId, 10) },
+                        { code: parseInt(employee.code, 10) }
+                    ]
+                });
 
-            const existingSalesman = await db.collection('salesmen').findOne({
-                $or: [
-                    { sid: parseInt(employee.employeeId, 10) },
-                    { code: parseInt(employee.code, 10) }
-                ]
-            });
+                if (!existingSalesman) {
+                    const salesman = {
+                        code: parseInt(employee.code, 10),
+                        sid: parseInt(employee.employeeId, 10),
+                        firstname: employee.firstName,
+                        lastname: employee.lastName,
+                        jobTitle: employee.jobTitle,
+                        department: employee.unit,
+                        supervisor: Array.isArray(employee.supervisor) ? employee.supervisor[0]?.name : employee.supervisor
+                    };
 
-            if (!existingSalesman) {
-
-                const salesman = {
-                    code: parseInt(employee.code, 10),
-                    sid: parseInt(employee.employeeId, 10),
-                    firstname: employee.firstName,
-                    lastname: employee.lastName,
-                    jobTitle: employee.jobTitle,
-                    department: employee.unit,
-                    supervisor: Array.isArray(employee.supervisor) ? employee.supervisor[0]?.name : employee.supervisor
-                };
-
-                salesmanDocuments.push(salesman);
+                    salesmanDocuments.push(salesman);
+                }
             }
         }
 
@@ -47,7 +46,7 @@ async function loadEmployeesToDB(db) {
 
 async function createUsersFromEmployees(db) {
     try {
-        const employees = await db.collection('salesmen').find().toArray();
+        const employees = await getAllEmployees();
 
         for (const employee of employees) {
             const existingUser = await db.collection('users').findOne({
@@ -57,12 +56,12 @@ async function createUsersFromEmployees(db) {
             if (!existingUser) {
                 const user = new User(
                     employee.code.toString(),
-                    employee.firstname,
-                    employee.lastname,
+                    employee.firstName,
+                    employee.lastName,
                     '',
                     'password',
                     false,
-                    employee.department
+                    employee.unit 
                 );
 
                 await add(db, user);
@@ -70,7 +69,6 @@ async function createUsersFromEmployees(db) {
         }
 
         console.log('Users successfully created from Employees.');
-
     } catch (error) {
         console.error('Error when creating Users from Employees:', error.message);
         throw new Error(`Error when creating Users from Employees: ${error.message}`);
