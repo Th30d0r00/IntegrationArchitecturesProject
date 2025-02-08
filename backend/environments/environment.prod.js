@@ -11,7 +11,7 @@ const environment = {
         name: 'team_4'
     },
     corsOrigins: [
-        '*'
+        'http://iar-frontend.inf.h-brs.de'
     ]
 };
 
