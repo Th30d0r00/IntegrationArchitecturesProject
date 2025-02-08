@@ -1,6 +1,13 @@
 {
+  "scripts": {
+    "start:backend": "node -e \"process.platform === 'win32' ? process.exit(1) : process.exit(0)\" && npm run start:backend:unix || npm run start:backend:win",
+    "start:backend:win": "cd ./backend && npm run start_win",
+    "start:backend:unix": "cd ./backend && npm run start",
+    "start:frontend": "cd ./frontend && npm run start",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "postinstall": "cd ./backend && npm install && cd ../frontend && npm install"
+  },
   "dependencies": {
-    "axios": "^1.7.8",
-    "swagger-ui-express": "^5.0.1"
+    "concurrently": "^9.1.2"
   }
 }
