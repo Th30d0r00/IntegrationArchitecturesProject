@@ -52,7 +52,7 @@ export class AddPerformanceRecordPageComponent implements OnInit {
                     name: new FormControl(competence.name),
                     targetValue: new FormControl(competence.targetValue),
                     // eslint-disable-next-line @typescript-eslint/unbound-method
-                    actualValue: new FormControl('', [Validators.required, Validators.min(0), Validators.max(4)])
+                    actualValue: new FormControl('', [Validators.required, Validators.min(0), Validators.max(5)])
                 }))
             )
         });

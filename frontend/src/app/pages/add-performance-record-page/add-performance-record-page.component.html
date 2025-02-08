@@ -83,12 +83,12 @@
                             type="number"
                             placeholder="Enter actual value"
                             min="0"
-                            max="4"
+                            max="5"
                         />
                         <div *ngIf="competence.get('actualValue')?.invalid && competence.get('actualValue')?.touched" class="error">
                             <small *ngIf="competence.get('actualValue')?.errors?.['required']">Value is required.</small>
                             <small *ngIf="competence.get('actualValue')?.errors?.['min']">Value must be 0 or greater.</small>
-                            <small *ngIf="competence.get('actualValue')?.errors?.['max']">Value must be 4 or less.</small>
+                            <small *ngIf="competence.get('actualValue')?.errors?.['max']">Value must be 5 or less.</small>
                         </div>
                     </td>
                 </tr>
