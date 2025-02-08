@@ -92,15 +92,29 @@
                                 [formControl]="competence.get('targetValue')"
                                 type="number"
                                 placeholder="Enter target value"
-                                min="0" />
+                                min="1"
+                                max="5" />
+                            <div
+                                *ngIf="competence.get('targetValue')?.invalid && competence.get('targetValue')?.touched"
+                                class="error">
+                                <small
+                                    *ngIf="competence.get('targetValue')?.errors?.['required']">Target value
+                                    is required.</small>
+                                <small
+                                    *ngIf="competence.get('targetValue')?.errors?.['min']">Target value
+                                    must be 1 or greater.</small>
+                                <small
+                                    *ngIf="competence.get('targetValue')?.errors?.['max']">Target value
+                                    must be 5 or less.</small>
+                            </div>
                         </td>
-                        <td>
+                        <td style="vertical-align:top;">
                             <input
                                 [formControl]="competence.get('actualValue')"
                                 type="number"
                                 placeholder="Enter actual value"
                                 min="0"
-                                max="{{competence.get('targetValue')?.value}}" />
+                                max="5" />
                             <div
                                 *ngIf="competence.get('actualValue')?.invalid && competence.get('actualValue')?.touched"
                                 class="error">
@@ -112,9 +126,7 @@
                                     must be 0 or greater.</small>
                                 <small
                                     *ngIf="competence.get('actualValue')?.errors?.['max']">Value
-                                    must be {{
-                                    competence.get('targetValue')?.value
-                                    }} or less.</small>
+                                    must be 5 or less.</small>
                             </div>
                         </td>
                     </tr>

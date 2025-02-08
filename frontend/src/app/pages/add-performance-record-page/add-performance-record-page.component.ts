@@ -21,12 +21,12 @@ export class AddPerformanceRecordPageComponent implements OnInit {
     salesOrders: ProductSalesDatapoint[];
 
     competences = [
-        { id: 1, name: 'Leadership', targetValue: 5 },
-        { id: 2, name: 'Openness to Employee', targetValue: 5 },
-        { id: 3, name: 'Social Behavior to Employee', targetValue: 5 },
-        { id: 4, name: 'Attitude towards Client', targetValue: 5 },
-        { id: 5, name: 'Communication Skill', targetValue: 5 },
-        { id: 6, name: 'Integrity towards Company', targetValue: 5 },
+        { id: 1, name: 'Leadership', targetValue: 4 },
+        { id: 2, name: 'Openness to Employee', targetValue: 4 },
+        { id: 3, name: 'Social Behavior to Employee', targetValue: 4 },
+        { id: 4, name: 'Attitude towards Client', targetValue: 4 },
+        { id: 5, name: 'Communication Skill', targetValue: 4 },
+        { id: 6, name: 'Integrity towards Company', targetValue: 4 },
     ];
 
     constructor(
@@ -50,32 +50,25 @@ export class AddPerformanceRecordPageComponent implements OnInit {
         this.recordForm = new FormGroup({
             year: new FormControl(new Date().getFullYear()),
             competences: new FormArray(
-                this.competences.map((competence): FormGroup => {
-                    const targetValueControl = new FormControl(
-                        competence.targetValue
-                    );
-                    const actualValueControl = new FormControl('', [
-                        Validators.required,
-                        Validators.min(0),
-                        Validators.max(competence.targetValue),
-                    ]);
-                    targetValueControl.valueChanges.subscribe(
-                        (newTargetValue) => {
-                            actualValueControl.setValidators([
+                this.competences.map(
+                    (competence): FormGroup =>
+                        new FormGroup({
+                            name: new FormControl(competence.name),
+                            targetValue: new FormControl(
+                                competence.targetValue,
+                                [
+                                    Validators.required,
+                                    Validators.min(0),
+                                    Validators.max(5),
+                                ]
+                            ),
+                            actualValue: new FormControl('', [
                                 Validators.required,
                                 Validators.min(0),
-                                Validators.max(newTargetValue),
-                            ]);
-                            actualValueControl.updateValueAndValidity();
-                        }
-                    );
-
-                    return new FormGroup({
-                        name: new FormControl(competence.name),
-                        targetValue: targetValueControl,
-                        actualValue: actualValueControl,
-                    });
-                })
+                                Validators.max(5),
+                            ]),
+                        })
+                )
             ),
         });
     }
