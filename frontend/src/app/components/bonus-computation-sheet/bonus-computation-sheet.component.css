@@ -1,0 +1,113 @@
+.container {
+    width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+/* Info Box */
+.info-box {
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.info-box strong,
+.info-box p {
+    font-size: 14px;
+    font-family: Roboto, sans-serif;
+    letter-spacing: 0.0178571429em;
+}
+
+.info-box strong {
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.info-box p {
+    font-weight: 400;
+    line-height: 20px;
+}
+
+/* Form & Table Styling */
+fieldset {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+/* Bonus Styling */
+.bonus-container {
+    border: 2px solid #ddd;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+/* Remark Input */
+.remark-input {
+    width: 96%;
+    height: 50px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Buttons */
+button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 15px;
+    color: white;
+    background-color: #ff9800;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #e68900;
+}
+
+/* CEO Approval Styling - Nur für Genehmigungsseite */
+.ceo-approval-container {
+    text-align: center;
+}
+
+.ceo-approval-status {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.approved {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.not-approved {
+    background-color: #D32F2F;
+    color: white;
+}

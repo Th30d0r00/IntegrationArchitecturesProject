@@ -27,6 +27,7 @@ import { PerformanceRecordApprovalListPageComponent } from './pages/performance-
 import { ApprovePerformanceRecordPageComponent } from './pages/approve-performance-record-page/approve-performance-record-page.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorized-page.component';
+import { BonusComputationSheetComponent } from './components/bonus-computation-sheet/bonus-computation-sheet.component';
 
 @NgModule({
     declarations: [
@@ -44,6 +45,7 @@ import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorize
         PerformanceRecordApprovalListPageComponent,
         ApprovePerformanceRecordPageComponent,
         UnauthorizedPageComponent,
+        BonusComputationSheetComponent,
     ],
     imports: [
         BrowserModule,
