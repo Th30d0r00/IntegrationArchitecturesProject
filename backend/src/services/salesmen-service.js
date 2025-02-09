@@ -5,6 +5,7 @@
  * @return {Promise<any>}
  */
 
+const {Waiting} = require("../models/Approval-status");
 exports.add = async function (db, salesman) {
     return (await db.collection('salesmen').insertOne(salesman));
 }
@@ -42,7 +43,7 @@ exports.getAllUnapprovedRecords = async function (db) {
         { $unwind: "$performance" },
 
         // Filtern: Nur Performance-Records, die ceoApproval = false haben
-        { $match: { "performance.ceoApproval": false } },
+        { $match: { "performance.approvalStatus": Waiting } },
 
         // Nur die relevanten Felder zurückgeben
         {
@@ -116,16 +117,16 @@ exports.getPerformanceRecordByYear = async function (db, sid, year) {
  * @param db target database
  * @param {string} sid salesman sid
  * @param {string} year year of the record
- * @param {boolean} ceoApproval CEO approval
+ * @param {string} approvalStatus CEO approval
  * @param {string} remark remark
  */
 
-exports.approvePerformanceRecord = async function (db, sid, year, ceoApproval, remark) {
+exports.approvePerformanceRecord = async function (db, sid, year, approvalStatus, remark) {
     return (await db.collection('salesmen').updateOne(
         { sid: sid, 'performance.year': year },
         {
             $set: {
-                'performance.$.ceoApproval': ceoApproval,
+                'performance.$.approvalStatus': approvalStatus,
                 'performance.$.remark': remark
             }
         }

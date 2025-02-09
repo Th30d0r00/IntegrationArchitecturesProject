@@ -1,4 +1,5 @@
 import {ProductsSales} from '../models/ProductsSales';
+import {ApprovalStatus} from '../models/Approval-status';
 
 export interface PerformanceDatapoint {
     sid: number;
@@ -9,7 +10,7 @@ export interface PerformanceDatapoint {
     bonusB: number;
     totalBonus: number;
     remark: string;
-    ceoApproval: boolean;
+    approvalStatus: ApprovalStatus;
 }
 
 export interface Competence {

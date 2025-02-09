@@ -5,6 +5,7 @@ import { BonusService } from '../../services/bonus.service';
 import { SalesmenDatapoint } from '../../interfaces/salesmen-datapoint';
 import { PerformanceDatapoint } from '../../interfaces/performance-datapoint';
 import { HttpResponse } from '@angular/common/http';
+import {ApprovalStatus} from '../../models/Approval-status';
 
 @Component({
     selector: 'app-bonus-computation-sheet',
@@ -68,10 +69,11 @@ export class BonusComputationSheetComponent implements OnInit {
         if (this.salesman && this.performanceData) {
             const { sid } = this.salesman;
             const { year, totalBonus } = this.performanceData;
-            const ceoApproval = true;
+            const approvalStatus = ApprovalStatus.ApprovedByCEO;
 
-            this.salesmenService.approvePerformanceRecord(sid, year, ceoApproval, this.remark).subscribe(
+            this.salesmenService.approvePerformanceRecord(sid, year, approvalStatus, this.remark).subscribe(
                 (response: HttpResponse<any>): void => {
+                    console.log(approvalStatus);
                     console.log('Record approved:', response);
                     alert('Performance Record approved!');
                     this.addBonus(sid, year, totalBonus);
@@ -94,4 +96,6 @@ export class BonusComputationSheetComponent implements OnInit {
             }
         );
     }
+
+    protected readonly ApprovalStatus = ApprovalStatus;
 }

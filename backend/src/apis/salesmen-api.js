@@ -2,6 +2,7 @@ const salesmenService = require('../services/salesmen-service')
 const Salesman = require("../models/Salesman");
 const PerformanceRecord = require("../models/PerformanceRecord");
 const {calculateBonusPartA,calculateBonusPartB} = require("../services/bonus-service");
+const {Waiting} = require("../models/Approval-status");
 
 
 /**
@@ -117,7 +118,7 @@ exports.addPerformanceRecord = async function (req, res) {
 
         const totalBonus = bonusA + bonusB;
 
-        const record = new PerformanceRecord(sid, year, bonusA, bonusB,totalBonus, updatedProductSales, updatedCompetences, false);
+        const record = new PerformanceRecord(sid, year, bonusA, bonusB,totalBonus, updatedProductSales, updatedCompetences, Waiting);
 
         console.log("PerformanceRecord with calculated Bonus:", record);
 
@@ -213,10 +214,13 @@ exports.approvePerformanceRecord = async function (req, res) {
     const db = req.app.get('db');
     const sid = parseInt(req.params.sid, 10);
     const year = parseInt(req.params.year, 10);
-    const {ceoApproval, remark} = req.body;
+    const {approvalStatus, remark} = req.body;
+
+    console.log(req.body);
+    console.log("Approval Status:", approvalStatus);
 
     try {
-        const result = await salesmenService.approvePerformanceRecord(db, sid, year, ceoApproval, remark);
+        const result = await salesmenService.approvePerformanceRecord(db, sid, year, approvalStatus, remark);
 
         if (result.modifiedCount > 0) {
             res.json({ message: 'Performance record approved' });

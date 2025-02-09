@@ -9,6 +9,7 @@ import {ProductSalesDatapoint} from '../../interfaces/productsSales-datapoint';
 import {ProductsSales} from '../../models/ProductsSales';
 import {ClientPurchase} from '../../models/ClientPurchase';
 import {HttpResponse} from '@angular/common/http';
+import {ApprovalStatus} from '../../models/Approval-status';
 
 @Component({
     selector: 'app-add-performance-record-page',
@@ -125,7 +126,7 @@ export class AddPerformanceRecordPageComponent implements OnInit {
                     0,
                     0,
                     0,
-                    false,
+                    ApprovalStatus.Waiting,
                     ''
                 );
 

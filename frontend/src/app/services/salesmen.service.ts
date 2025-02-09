@@ -7,6 +7,7 @@ import {PerformanceDatapoint} from '../interfaces/performance-datapoint';
 import {Competence} from '../models/Competence';
 import {SalesmenDatapointWithPerformanceYear} from '../interfaces/salesmen-datapoint-performance-year';
 import {ProductSalesDatapoint} from '../interfaces/productsSales-datapoint';
+import {ApprovalStatus} from '../models/Approval-status';
 
 @Injectable({
     providedIn: 'root'
@@ -40,9 +41,9 @@ export class SalesmenService {
         return this.http.get<SalesmenDatapointWithPerformanceYear[]>(url, { observe: 'response', withCredentials: true });
     }
 
-    approvePerformanceRecord(sid: number, year: number, ceoApproval: boolean, remark: string): Observable<HttpResponse<any>> {
+    approvePerformanceRecord(sid: number, year: number, approvalStatus: ApprovalStatus, remark: string): Observable<HttpResponse<any>> {
         const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance/${year}`;
-        const record = { ceoApproval, remark };
+        const record = { approvalStatus, remark };
         return this.http.put<any>(url, record, { observe: 'response' });
     }
 
