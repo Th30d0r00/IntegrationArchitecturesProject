@@ -28,7 +28,7 @@ app.set("environment", environment);
 
 app.use(
   cors({
-    origin: "http://iar-frontend.inf.h-brs.de",
+    origin: app.get("environment").corsOrigins,
     credentials: true,
   })
 );
