@@ -10,7 +10,7 @@ const environment = {
     authSource: "team_4",
     name: "team_4",
   },
-  corsOrigins: "http://iar-frontend.inf.h-brs.de",
+  corsOrigins: ["http://iar-frontend.inf.h-brs.de"],
 };
 
 exports.default = environment;

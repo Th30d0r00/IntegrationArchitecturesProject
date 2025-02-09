@@ -40,9 +40,9 @@ export class AddPerformanceRecordPageComponent implements OnInit {
         console.log(this.recordForm);
         const sid = this.route.snapshot.paramMap.get('sid');
         if (sid) {
-            this.fetchSalesmanDetails(parseInt(sid, 10)).then(() => {
+            this.fetchSalesmanDetails(parseInt(sid, 10)).then((): void => {
                 this.onGetOrderEvaluation();
-            });
+            }, console.error);
         }
     }
 
@@ -83,7 +83,7 @@ export class AddPerformanceRecordPageComponent implements OnInit {
     }
 
     async fetchSalesmanDetails(sid: number): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>((resolve): void => {
             this.salesmenService
                 .getSalesmanById(sid)
                 .subscribe(
@@ -183,9 +183,7 @@ export class AddPerformanceRecordPageComponent implements OnInit {
                                 error
                             );
                             if ((error as HttpErrorResponse).status === 409) {
-                                alert(
-                                    (error as HttpErrorResponse).error.message
-                                );
+                                alert((error as HttpErrorResponse).message);
                                 return;
                             }
                             alert(

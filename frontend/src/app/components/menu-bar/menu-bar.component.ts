@@ -17,8 +17,8 @@ export class MenuBarComponent implements OnInit {
    */
 
     buttons = [
-        { title: 'Welcome', routerLink: '', roles: [] }, // the tile is the text on the button, the routerLink specifies, where it will navigate
-        { title: 'Example', routerLink: 'example', roles: [] }, // the role specifies, which role is allowed to see the button
+        { title: 'Welcome', routerLink: '', roles: [] },
+        { title: 'Example', routerLink: 'example', roles: [] },
         { title: 'Salesmen', routerLink: 'salesmen', roles: ['Leader', 'HR'] },
         {
             title: 'Approval List',
