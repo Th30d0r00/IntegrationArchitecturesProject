@@ -33,6 +33,15 @@ app.use(
   })
 );
 
+app.use(
+  cors({
+    origin: environment.corsOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  })
+);
+
 app.use(express.json()); //adds support for json encoded bodies
 app.use(express.urlencoded({ extended: true })); //adds support url encoded bodies
 app.use(upload.array()); //adds support multipart/form-data bodies
