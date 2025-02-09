@@ -26,13 +26,6 @@ if (process.env.NODE_ENV === "development") {
 
 app.set("environment", environment);
 
-app.use(
-  cors({
-    origin: app.get("environment").corsOrigins,
-    credentials: true,
-  })
-);
-
 app.use(express.json()); //adds support for json encoded bodies
 app.use(express.urlencoded({ extended: true })); //adds support url encoded bodies
 app.use(upload.array()); //adds support multipart/form-data bodies
@@ -44,6 +37,13 @@ app.use(
     sameSite: false,
     secure: false,
     httpOnly: false,
+  })
+);
+
+app.use(
+  cors({
+    origin: environment.corsOrigins,
+    credentials: true,
   })
 );
 
