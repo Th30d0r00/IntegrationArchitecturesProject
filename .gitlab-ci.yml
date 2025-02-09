@@ -69,6 +69,34 @@ unit-test:backend:
       - backend/node_modules
     policy: pull
 
+#deploy:backend:
+#  stage: deploy
+#  image: keymetrics/pm2:latest-alpine
+#  variables:
+#    HTTP_PROXY: "http://www-cache:8080"
+#    HTTPS_PROXY: "http://www-cache:8080"
+#    http_proxy: "http://www-cache:8080"
+#    https_proxy: "http://www-cache:8080"
+#  rules:
+#    - !reference [ .backend_rules, rules ]
+#  needs:
+#    - unit-test:backend
+#  script:
+#    - echo "====== Deploy backend to production server ======"
+#    - apk update && apk upgrade
+#    - apk add openssh bash git
+#    # Add target server`s secret key
+#    - mkdir ~/.ssh
+#    - echo $TARGET_SERVER_SECRET_KEY_BASE64 | base64 -d > ~/.ssh/id_rsa
+#    - chmod 700 ~/.ssh && chmod 600 ~/.ssh/*
+#    - echo "Test ssh connection"
+#    - ssh -o StrictHostKeyChecking=no -T "$TARGET_SERVER_USER@$BACKEND_SERVER_HOST" pm2 status
+#    # Deploy
+#    - echo "Setup tagged server directories"
+#    - pm2 deploy backend/ecosystem.config.js production setup 2>&1 || true
+#    - echo "make deploy"
+#    - pm2 deploy backend/ecosystem.config.js production
+
 deploy:backend:
   stage: deploy
   image: keymetrics/pm2:latest-alpine
@@ -90,12 +118,21 @@ deploy:backend:
     - echo $TARGET_SERVER_SECRET_KEY_BASE64 | base64 -d > ~/.ssh/id_rsa
     - chmod 700 ~/.ssh && chmod 600 ~/.ssh/*
     - echo "Test ssh connection"
+    # Fetch PM2 logs before deployment
+    - echo "====== Previous PM2 Logs ======"
+    - ssh -o StrictHostKeyChecking=no -T "$TARGET_SERVER_USER@$BACKEND_SERVER_HOST" "pm2 logs app --lines 100 --nostream" || true
     - ssh -o StrictHostKeyChecking=no -T "$TARGET_SERVER_USER@$BACKEND_SERVER_HOST" pm2 status
     # Deploy
     - echo "Setup tagged server directories"
     - pm2 deploy backend/ecosystem.config.js production setup 2>&1 || true
     - echo "make deploy"
     - pm2 deploy backend/ecosystem.config.js production
+    # Fetch PM2 logs after deployment
+    - echo "====== Current PM2 Logs ======"
+    - ssh -o StrictHostKeyChecking=no -T "$TARGET_SERVER_USER@$BACKEND_SERVER_HOST" "pm2 logs app --lines 100 --nostream"
+  artifacts:
+    paths:
+      - backend/pm2-logs.txt
 
 install-dependencies:frontend:
   extends: .node
