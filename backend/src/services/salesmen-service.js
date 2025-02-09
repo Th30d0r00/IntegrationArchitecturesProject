@@ -6,8 +6,8 @@
  */
 
 exports.add = async function (db, salesman) {
-    return (await db.collection('salesmen').insertOne(salesman));
-}
+  return await db.collection("salesmen").insertOne(salesman);
+};
 
 /**
  * retrieves a salesman by its sid
@@ -17,8 +17,8 @@ exports.add = async function (db, salesman) {
  */
 
 exports.getBySid = async function (db, sid) {
-    return (await db.collection('salesmen').findOne({ sid: sid }));
-}
+  return await db.collection("salesmen").findOne({ sid: sid });
+};
 
 /**
  * retrieves all salesmen
@@ -27,8 +27,8 @@ exports.getBySid = async function (db, sid) {
  */
 
 exports.getAll = async function (db) {
-    return (await db.collection('salesmen').find().toArray());
-}
+  return await db.collection("salesmen").find().toArray();
+};
 
 /**
  * retrieves all salesmen who hava an unnapproved performance record
@@ -37,28 +37,29 @@ exports.getAll = async function (db) {
  */
 
 exports.getAllUnapprovedRecords = async function (db) {
-    return await db.collection('salesmen').aggregate([
-        // Entpackt das performance-Array -> Jeder Eintrag wird zu einem eigenen Dokument
-        { $unwind: "$performance" },
+  return await db
+    .collection("salesmen")
+    .aggregate([
+      // Entpackt das performance-Array -> Jeder Eintrag wird zu einem eigenen Dokument
+      { $unwind: "$performance" },
 
-        // Filtern: Nur Performance-Records, die ceoApproval = false haben
-        { $match: { "performance.ceoApproval": false } },
+      // Filtern: Nur Performance-Records, die ceoApproval = false haben
+      { $match: { "performance.ceoApproval": false } },
 
-        // Nur die relevanten Felder zurückgeben
-        {
-            $project: {
-                _id: 0,
-                firstname: 1,
-                lastname: 1,
-                sid: 1,
-                department: 1,
-                year: "$performance.year",  // Jahr des Performance-Records
-            }
-        }
-    ]).toArray();
+      // Nur die relevanten Felder zurückgeben
+      {
+        $project: {
+          _id: 0,
+          firstname: 1,
+          lastname: 1,
+          sid: 1,
+          department: 1,
+          year: "$performance.year", // Jahr des Performance-Records
+        },
+      },
+    ])
+    .toArray();
 };
-
-
 
 /**
  * deletes a salesman by its sid
@@ -68,8 +69,8 @@ exports.getAllUnapprovedRecords = async function (db) {
  */
 
 exports.delete = async function (db, sid) {
-    return (await db.collection('salesmen').deleteOne({sid: sid}));
-}
+  return await db.collection("salesmen").deleteOne({ sid: sid });
+};
 
 /**
  * adds a performance record to a salesman
@@ -80,8 +81,19 @@ exports.delete = async function (db, sid) {
  */
 
 exports.addPerformanceRecord = async function (db, sid, record) {
-    return (await db.collection('salesmen').updateOne({sid: sid}, {$push: {performance: record}}));
-}
+  return await db
+    .collection("salesmen")
+    .updateOne({ sid: sid }, { $push: { performance: record } });
+};
+
+exports.checkForExistingPerformanceRecord = async function (db, sid, year) {
+  //return (await db.collection('salesmen').updateOne({sid: sid}, {$push: {performance: record}}));
+  return (
+    (await db
+      .collection("salesmen")
+      .findOne({ sid: sid, "performance.year": year })) !== null
+  );
+};
 
 /**
  * retrieves all performance records of a salesman
@@ -91,8 +103,10 @@ exports.addPerformanceRecord = async function (db, sid, record) {
  */
 
 exports.getPerformanceRecords = async function (db, sid) {
-    return (await db.collection('salesmen').findOne({sid: sid}, {projection: {performance: 1}}));
-}
+  return await db
+    .collection("salesmen")
+    .findOne({ sid: sid }, { projection: { performance: 1 } });
+};
 
 /**
  * retrieves a performance record of a salesman by year
@@ -103,12 +117,14 @@ exports.getPerformanceRecords = async function (db, sid) {
  */
 
 exports.getPerformanceRecordByYear = async function (db, sid, year) {
-    const result = await db.collection('salesmen').findOne(
-        { sid: sid, 'performance.year': year },
-        { projection: { performance: { $elemMatch: { year: year } } } }
+  const result = await db
+    .collection("salesmen")
+    .findOne(
+      { sid: sid, "performance.year": year },
+      { projection: { performance: { $elemMatch: { year: year } } } }
     );
 
-    return result?.performance?.[0] || null;
+  return result?.performance?.[0] || null;
 };
 
 /**
@@ -120,18 +136,23 @@ exports.getPerformanceRecordByYear = async function (db, sid, year) {
  * @param {string} remark remark
  */
 
-exports.approvePerformanceRecord = async function (db, sid, year, ceoApproval, remark) {
-    return (await db.collection('salesmen').updateOne(
-        { sid: sid, 'performance.year': year },
-        {
-            $set: {
-                'performance.$.ceoApproval': ceoApproval,
-                'performance.$.remark': remark
-            }
-        }
-    ));
+exports.approvePerformanceRecord = async function (
+  db,
+  sid,
+  year,
+  ceoApproval,
+  remark
+) {
+  return await db.collection("salesmen").updateOne(
+    { sid: sid, "performance.year": year },
+    {
+      $set: {
+        "performance.$.ceoApproval": ceoApproval,
+        "performance.$.remark": remark,
+      },
+    }
+  );
 };
-
 
 /**
  * deletes a performance record of a salesman by year
@@ -142,5 +163,7 @@ exports.approvePerformanceRecord = async function (db, sid, year, ceoApproval, r
  */
 
 exports.deletePerformanceRecord = async function (db, sid, year) {
-    return (await db.collection('salesmen').updateOne({sid: sid}, {$pull: {performance: {year: year}}}));
-}
+  return await db
+    .collection("salesmen")
+    .updateOne({ sid: sid }, { $pull: { performance: { year: year } } });
+};

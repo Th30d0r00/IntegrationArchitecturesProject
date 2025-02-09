@@ -8,7 +8,7 @@ import { PeformanceRecord } from '../../models/PeformanceRecord';
 import { ProductSalesDatapoint } from '../../interfaces/productsSales-datapoint';
 import { ProductsSales } from '../../models/ProductsSales';
 import { ClientPurchase } from '../../models/ClientPurchase';
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-add-performance-record-page',
@@ -182,6 +182,12 @@ export class AddPerformanceRecordPageComponent implements OnInit {
                                 'Error adding performance record:',
                                 error
                             );
+                            if ((error as HttpErrorResponse).status === 409) {
+                                alert(
+                                    (error as HttpErrorResponse).error.message
+                                );
+                                return;
+                            }
                             alert(
                                 'An error occurred while adding the performance record.'
                             );
