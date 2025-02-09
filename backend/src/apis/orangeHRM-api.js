@@ -1,5 +1,5 @@
 // src/controllers/orangehrm-controller.js
-const { getAllEmployees, getEmployeeById, addBonus, getAllBonuses } = require('../services/orangehrm-service');
+const { getAllEmployees, getEmployeeById, addBonus, getAllBonuses } = require('../services/orangeHRM-service');
 
 exports.getAllEmployees = async (req, res) => {
     try {

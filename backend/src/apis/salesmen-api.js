@@ -107,6 +107,11 @@ exports.addPerformanceRecord = async function (req, res) {
         const { year, competences, productSales } = req.body;
         const sid = parseInt(req.params.sid);
 
+        if(await salesmenService.checkForExistingPerformanceRecord(db, sid, year)) {
+            res.status(409).json({ message: 'Performance record for this person and year already exists' });
+            return;
+        }
+
         const { bonusA, productSales: updatedProductSales } = calculateBonusPartA(productSales);
 
         console.log("BonusA:", bonusA);
