@@ -27,12 +27,12 @@ export class AddPerformanceRecordPageComponent implements OnInit {
     salesOrders: ProductSalesDatapoint[];
 
     competences = [
-        { id: 1, name: 'Leadership', targetValue: 4 },
+        { id: 1, name: 'Leadership Competence', targetValue: 4 },
         { id: 2, name: 'Openness to Employee', targetValue: 4 },
         { id: 3, name: 'Social Behavior to Employee', targetValue: 4 },
         { id: 4, name: 'Attitude towards Client', targetValue: 4 },
-        { id: 5, name: 'Communication Skill', targetValue: 4 },
-        { id: 6, name: 'Integrity towards Company', targetValue: 4 },
+        { id: 5, name: 'Communication Skills', targetValue: 4 },
+        { id: 6, name: 'Integrity to Company', targetValue: 4 }
     ];
 
     constructor(
