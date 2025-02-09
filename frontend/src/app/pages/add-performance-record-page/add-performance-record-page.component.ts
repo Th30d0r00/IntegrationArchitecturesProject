@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import {
+    FormGroup,
+    FormControl,
+    FormArray,
+    Validators,
+    ValidationErrors,
+} from '@angular/forms';
 import { SalesmenService } from '../../services/salesmen.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SalesmenDatapoint } from '../../interfaces/salesmen-datapoint';
@@ -57,15 +63,21 @@ export class AddPerformanceRecordPageComponent implements OnInit {
                             targetValue: new FormControl(
                                 competence.targetValue,
                                 [
-                                    (value) => Validators.required(value),
-                                    (value) => Validators.min(1)(value),
-                                    (value) => Validators.max(5)(value),
+                                    (value): ValidationErrors =>
+                                        Validators.required(value),
+                                    (value): ValidationErrors =>
+                                        Validators.min(1)(value),
+                                    (value): ValidationErrors =>
+                                        Validators.max(5)(value),
                                 ]
                             ),
                             actualValue: new FormControl('', [
-                                (value) => Validators.required(value),
-                                (value) => Validators.min(0)(value),
-                                (value) => Validators.max(5)(value),
+                                (value): ValidationErrors =>
+                                    Validators.required(value),
+                                (value): ValidationErrors =>
+                                    Validators.min(0)(value),
+                                (value): ValidationErrors =>
+                                    Validators.max(5)(value),
                             ]),
                         })
                 )
