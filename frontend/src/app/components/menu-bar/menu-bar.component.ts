@@ -1,26 +1,30 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../../services/auth.service';
-import {Router} from '@angular/router';
-import {User} from '../../models/User';
-import {UserService} from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { User } from '../../models/User';
+import { UserService } from '../../services/user.service';
 
 @Component({
     selector: 'app-menu-bar',
     templateUrl: './menu-bar.component.html',
-    styleUrls: ['./menu-bar.component.css']
+    styleUrls: ['./menu-bar.component.css'],
 })
 export class MenuBarComponent implements OnInit {
-
     user: User;
 
     /*
     This array holds the definition of the menu's buttons.
    */
+
     buttons = [
-        {title: 'Welcome', routerLink: ''}, // the tile is the text on the button, the routerLink specifies, where it will navigate
-        {title: 'Example', routerLink: 'example'},
-        {title: 'Salesmen', routerLink: 'salesmen'},
-        {title: 'Approval List', routerLink: 'approval-list'}
+        { title: 'Welcome', routerLink: '', roles: [] }, // the tile is the text on the button, the routerLink specifies, where it will navigate
+        { title: 'Example', routerLink: 'example', roles: [] }, // the role specifies, which role is allowed to see the button
+        { title: 'Salesmen', routerLink: 'salesmen', roles: ['Leader', 'HR'] },
+        {
+            title: 'Approval List',
+            routerLink: 'approval-list',
+            roles: ['Leader'],
+        },
     ];
 
     /**
@@ -30,7 +34,11 @@ export class MenuBarComponent implements OnInit {
      * @param router
      * @param userService
      */
-    constructor(private authService: AuthService, private router: Router, private userService: UserService) { }
+    constructor(
+        private authService: AuthService,
+        private router: Router,
+        private userService: UserService
+    ) {}
 
     ngOnInit(): void {
         this.fetchUser();
@@ -39,7 +47,7 @@ export class MenuBarComponent implements OnInit {
     /**
      * function which handles clicking the logout button
      */
-    handleLogout(): void{
+    handleLogout(): void {
         this.authService.logout().subscribe();
         void this.router.navigate(['login']); // after logout go back to the login-page
     }
@@ -47,9 +55,10 @@ export class MenuBarComponent implements OnInit {
     /**
      * fetches information about logged-in user
      */
-    fetchUser(): void{
+    fetchUser(): void {
         this.userService.getOwnUser().subscribe((user): void => {
             this.user = user;
+            console.log(user);
         });
     }
 }
