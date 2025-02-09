@@ -1,6 +1,6 @@
 const environment = {
   production: true,
-  port: 80,
+  port: 8080,
   defaultAdminPassword: "c3uz#3zd",
   db: {
     host: "iar-mongo.inf.h-brs.de",
