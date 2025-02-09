@@ -57,15 +57,15 @@ export class AddPerformanceRecordPageComponent implements OnInit {
                             targetValue: new FormControl(
                                 competence.targetValue,
                                 [
-                                    Validators.required,
-                                    Validators.min(0),
-                                    Validators.max(5),
+                                    (value) => Validators.required(value),
+                                    (value) => Validators.min(1)(value),
+                                    (value) => Validators.max(5)(value),
                                 ]
                             ),
                             actualValue: new FormControl('', [
-                                Validators.required,
-                                Validators.min(0),
-                                Validators.max(5),
+                                (value) => Validators.required(value),
+                                (value) => Validators.min(0)(value),
+                                (value) => Validators.max(5)(value),
                             ]),
                         })
                 )
@@ -183,7 +183,12 @@ export class AddPerformanceRecordPageComponent implements OnInit {
                                 error
                             );
                             if ((error as HttpErrorResponse).status === 409) {
-                                alert((error as HttpErrorResponse).message);
+                                alert(
+                                    (
+                                        (error as HttpErrorResponse)
+                                            .error as Error
+                                    ).message
+                                );
                                 return;
                             }
                             alert(
