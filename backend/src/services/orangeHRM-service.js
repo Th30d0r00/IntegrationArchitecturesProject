@@ -1,4 +1,4 @@
-// src/services/orangehrm-service.js
+// src/services/orangeHRM-service.js
 const axios = require('axios');
 const { getAccessToken } = require('./token-service');
 

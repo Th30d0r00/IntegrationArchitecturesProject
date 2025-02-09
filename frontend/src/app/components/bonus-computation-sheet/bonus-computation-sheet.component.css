@@ -43,7 +43,8 @@ table {
     margin-top: 10px;
 }
 
-th, td {
+th,
+td {
     padding: 8px;
     text-align: left;
     border: 1px solid #ddd;
@@ -103,11 +104,23 @@ button:hover {
 }
 
 .approved {
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
 }
 
 .not-approved {
-    background-color: #D32F2F;
+    background-color: #d32f2f;
     color: white;
+}
+
+.placeholder-black::placeholder {
+    color: black;
+}
+
+.placeholder-black::-moz-placeholder {
+    color: black;
+}
+
+.placeholder-black::-webkit-input-placeholder {
+    color: black;
 }

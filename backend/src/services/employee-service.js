@@ -1,4 +1,4 @@
-const { getAllEmployees } = require('./orangehrm-service');
+const { getAllEmployees } = require('./orangeHRM-service');
 const { getAllEmployeesFromOdoo, getBonusesFromOdoo } = require('./odoo-service');
 const {add} = require('./user-service');
 const User = require("../models/User");

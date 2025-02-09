@@ -17,13 +17,17 @@ export class MenuBarComponent implements OnInit {
    */
 
     buttons = [
-        { title: 'Welcome', routerLink: '', roles: [] },
-        { title: 'Example', routerLink: 'example', roles: [] },
-        { title: 'Salesmen', routerLink: 'salesmen', roles: ['Leader', 'HR'] },
+        { title: 'Welcome', routerLink: '', roles: ['admin'] },
+        { title: 'Example', routerLink: 'example', roles: ['admin'] },
+        {
+            title: 'Salesmen',
+            routerLink: 'salesmen',
+            roles: ['Leader', 'HR', 'admin'],
+        },
         {
             title: 'Approval List',
             routerLink: 'approval-list',
-            roles: ['Leader'],
+            roles: ['Leader', 'admin'],
         },
     ];
 

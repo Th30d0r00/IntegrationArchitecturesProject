@@ -80,9 +80,11 @@
 
     <fieldset>
         <legend><strong>Remarks</strong></legend>
-        <p>{{ performanceData.remark }}</p>
-        <input class="remark-input" [disabled]="!isApprovalPage" type="text"
-            [(ngModel)]="remark" placeholder="{{ isApprovalPage ? 'Enter Remark' : '' }}">
+        <input
+            [classList]="!isApprovalPage ? 'placeholder-black remark-input' : 'remark-input'"
+            [disabled]="!isApprovalPage" type="text"
+            [(ngModel)]="remark"
+            placeholder="{{ isApprovalPage ? 'Enter Remark' : performanceData.remark }}" />
     </fieldset>
 
     <fieldset *ngIf="!isApprovalPage" class="ceo-approval-container">
