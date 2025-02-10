@@ -30,6 +30,7 @@ import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorize
 import { BonusComputationSheetComponent } from './components/bonus-computation-sheet/bonus-computation-sheet.component';
 import { PerformanceRecordsViewComponent } from './components/performance-records-view/performance-records-view.component';
 import { SalesmanViewPageComponent } from './pages/salesman-view-page/salesman-view-page.component';
+// eslint-disable-next-line max-len
 import { PerformanceRecordSalesmanViewComponent } from './pages/performance-record-salesman-view/performance-record-salesman-view.component';
 
 @NgModule({
