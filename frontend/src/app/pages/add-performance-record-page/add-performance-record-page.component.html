@@ -45,21 +45,22 @@
                 </thead>
                 <tbody *ngIf="salesOrders && salesOrders.length > 0">
                     <tr *ngFor="let order of salesOrders">
-                        <td>
+                        <td style="vertical-align:top;">
                             <!-- Anzeige des Produktnamens -->
                             {{ order.productName }}
                         </td>
-                        <td *ngFor="let client of order.clients">
-                            <!-- Anzeige des Kundennamens -->
-                            {{ client.customerName }}
+                        <td style="vertical-align:top;">
+                            <p *ngFor="let client of order.clients">{{
+                                client.customerName }}</p>
                         </td>
-                        <td *ngFor="let client of order.clients">
-                            <!-- Anzeige des Kunden-Rankings -->
-                            {{ client.rating }}
+                        <td style="vertical-align:top;">
+                            <p *ngFor="let client of order.clients">{{
+                                client.rating
+                                }}</p>
                         </td>
-                        <td *ngFor="let client of order.clients">
-                            <!-- Anzeige der bestellten Menge (items) -->
-                            {{ client.quantity }}
+                        <td style="vertical-align:top;">
+                            <p *ngFor="let client of order.clients">{{
+                                client.quantity }}</p>
                         </td>
                     </tr>
                 </tbody>
@@ -98,13 +99,16 @@
                                 *ngIf="competence.get('targetValue')?.invalid && competence.get('targetValue')?.touched"
                                 class="error">
                                 <small
-                                    *ngIf="competence.get('targetValue')?.errors?.['required']">Target value
+                                    *ngIf="competence.get('targetValue')?.errors?.['required']">Target
+                                    value
                                     is required.</small>
                                 <small
-                                    *ngIf="competence.get('targetValue')?.errors?.['min']">Target value
+                                    *ngIf="competence.get('targetValue')?.errors?.['min']">Target
+                                    value
                                     must be 1 or greater.</small>
                                 <small
-                                    *ngIf="competence.get('targetValue')?.errors?.['max']">Target value
+                                    *ngIf="competence.get('targetValue')?.errors?.['max']">Target
+                                    value
                                     must be 5 or less.</small>
                             </div>
                         </td>

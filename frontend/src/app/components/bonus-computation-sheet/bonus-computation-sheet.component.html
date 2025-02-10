@@ -29,15 +29,17 @@
             </thead>
             <tbody>
                 <tr *ngFor="let product of performanceData.productSales">
-                    <td>{{ product.productName }}</td>
-                    <td *ngFor="let client of product.clients">{{
-                        client.customerName }}</td>
-                    <td *ngFor="let client of product.clients">{{ client.rating
-                        }}</td>
-                    <td *ngFor="let client of product.clients">{{
-                        client.quantity }}</td>
-                    <td *ngFor="let client of product.clients">{{ client.bonus
-                        }}</td>
+                    <td style="vertical-align:top;">{{ product.productName }}</td>
+                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
+                            client.customerName }}</p></td>
+                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
+                            client.rating
+                            }}</p></td>
+                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
+                            client.quantity }}</p></td>
+                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
+                            client.bonus
+                            }}</p></td>
                 </tr>
             </tbody>
         </table>
