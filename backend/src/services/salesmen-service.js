@@ -1,3 +1,5 @@
+const ApprovalStatus = require('../models/Approval-status');
+
 /**
  * inserts a new salesman into database
  * @param db target database
@@ -5,7 +7,6 @@
  * @return {Promise<any>}
  */
 
-const {Waiting} = require("../models/Approval-status");
 exports.add = async function (db, salesman) {
     return (await db.collection('salesmen').insertOne(salesman));
 }
@@ -39,13 +40,13 @@ exports.getAll = async function (db) {
 
 exports.getAllUnapprovedRecords = async function (db) {
     return await db.collection('salesmen').aggregate([
-        // Entpackt das performance-Array -> Jeder Eintrag wird zu einem eigenen Dokument
+
         { $unwind: "$performance" },
 
-        // Filtern: Nur Performance-Records, die ceoApproval = false haben
-        { $match: { "performance.approvalStatus": Waiting } },
 
-        // Nur die relevanten Felder zurückgeben
+        { $match: { "performance.approvalStatus": ApprovalStatus.Waiting } },
+
+
         {
             $project: {
                 _id: 0,
@@ -53,7 +54,7 @@ exports.getAllUnapprovedRecords = async function (db) {
                 lastname: 1,
                 sid: 1,
                 department: 1,
-                year: "$performance.year",  // Jahr des Performance-Records
+                year: "$performance.year",
             }
         }
     ]).toArray();
@@ -92,8 +93,60 @@ exports.addPerformanceRecord = async function (db, sid, record) {
  */
 
 exports.getPerformanceRecords = async function (db, sid) {
-    return (await db.collection('salesmen').findOne({sid: sid}, {projection: {performance: 1}}));
-}
+    return await db.collection('salesmen').aggregate([
+        { $match: { sid: sid } },
+        { $unwind: "$performance" },
+        {
+            $project: {
+                _id: 0,
+                sid: 1,
+                firstname: 1,
+                lastname: 1,
+                department: 1,
+                performance: 1,
+                year: "$performance.year"
+            }
+        }
+    ]).toArray();
+};
+
+
+
+/**
+ * retrieves all performance records of a salesman which are approved by CEO and Employee
+ * @param db
+ * @param sid
+ * @returns {Promise<*>}
+ */
+
+exports.getApprovedPerformanceRecords = async function (db, sid) {
+    return await db.collection('salesmen').aggregate([
+        { $unwind: "$performance" },
+
+        {
+            $match: {
+                sid: sid,
+                "performance.approvalStatus": {
+                    $in: [ApprovalStatus.Approved, ApprovalStatus.ApprovedByEmployee]
+                }
+            }
+        },
+
+        {
+            $project: {
+                _id: 0,
+                firstname: 1,
+                lastname: 1,
+                sid: 1,
+                department: 1,
+                year: "$performance.year",
+            }
+        }
+    ]).toArray();
+};
+
+
+
 
 /**
  * retrieves a performance record of a salesman by year

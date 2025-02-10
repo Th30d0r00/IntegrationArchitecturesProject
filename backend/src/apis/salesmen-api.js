@@ -154,6 +154,25 @@ exports.getPerformanceRecordsBySalesmanId = async function (req, res) {
     }
 };
 
+exports.getApprovedPerformanceRecordsBySalesmanId = async function (req, res) {
+    const db = req.app.get('db');
+    const sid = parseInt(req.params.sid, 10);
+
+    try {
+        const performanceRecords = await salesmenService.getApprovedPerformanceRecords(db, sid);
+        console.log(performanceRecords);
+
+        if (performanceRecords) {
+            res.json(performanceRecords);
+        } else {
+            res.status(404).json({ message: 'No performance records found' });
+        }
+    } catch (err) {
+        console.error('Error retrieving performance records:', err);
+        res.status(500).json({ message: 'Failed to retrieve performance records', error: err.message });
+    }
+}
+
 /**
  * Endpoint, which retrieves a specific performance record by year for a salesman
  * @param req express request

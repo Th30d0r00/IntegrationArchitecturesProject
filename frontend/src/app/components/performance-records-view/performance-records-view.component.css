@@ -1,0 +1,113 @@
+.salesman-details-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+.salesman-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3f51b5;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.salesman-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.salesman-header h2 {
+    font-size: 1.8em;
+    margin: 0;
+}
+
+.employee-id {
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+.add-record-btn {
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: #ff9800;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.add-record-btn:hover {
+    transform: scale(1.05);
+}
+
+.performance-title-box {
+    background-color: #3f51b5;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.performance-title-box h2 {
+    margin: 0;
+    font-size: 1.4em;
+}
+
+.performance-records {
+    margin-top: 20px;
+}
+
+.performance-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.performance-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.performance-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.performance-card mat-card-header {
+    background-color: #3f51b5;
+    color: white;
+    border-radius: 10px 10px 0 0;
+    padding: 12px;
+}
+
+.performance-card mat-card-title {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.performance-card mat-card-content {
+    padding: 16px;
+}
+
+.view-record-link {
+    color: #3f51b5;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+}
+
+.view-record-link:hover {
+    text-decoration: underline;
+}

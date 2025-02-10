@@ -86,7 +86,10 @@
         </p>
     </fieldset>
 
-    <button *ngIf="isApprovalPage" mat-raised-button color="primary" (click)="approveRecord()">Approve Record</button>
+    <button *ngIf="isApprovalPage" mat-raised-button color="primary" (click)="approveRecord(ApprovalStatus.ApprovedByCEO)">Approve Record</button>
+
+    <button *ngIf="isSalesmanView" mat-raised-button color="primary" (click)="approveRecord(ApprovalStatus.ApprovedByEmployee)"
+            [disabled]="performanceData?.approvalStatus === ApprovalStatus.ApprovedByEmployee">Confirm Record</button>
 </div>
 
 <div *ngIf="!performanceData">

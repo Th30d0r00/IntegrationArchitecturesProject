@@ -72,7 +72,7 @@ async function initDb(db){
         const User = require("./models/User");
 
         const adminPassword = environment.defaultAdminPassword;
-        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true, 'admin'));
+        await userService.add(db, new User('admin',1111, '', 'admin', '', adminPassword, true, 'admin'));
 
         console.log('created admin user with password: '+adminPassword);
     }

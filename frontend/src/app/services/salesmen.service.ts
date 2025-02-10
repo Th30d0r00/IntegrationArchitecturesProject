@@ -26,9 +26,19 @@ export class SalesmenService {
         return this.http.get<SalesmenDatapoint>(url, { observe: 'response', withCredentials: true });
     }
 
+    getPerformanceRecords(sid: number): Observable<HttpResponse<PerformanceDatapoint[]>> {
+        const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance`;
+        return this.http.get<PerformanceDatapoint[]>(url, { observe: 'response', withCredentials: true });
+    }
+
     getSalesmanPerformanceByYear(sid: number, year: number): Observable<HttpResponse<PerformanceDatapoint>> {
         const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance/${year}`;
         return this.http.get<PerformanceDatapoint>(url, { observe: 'response', withCredentials: true });
+    }
+
+    getApprovedPerformanceRecords(sid: number): Observable<HttpResponse<PerformanceDatapoint[]>> {
+        const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance/approved`;
+        return this.http.get<PerformanceDatapoint[]>(url, { observe: 'response', withCredentials: true });
     }
 
     addPerformanceRecord(sid: number, record: { sid: number; year: number; competences: Competence[] }): Observable<HttpResponse<any>> {
