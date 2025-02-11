@@ -1,5 +1,6 @@
 const axios = require('axios');
 const xml2js = require('xml2js');
+const ApprovalStatus = require('../models/Approval-status');
 
 const odooBaseURL = 'https://sepp-odoo.inf.h-brs.de';
 const apiKey = 'dabacfdf8afdd4bb70c0e199a1e4f6e035e36576';
@@ -178,6 +179,9 @@ async function getBonusesFromOdoo() {
             const bonusReason = bonus.struct[0].member.find(m => m.name[0] === 'bonus_reason_id').value[0].array[0].data[0].value[1].string[0] || 'Unknown';
             const state = bonus.struct[0].member.find(m => m.name[0] === 'state').value[0].string[0] || 'unknown';
 
+            // Determine approval status
+            let approvalStatus = state.includes("manager_approved") ? ApprovalStatus.Approved : ApprovalStatus.Waiting;
+
             // Extract the year from the bonus reason (assume format contains YYYY somewhere)
             const yearMatch = bonusReason.match(/\b(19|20)\d{2}\b/);
             const year = yearMatch ? parseInt(yearMatch[0], 10) : null;
@@ -186,7 +190,7 @@ async function getBonusesFromOdoo() {
                 employeeId: formattedEmployeeId,
                 totalBonus: bonusAmount,
                 year,
-                ceoApproval: state.includes("manager_approved")
+                approvalStatus
             };
         });
 
