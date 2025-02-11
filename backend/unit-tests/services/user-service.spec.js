@@ -11,8 +11,8 @@ const crypto = require("crypto");
 const Credentials = require("../../src/models/Credentials");
 const {copyObject} = require("../support/copyObject");
 
-const demouser = new User('testuser', 'John', 'Doe', 'jd@test.com', 'secret', false, 'IT');
-const demouser2 = new User('testuser2', 'Jane', 'Doe', 'jad@test.com', 'xyz', false, 'IT');
+const demouser = new User('testuser', 1235,'John', 'Doe', 'jd@test.com', 'secret', false, 'IT');
+const demouser2 = new User('testuser2', 1236,'Jane', 'Doe', 'jad@test.com', 'xyz', false, 'IT');
 
 let db;
 
