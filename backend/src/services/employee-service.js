@@ -79,7 +79,7 @@ async function createUsersFromEmployees(db) {
             if (!existingUser) {
                 const user = new User(
                     employee.code.toString(),
-                    employee.sid,
+                    parseInt(employee.employeeId),
                     employee.firstName,
                     employee.lastName,
                     '',

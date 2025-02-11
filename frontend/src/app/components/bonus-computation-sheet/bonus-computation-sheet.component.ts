@@ -71,6 +71,10 @@ export class BonusComputationSheetComponent implements OnInit {
             const { sid } = this.salesman;
             const { year, totalBonus } = this.performanceData;
 
+            if (ApprovalStatus.ApprovedByEmployee === approvalStatus) {
+                this.remark = this.performanceData.remark;
+            }
+
             this.salesmenService.approvePerformanceRecord(sid, year, approvalStatus, this.remark).subscribe(
                 (response: HttpResponse<any>): void => {
                     if (approvalStatus === ApprovalStatus.ApprovedByCEO) {

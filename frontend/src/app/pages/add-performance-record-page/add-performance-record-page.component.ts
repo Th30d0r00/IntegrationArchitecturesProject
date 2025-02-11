@@ -15,7 +15,7 @@ import { ProductSalesDatapoint } from '../../interfaces/productsSales-datapoint'
 import { ProductsSales } from '../../models/ProductsSales';
 import { ClientPurchase } from '../../models/ClientPurchase';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { ApprovalStatus } from '../../models/Approval-Status';
+import { ApprovalStatus } from '../../models/Approval-status';
 
 @Component({
     selector: 'app-add-performance-record-page',
