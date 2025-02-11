@@ -1,23 +1,22 @@
-// Nochmal drüber diskutieren, ob das so passt. GGf. Berechnung verändern
-
 function calculateBonusPartA(productSales) {
-
     let bonusA = 0;
 
     productSales.forEach((product) => {
         product.clients.forEach((client) => {
-            const { rating } = client;
-            const bonus = clientRatingmapping[rating];
-            client.bonus = bonus;
-            bonusA += bonus;
+            const { rating, quantity } = client; 
+
+            const ratingWeight = clientRatingmapping[rating];
+            const bonus = quantity * ratingWeight * 8;
+            
+            client.bonus = bonus; 
+            bonusA += bonus; 
         });
     });
 
     return {
-        bonusA: bonusA,
+        bonusA,
         productSales
     };
-
 }
 
 function calculateBonusPartB(competences) {
@@ -26,32 +25,25 @@ function calculateBonusPartB(competences) {
     competences.forEach((competence) => {
         const { targetValue, actualValue } = competence;
 
-        let calculatedBonus = 0;
+        let calculatedBonus = Math.floor((Math.pow(actualValue, 2) * 15) / targetValue); 
 
-        if (actualValue >= targetValue) {
-            calculatedBonus = 100;
-        } else {
-            const performanceRatio = actualValue / targetValue;
-            calculatedBonus = 100 * performanceRatio;
-        }
-
-        competence.bonus = Math.round(calculatedBonus);
+        competence.bonus = calculatedBonus;
 
         bonusB += calculatedBonus;
     });
 
     return {
-        bonusB: Math.round(bonusB),
+        bonusB,
         competences
     };
 }
 
-clientRatingmapping = {
-    "excellent": 700,
-    "very good": 500,
-    "good": 200,
-    "satisfactory": 100,
-    "sufficient": 50,
+const clientRatingmapping = {
+    "excellent": 3,
+    "very good": 2.5,
+    "good": 2,
+    "satisfactory": 1.5,
+    "sufficient": 1
 }
 
 module.exports = {calculateBonusPartA, calculateBonusPartB};

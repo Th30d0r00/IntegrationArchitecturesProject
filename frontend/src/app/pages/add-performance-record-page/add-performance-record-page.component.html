@@ -6,9 +6,11 @@
             <legend><strong>General Information</strong></legend>
             <div class="info-box">
                 <div *ngIf="salesman">
-                    <p><strong>Name:</strong> {{ salesman.firstname }} {{ salesman.lastname }}</p>
+                    <p><strong>Name:</strong> {{ salesman.firstname }} {{
+                        salesman.lastname }}</p>
                     <p><strong>Employee ID:</strong> {{ salesman.code }}</p>
-                    <p><strong>Department:</strong> {{ salesman.department }}</p>
+                    <p><strong>Department:</strong> {{ salesman.department
+                        }}</p>
                 </div>
                 <div class="form-group">
                     <label for="year"><strong>Year:</strong></label>
@@ -16,13 +18,17 @@
                         id="year"
                         formControlName="year"
                         type="number"
-                        placeholder="Enter year"
-                    />
-                    <div *ngIf="recordForm.get('year')?.invalid && recordForm.get('year')?.touched" class="error">
-                        <small *ngIf="recordForm.get('year')?.errors?.['required']">Year is required.</small>
+                        placeholder="Enter year" />
+                    <div
+                        *ngIf="recordForm.get('year')?.invalid && recordForm.get('year')?.touched"
+                        class="error">
+                        <small
+                            *ngIf="recordForm.get('year')?.errors?.['required']">Year
+                            is required.</small>
                     </div>
                 </div>
-                <button mat-raised-button color="primary" type="button" (click)="onGetOrderEvaluation()">Fetch Orders</button>
+                <button mat-raised-button color="primary" type="button"
+                    (click)="onGetOrderEvaluation()">Fetch Orders</button>
             </div>
         </fieldset>
 
@@ -30,72 +36,109 @@
             <legend><strong>A.) Orders Evaluation</strong></legend>
             <table>
                 <thead>
-                <tr>
-                    <th>Name of Product</th>
-                    <th>Client</th>
-                    <th>Client Ranking</th>
-                    <th>Items</th>
-                </tr>
+                    <tr>
+                        <th>Name of Product</th>
+                        <th>Client</th>
+                        <th>Client Ranking</th>
+                        <th>Items</th>
+                    </tr>
                 </thead>
-                <tbody>
-                <tr *ngFor="let order of salesOrders">
-                    <td>
-                        <!-- Anzeige des Produktnamens -->
-                        {{ order.productName }}
-                    </td>
-                    <td *ngFor="let client of order.clients">
-                        <!-- Anzeige des Kundennamens -->
-                        {{ client.customerName }}
-                    </td>
-                    <td *ngFor="let client of order.clients">
-                        <!-- Anzeige des Kunden-Rankings -->
-                        {{ client.rating }}
-                    </td>
-                    <td *ngFor="let client of order.clients">
-                        <!-- Anzeige der bestellten Menge (items) -->
-                        {{ client.quantity }}
-                    </td>
-                </tr>
+                <tbody *ngIf="salesOrders && salesOrders.length > 0">
+                    <tr *ngFor="let order of salesOrders">
+                        <td style="vertical-align:top;">
+                            <!-- Anzeige des Produktnamens -->
+                            {{ order.productName }}
+                        </td>
+                        <td style="vertical-align:top;">
+                            <p *ngFor="let client of order.clients">{{
+                                client.customerName }}</p>
+                        </td>
+                        <td style="vertical-align:top;">
+                            <p *ngFor="let client of order.clients">{{
+                                client.rating
+                                }}</p>
+                        </td>
+                        <td style="vertical-align:top;">
+                            <p *ngFor="let client of order.clients">{{
+                                client.quantity }}</p>
+                        </td>
+                    </tr>
                 </tbody>
-
             </table>
-        </fieldset>
 
+            <p *ngIf="!salesOrders || salesOrders.length <= 0"
+                style="text-align: center; margin-top: 16px;">
+                No orders found for the selected year.
+            </p>
+        </fieldset>
 
         <fieldset>
             <legend><strong>B.) Social Performance Evaluation</strong></legend>
-            <p>Fill in the actual values for each category to calculate the bonus.</p>
+            <p>Fill in the actual values for each category to calculate the
+                bonus.</p>
             <table>
                 <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Target Value</th>
-                    <th>Actual Value</th>
-                </tr>
+                    <tr>
+                        <th>Category</th>
+                        <th>Target Value</th>
+                        <th>Actual Value</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let competence of competencesControls; let i = index">
-                    <td>{{ competence.get('name')?.value }}</td>
-                    <td>{{ competence.get('targetValue')?.value }}</td>
-                    <td>
-                        <input
-                            [formControl]="competence.get('actualValue')"
-                            type="number"
-                            placeholder="Enter actual value"
-                            min="0"
-                            max="4"
-                        />
-                        <div *ngIf="competence.get('actualValue')?.invalid && competence.get('actualValue')?.touched" class="error">
-                            <small *ngIf="competence.get('actualValue')?.errors?.['required']">Value is required.</small>
-                            <small *ngIf="competence.get('actualValue')?.errors?.['min']">Value must be 0 or greater.</small>
-                            <small *ngIf="competence.get('actualValue')?.errors?.['max']">Value must be 4 or less.</small>
-                        </div>
-                    </td>
-                </tr>
+                    <tr
+                        *ngFor="let competence of competencesControls; let i = index">
+                        <td>{{ competence.get('name')?.value }}</td>
+                        <td style="vertical-align:top;">
+                            <input
+                                [formControl]="competence.get('targetValue')"
+                                type="number"
+                                placeholder="Enter target value"
+                                min="1"
+                                max="5" />
+                            <div
+                                *ngIf="competence.get('targetValue')?.invalid && competence.get('targetValue')?.touched"
+                                class="error">
+                                <small
+                                    *ngIf="competence.get('targetValue')?.errors?.['required']">Target
+                                    value
+                                    is required.</small>
+                                <small
+                                    *ngIf="competence.get('targetValue')?.errors?.['min']">Target
+                                    value
+                                    must be 1 or greater.</small>
+                                <small
+                                    *ngIf="competence.get('targetValue')?.errors?.['max']">Target
+                                    value
+                                    must be 5 or less.</small>
+                            </div>
+                        </td>
+                        <td style="vertical-align:top;">
+                            <input
+                                [formControl]="competence.get('actualValue')"
+                                type="number"
+                                placeholder="Enter actual value"
+                                min="0"
+                                max="5" />
+                            <div
+                                *ngIf="competence.get('actualValue')?.invalid && competence.get('actualValue')?.touched"
+                                class="error">
+                                <small
+                                    *ngIf="competence.get('actualValue')?.errors?.['required']">Value
+                                    is required.</small>
+                                <small
+                                    *ngIf="competence.get('actualValue')?.errors?.['min']">Value
+                                    must be 0 or greater.</small>
+                                <small
+                                    *ngIf="competence.get('actualValue')?.errors?.['max']">Value
+                                    must be 5 or less.</small>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </fieldset>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="recordForm.invalid">Submit</button>
+        <button mat-raised-button color="primary" type="submit"
+            [disabled]="recordForm.invalid">Submit</button>
     </form>
 </div>

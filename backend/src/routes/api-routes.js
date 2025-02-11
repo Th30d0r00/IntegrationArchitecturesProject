@@ -31,7 +31,7 @@ router.put('/salesmen/:sid/performance/:year', salesmenApi.approvePerformanceRec
 router.get('/unapprovedSalesmenRecords', salesmenApi.getSalesmenWithUnapprovedPerformanceRecords);
 
 
-const orangeHRMApi = require('../apis/OrangeHRM-api');
+const orangeHRMApi = require('../apis/orangeHRM-api');
 router.get('/employees', orangeHRMApi.getAllEmployees);
 router.get('/employees/:sid', orangeHRMApi.getEmployeeById);
 router.post('/employees/:sid/bonus', orangeHRMApi.addBonus);

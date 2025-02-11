@@ -42,7 +42,8 @@ table {
     margin-top: 10px;
 }
 
-th, td {
+th,
+td {
     padding: 8px;
     text-align: left;
     border: 1px solid #ddd;
@@ -110,4 +111,16 @@ button:hover {
 .employee-approved {
     background-color: #3f51b5;
     color: white;
+}
+
+.placeholder-black::placeholder {
+    color: black;
+}
+
+.placeholder-black::-moz-placeholder {
+    color: black;
+}
+
+.placeholder-black::-webkit-input-placeholder {
+    color: black;
 }

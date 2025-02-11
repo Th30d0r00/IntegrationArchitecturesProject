@@ -8,8 +8,8 @@ const ApprovalStatus = require('../models/Approval-status');
  */
 
 exports.add = async function (db, salesman) {
-    return (await db.collection('salesmen').insertOne(salesman));
-}
+  return await db.collection("salesmen").insertOne(salesman);
+};
 
 /**
  * retrieves a salesman by its sid
@@ -19,8 +19,8 @@ exports.add = async function (db, salesman) {
  */
 
 exports.getBySid = async function (db, sid) {
-    return (await db.collection('salesmen').findOne({ sid: sid }));
-}
+  return await db.collection("salesmen").findOne({ sid: sid });
+};
 
 /**
  * retrieves all salesmen
@@ -29,8 +29,8 @@ exports.getBySid = async function (db, sid) {
  */
 
 exports.getAll = async function (db) {
-    return (await db.collection('salesmen').find().toArray());
-}
+  return await db.collection("salesmen").find().toArray();
+};
 
 /**
  * retrieves all salesmen who hava an unnapproved performance record
@@ -60,8 +60,6 @@ exports.getAllUnapprovedRecords = async function (db) {
     ]).toArray();
 };
 
-
-
 /**
  * deletes a salesman by its sid
  * @param db target database
@@ -70,8 +68,8 @@ exports.getAllUnapprovedRecords = async function (db) {
  */
 
 exports.delete = async function (db, sid) {
-    return (await db.collection('salesmen').deleteOne({sid: sid}));
-}
+  return await db.collection("salesmen").deleteOne({ sid: sid });
+};
 
 /**
  * adds a performance record to a salesman
@@ -82,8 +80,19 @@ exports.delete = async function (db, sid) {
  */
 
 exports.addPerformanceRecord = async function (db, sid, record) {
-    return (await db.collection('salesmen').updateOne({sid: sid}, {$push: {performance: record}}));
-}
+  return await db
+    .collection("salesmen")
+    .updateOne({ sid: sid }, { $push: { performance: record } });
+};
+
+exports.checkForExistingPerformanceRecord = async function (db, sid, year) {
+  //return (await db.collection('salesmen').updateOne({sid: sid}, {$push: {performance: record}}));
+  return (
+    (await db
+      .collection("salesmen")
+      .findOne({ sid: sid, "performance.year": year })) !== null
+  );
+};
 
 /**
  * retrieves all performance records of a salesman
@@ -157,12 +166,14 @@ exports.getApprovedPerformanceRecords = async function (db, sid) {
  */
 
 exports.getPerformanceRecordByYear = async function (db, sid, year) {
-    const result = await db.collection('salesmen').findOne(
-        { sid: sid, 'performance.year': year },
-        { projection: { performance: { $elemMatch: { year: year } } } }
+  const result = await db
+    .collection("salesmen")
+    .findOne(
+      { sid: sid, "performance.year": year },
+      { projection: { performance: { $elemMatch: { year: year } } } }
     );
 
-    return result?.performance?.[0] || null;
+  return result?.performance?.[0] || null;
 };
 
 /**
@@ -186,7 +197,6 @@ exports.approvePerformanceRecord = async function (db, sid, year, approvalStatus
     ));
 };
 
-
 /**
  * deletes a performance record of a salesman by year
  * @param db target database
@@ -196,5 +206,7 @@ exports.approvePerformanceRecord = async function (db, sid, year, approvalStatus
  */
 
 exports.deletePerformanceRecord = async function (db, sid, year) {
-    return (await db.collection('salesmen').updateOne({sid: sid}, {$pull: {performance: {year: year}}}));
-}
+  return await db
+    .collection("salesmen")
+    .updateOne({ sid: sid }, { $pull: { performance: { year: year } } });
+};
