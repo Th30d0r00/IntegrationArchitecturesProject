@@ -42,7 +42,7 @@ async function loadEmployeesToDB(db) {
                             sid: parseInt(b.employeeId, 10),
                             year: b.year,
                             totalBonus: b.totalBonus,
-                            ceoApproval: b.ceoApproval,
+                            approvalStatus: b.approvalStatus
                         }));
                     }
 
