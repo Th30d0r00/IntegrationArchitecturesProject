@@ -24,6 +24,7 @@ router.get('/salesmen', salesmenApi.getAllSalesmen);
 router.delete('/salesmen/:sid', salesmenApi.deleteSalesman);
 router.post('/salesmen/:sid/performance', salesmenApi.addPerformanceRecord);
 router.get('/salesmen/:sid/performance', salesmenApi.getPerformanceRecordsBySalesmanId);
+router.get('/salesmen/:sid/performance/approved', salesmenApi.getApprovedPerformanceRecordsBySalesmanId);
 router.get('/salesmen/:sid/performance/:year', salesmenApi.getPerformanceRecordByYear);
 router.delete('/salesmen/:sid/performance/:year', salesmenApi.deletePerformanceRecord);
 router.put('/salesmen/:sid/performance/:year', salesmenApi.approvePerformanceRecord);

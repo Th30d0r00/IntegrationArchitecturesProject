@@ -7,6 +7,7 @@ import {PerformanceDatapoint} from '../interfaces/performance-datapoint';
 import {Competence} from '../models/Competence';
 import {SalesmenDatapointWithPerformanceYear} from '../interfaces/salesmen-datapoint-performance-year';
 import {ProductSalesDatapoint} from '../interfaces/productsSales-datapoint';
+import {ApprovalStatus} from '../models/Approval-status';
 
 @Injectable({
     providedIn: 'root'
@@ -25,9 +26,19 @@ export class SalesmenService {
         return this.http.get<SalesmenDatapoint>(url, { observe: 'response', withCredentials: true });
     }
 
+    getPerformanceRecords(sid: number): Observable<HttpResponse<PerformanceDatapoint[]>> {
+        const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance`;
+        return this.http.get<PerformanceDatapoint[]>(url, { observe: 'response', withCredentials: true });
+    }
+
     getSalesmanPerformanceByYear(sid: number, year: number): Observable<HttpResponse<PerformanceDatapoint>> {
         const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance/${year}`;
         return this.http.get<PerformanceDatapoint>(url, { observe: 'response', withCredentials: true });
+    }
+
+    getApprovedPerformanceRecords(sid: number): Observable<HttpResponse<PerformanceDatapoint[]>> {
+        const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance/approved`;
+        return this.http.get<PerformanceDatapoint[]>(url, { observe: 'response', withCredentials: true });
     }
 
     addPerformanceRecord(sid: number, record: { sid: number; year: number; competences: Competence[] }): Observable<HttpResponse<any>> {
@@ -40,9 +51,9 @@ export class SalesmenService {
         return this.http.get<SalesmenDatapointWithPerformanceYear[]>(url, { observe: 'response', withCredentials: true });
     }
 
-    approvePerformanceRecord(sid: number, year: number, ceoApproval: boolean, remark: string): Observable<HttpResponse<any>> {
+    approvePerformanceRecord(sid: number, year: number, approvalStatus: ApprovalStatus, remark: string): Observable<HttpResponse<any>> {
         const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance/${year}`;
-        const record = { ceoApproval, remark };
+        const record = { approvalStatus, remark };
         return this.http.put<any>(url, record, { observe: 'response' });
     }
 

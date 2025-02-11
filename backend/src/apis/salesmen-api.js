@@ -2,6 +2,7 @@ const salesmenService = require('../services/salesmen-service')
 const Salesman = require("../models/Salesman");
 const PerformanceRecord = require("../models/PerformanceRecord");
 const {calculateBonusPartA,calculateBonusPartB} = require("../services/bonus-service");
+const {Waiting} = require("../models/Approval-status");
 
 
 /**
@@ -122,7 +123,7 @@ exports.addPerformanceRecord = async function (req, res) {
 
         const totalBonus = bonusA + bonusB;
 
-        const record = new PerformanceRecord(sid, year, bonusA, bonusB,totalBonus, updatedProductSales, updatedCompetences, false);
+        const record = new PerformanceRecord(sid, year, bonusA, bonusB,totalBonus, updatedProductSales, updatedCompetences, Waiting);
 
         console.log("PerformanceRecord with calculated Bonus:", record);
 
@@ -157,6 +158,25 @@ exports.getPerformanceRecordsBySalesmanId = async function (req, res) {
         res.status(500).json({ message: 'Failed to retrieve performance records', error: err.message });
     }
 };
+
+exports.getApprovedPerformanceRecordsBySalesmanId = async function (req, res) {
+    const db = req.app.get('db');
+    const sid = parseInt(req.params.sid, 10);
+
+    try {
+        const performanceRecords = await salesmenService.getApprovedPerformanceRecords(db, sid);
+        console.log(performanceRecords);
+
+        if (performanceRecords) {
+            res.json(performanceRecords);
+        } else {
+            res.status(404).json({ message: 'No performance records found' });
+        }
+    } catch (err) {
+        console.error('Error retrieving performance records:', err);
+        res.status(500).json({ message: 'Failed to retrieve performance records', error: err.message });
+    }
+}
 
 /**
  * Endpoint, which retrieves a specific performance record by year for a salesman
@@ -218,10 +238,13 @@ exports.approvePerformanceRecord = async function (req, res) {
     const db = req.app.get('db');
     const sid = parseInt(req.params.sid, 10);
     const year = parseInt(req.params.year, 10);
-    const {ceoApproval, remark} = req.body;
+    const {approvalStatus, remark} = req.body;
+
+    console.log(req.body);
+    console.log("Approval Status:", approvalStatus);
 
     try {
-        const result = await salesmenService.approvePerformanceRecord(db, sid, year, ceoApproval, remark);
+        const result = await salesmenService.approvePerformanceRecord(db, sid, year, approvalStatus, remark);
 
         if (result.modifiedCount > 0) {
             res.json({ message: 'Performance record approved' });

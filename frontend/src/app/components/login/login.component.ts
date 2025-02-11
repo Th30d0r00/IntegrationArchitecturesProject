@@ -3,6 +3,8 @@ import {AuthService} from '../../services/auth.service';
 import {Credentials} from '../../models/Credentials';
 import {Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
+import {UserService} from '../../services/user.service';
+import {User} from '../../models/User';
 
 @Component({
     selector: 'app-login',
@@ -16,7 +18,7 @@ export class LoginComponent implements OnInit {
 
     loginError: string;
 
-    constructor(private authService: AuthService, private router: Router) { }
+    constructor(private authService: AuthService, private userService: UserService, private router: Router) { }
 
     ngOnInit(): void {
         this.resetCredentials();
@@ -50,7 +52,15 @@ export class LoginComponent implements OnInit {
     /**
      * redirects to the landing page
      */
-    enterApplication(): void{
-        void this.router.navigate(['']);
+    enterApplication(): void {
+        this.userService.getOwnUser().subscribe((userdata: User): void  => {
+            if (userdata.role === 'Sales') {
+                void this.router.navigate(['/my-performance-records']);
+            } else {
+                void this.router.navigate(['']);
+            }
+        });
     }
+
+
 }

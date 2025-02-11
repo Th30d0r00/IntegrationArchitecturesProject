@@ -29,6 +29,10 @@ export class MenuBarComponent implements OnInit {
             routerLink: 'approval-list',
             roles: ['Leader', 'admin'],
         },
+        {
+            title: 'My Records',
+            routerLink: 'my-performance-records',
+            roles: ['Sales']},
     ];
 
     /**

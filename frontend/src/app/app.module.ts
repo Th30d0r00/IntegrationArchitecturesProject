@@ -28,6 +28,10 @@ import { ApprovePerformanceRecordPageComponent } from './pages/approve-performan
 import {MatGridListModule} from '@angular/material/grid-list';
 import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorized-page.component';
 import { BonusComputationSheetComponent } from './components/bonus-computation-sheet/bonus-computation-sheet.component';
+import { PerformanceRecordsViewComponent } from './components/performance-records-view/performance-records-view.component';
+import { SalesmanViewPageComponent } from './pages/salesman-view-page/salesman-view-page.component';
+// eslint-disable-next-line max-len
+import { PerformanceRecordSalesmanViewComponent } from './pages/performance-record-salesman-view/performance-record-salesman-view.component';
 
 @NgModule({
     declarations: [
@@ -46,6 +50,9 @@ import { BonusComputationSheetComponent } from './components/bonus-computation-s
         ApprovePerformanceRecordPageComponent,
         UnauthorizedPageComponent,
         BonusComputationSheetComponent,
+        PerformanceRecordsViewComponent,
+        SalesmanViewPageComponent,
+        PerformanceRecordSalesmanViewComponent,
     ],
     imports: [
         BrowserModule,

@@ -1,5 +1,5 @@
 class PerformanceRecord {
-    constructor(sid, year, bonusA, bonusB, totalBonus, productSales, competences, ceoApproval = false) {
+    constructor(sid, year, bonusA, bonusB, totalBonus, productSales, competences, approvalStatus) {
         this.sid = sid;
         this.year = year;
         this.bonusA = bonusA;
@@ -7,7 +7,7 @@ class PerformanceRecord {
         this.totalBonus = totalBonus
         this.productSales = productSales;
         this.competences = competences;
-        this.ceoApproval = ceoApproval;
+        this.approvalStatus = approvalStatus;
     }
 }
 

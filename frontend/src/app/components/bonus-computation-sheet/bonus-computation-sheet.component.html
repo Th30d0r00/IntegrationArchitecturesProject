@@ -89,16 +89,21 @@
             placeholder="{{ isApprovalPage ? 'Enter Remark' : performanceData.remark }}" />
     </fieldset>
 
-    <fieldset *ngIf="!isApprovalPage" class="ceo-approval-container">
-        <legend><strong>CEO Approval</strong></legend>
-        <p class="ceo-approval-status"
-            [ngClass]="{ 'approved': performanceData.ceoApproval, 'not-approved': !performanceData.ceoApproval }">
-            {{ performanceData.ceoApproval ? 'Yes' : 'No' }}
+    <fieldset *ngIf="!isApprovalPage" class="approval-container">
+        <legend><strong>Status</strong></legend>
+        <p class="approval-status" [ngClass]="{
+       'waiting': performanceData.approvalStatus === ApprovalStatus.Waiting,
+       'ceo-approved': performanceData.approvalStatus === ApprovalStatus.ApprovedByCEO,
+       'employee-approved': performanceData.approvalStatus === ApprovalStatus.ApprovedByEmployee
+        }">
+            {{ performanceData.approvalStatus }}
         </p>
     </fieldset>
 
-    <button *ngIf="isApprovalPage" mat-raised-button color="primary"
-        (click)="approveRecord()">Approve Record</button>
+    <button *ngIf="isApprovalPage" mat-raised-button color="primary" (click)="approveRecord(ApprovalStatus.ApprovedByCEO)">Approve Record</button>
+
+    <button *ngIf="isSalesmanView" mat-raised-button color="primary" (click)="approveRecord(ApprovalStatus.ApprovedByEmployee)"
+            [disabled]="performanceData?.approvalStatus === ApprovalStatus.ApprovedByEmployee">Confirm Record</button>
 </div>
 
 <div *ngIf="!performanceData">

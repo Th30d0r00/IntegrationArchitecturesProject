@@ -1,5 +1,6 @@
 import {Competence} from './Competence';
 import {ProductsSales} from './ProductsSales';
+import {ApprovalStatus} from './Approval-status';
 
 export class PeformanceRecord {
     constructor(
@@ -11,7 +12,7 @@ export class PeformanceRecord {
         public bonusA: number,
         public bonusB: number,
         public totalBonus: number,
-        public ceoApproval: boolean,
+        public approvalStatus: ApprovalStatus,
         public remark: string
     ) { }
 }

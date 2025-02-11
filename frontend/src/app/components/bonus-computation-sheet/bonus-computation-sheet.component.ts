@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SalesmenService } from '../../services/salesmen.service';
-import { BonusService } from '../../services/bonus.service';
-import { SalesmenDatapoint } from '../../interfaces/salesmen-datapoint';
-import { PerformanceDatapoint } from '../../interfaces/performance-datapoint';
-import { HttpResponse } from '@angular/common/http';
+import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {SalesmenService} from '../../services/salesmen.service';
+import {BonusService} from '../../services/bonus.service';
+import {SalesmenDatapoint} from '../../interfaces/salesmen-datapoint';
+import {PerformanceDatapoint} from '../../interfaces/performance-datapoint';
+import {HttpResponse} from '@angular/common/http';
+import {ApprovalStatus} from '../../models/Approval-status';
 
 @Component({
     selector: 'app-bonus-computation-sheet',
@@ -15,6 +16,7 @@ export class BonusComputationSheetComponent implements OnInit {
     @Input() performanceData: PerformanceDatapoint;
     @Input() salesman: SalesmenDatapoint;
     @Input() isApprovalPage = false;
+    @Input() isSalesmanView = false;
 
     remark = '';
 
@@ -64,17 +66,28 @@ export class BonusComputationSheetComponent implements OnInit {
         );
     }
 
-    approveRecord(): void {
+    approveRecord(approvalStatus: ApprovalStatus): void {
         if (this.salesman && this.performanceData) {
             const { sid } = this.salesman;
             const { year, totalBonus } = this.performanceData;
-            const ceoApproval = true;
 
-            this.salesmenService.approvePerformanceRecord(sid, year, ceoApproval, this.remark).subscribe(
+            if (ApprovalStatus.ApprovedByEmployee === approvalStatus) {
+                this.remark = this.performanceData.remark;
+            }
+
+            this.salesmenService.approvePerformanceRecord(sid, year, approvalStatus, this.remark).subscribe(
                 (response: HttpResponse<any>): void => {
-                    console.log('Record approved:', response);
-                    alert('Performance Record approved!');
-                    this.addBonus(sid, year, totalBonus);
+                    if (approvalStatus === ApprovalStatus.ApprovedByCEO) {
+                        console.log(approvalStatus);
+                        console.log('Record approved by CEO:', response);
+                        alert('Performance Record approved!');
+                        this.addBonus(sid, year, totalBonus);
+                    } else if (approvalStatus === ApprovalStatus.ApprovedByEmployee) {
+                        console.log(approvalStatus);
+                        console.log('Record approved by Employee:', response);
+                        alert('Performance Record confirmed!');
+                        void this.router.navigate(['/my-performance-records']);
+                    }
                 },
                 (error): void => {
                     console.error('Error approving record:', error);
@@ -94,4 +107,6 @@ export class BonusComputationSheetComponent implements OnInit {
             }
         );
     }
+
+    protected readonly ApprovalStatus = ApprovalStatus;
 }

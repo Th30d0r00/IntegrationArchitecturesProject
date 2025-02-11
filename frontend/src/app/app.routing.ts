@@ -13,6 +13,10 @@ import {AddPerformanceRecordPageComponent} from './pages/add-performance-record-
 import {PerformanceRecordApprovalListPageComponent} from './pages/performance-record-approval-list-page/performance-record-approval-list-page.component';
 import {ApprovePerformanceRecordPageComponent} from './pages/approve-performance-record-page/approve-performance-record-page.component';
 import {UnauthorizedPageComponent} from './pages/unauthorized-page/unauthorized-page.component';
+import {SalesmanViewPageComponent} from './pages/salesman-view-page/salesman-view-page.component';
+import {
+    PerformanceRecordSalesmanViewComponent
+} from './pages/performance-record-salesman-view/performance-record-salesman-view.component';
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -40,6 +44,10 @@ const routes: Routes = [
     },
     {path: 'approve-performance-record/:sid/:year', component: ApprovePerformanceRecordPageComponent, canActivate: [AuthGuardService],
         data: { roles: ['admin', 'Leader'] }},
+    {path: 'my-performance-records', component: SalesmanViewPageComponent, canActivate: [AuthGuardService],
+        data: { roles: ['Sales'] }},
+    {path: 'my-performance-records/:sid/:year', component: PerformanceRecordSalesmanViewComponent, canActivate: [AuthGuardService],
+        data: { roles: ['Sales'] }},
     {path: 'unauthorized', component: UnauthorizedPageComponent},
     {path: '', redirectTo: '/salesmen', pathMatch: 'full'},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
