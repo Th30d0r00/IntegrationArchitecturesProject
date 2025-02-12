@@ -6,7 +6,7 @@ import {HttpResponse} from '@angular/common/http';
 import {UserService} from '../../services/user.service';
 import {User} from '../../models/User';
 import {PerformanceDatapoint} from '../../interfaces/performance-datapoint';
-import {ApprovalStatus} from "../../models/Approval-status";
+import {ApprovalStatus} from '../../models/Approval-status';
 
 @Component({
     selector: 'app-performance-records-view',
