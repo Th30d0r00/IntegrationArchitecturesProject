@@ -17,6 +17,7 @@ import {SalesmanViewPageComponent} from './pages/salesman-view-page/salesman-vie
 import {
     PerformanceRecordSalesmanViewComponent
 } from './pages/performance-record-salesman-view/performance-record-salesman-view.component';
+import { StatisticsPageComponent } from './pages/statistics-page/statistics-page.component';
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -40,6 +41,9 @@ const routes: Routes = [
     {path: 'add-performance-record/:sid', component: AddPerformanceRecordPageComponent, canActivate: [AuthGuardService],
         data: { roles: ['admin', 'HR'] }},
     { path: 'approval-list', component: PerformanceRecordApprovalListPageComponent, canActivate: [AuthGuardService],
+        data: { roles: ['admin', 'Leader'] }
+    },
+    { path: 'statistics', component: StatisticsPageComponent, canActivate: [AuthGuardService],
         data: { roles: ['admin', 'Leader'] }
     },
     {path: 'approve-performance-record/:sid/:year', component: ApprovePerformanceRecordPageComponent, canActivate: [AuthGuardService],

@@ -1,4 +1,4 @@
-const ApprovalStatus = require('../models/Approval-status');
+const ApprovalStatus = require("../models/Approval-status");
 
 /**
  * inserts a new salesman into database
@@ -39,25 +39,25 @@ exports.getAll = async function (db) {
  */
 
 exports.getAllUnapprovedRecords = async function (db) {
-    return await db.collection('salesmen').aggregate([
+  return await db
+    .collection("salesmen")
+    .aggregate([
+      { $unwind: "$performance" },
 
-        { $unwind: "$performance" },
+      { $match: { "performance.approvalStatus": ApprovalStatus.Waiting } },
 
-
-        { $match: { "performance.approvalStatus": ApprovalStatus.Waiting } },
-
-
-        {
-            $project: {
-                _id: 0,
-                firstname: 1,
-                lastname: 1,
-                sid: 1,
-                department: 1,
-                year: "$performance.year",
-            }
-        }
-    ]).toArray();
+      {
+        $project: {
+          _id: 0,
+          firstname: 1,
+          lastname: 1,
+          sid: 1,
+          department: 1,
+          year: "$performance.year",
+        },
+      },
+    ])
+    .toArray();
 };
 
 /**
@@ -102,24 +102,25 @@ exports.checkForExistingPerformanceRecord = async function (db, sid, year) {
  */
 
 exports.getPerformanceRecords = async function (db, sid) {
-    return await db.collection('salesmen').aggregate([
-        { $match: { sid: sid } },
-        { $unwind: "$performance" },
-        {
-            $project: {
-                _id: 0,
-                sid: 1,
-                firstname: 1,
-                lastname: 1,
-                department: 1,
-                performance: 1,
-                year: "$performance.year"
-            }
-        }
-    ]).toArray();
+  return await db
+    .collection("salesmen")
+    .aggregate([
+      { $match: { sid: sid } },
+      { $unwind: "$performance" },
+      {
+        $project: {
+          _id: 0,
+          sid: 1,
+          firstname: 1,
+          lastname: 1,
+          department: 1,
+          performance: 1,
+          year: "$performance.year",
+        },
+      },
+    ])
+    .toArray();
 };
-
-
 
 /**
  * retrieves all performance records of a salesman which are approved by CEO and Employee
@@ -129,33 +130,33 @@ exports.getPerformanceRecords = async function (db, sid) {
  */
 
 exports.getApprovedPerformanceRecords = async function (db, sid) {
-    return await db.collection('salesmen').aggregate([
-        { $unwind: "$performance" },
+  return await db
+    .collection("salesmen")
+    .aggregate([
+      { $unwind: "$performance" },
 
-        {
-            $match: {
-                sid: sid,
-                "performance.approvalStatus": {
-                    $in: [ApprovalStatus.Approved, ApprovalStatus.ApprovedByEmployee]
-                }
-            }
+      {
+        $match: {
+          sid: sid,
+          "performance.approvalStatus": {
+            $in: [ApprovalStatus.Approved, ApprovalStatus.ApprovedByEmployee],
+          },
         },
+      },
 
-        {
-            $project: {
-                _id: 0,
-                firstname: 1,
-                lastname: 1,
-                sid: 1,
-                department: 1,
-                year: "$performance.year",
-            }
-        }
-    ]).toArray();
+      {
+        $project: {
+          _id: 0,
+          firstname: 1,
+          lastname: 1,
+          sid: 1,
+          department: 1,
+          year: "$performance.year",
+        },
+      },
+    ])
+    .toArray();
 };
-
-
-
 
 /**
  * retrieves a performance record of a salesman by year
@@ -185,16 +186,22 @@ exports.getPerformanceRecordByYear = async function (db, sid, year) {
  * @param {string} remark remark
  */
 
-exports.approvePerformanceRecord = async function (db, sid, year, approvalStatus, remark) {
-    return (await db.collection('salesmen').updateOne(
-        { sid: sid, 'performance.year': year },
-        {
-            $set: {
-                'performance.$.approvalStatus': approvalStatus,
-                'performance.$.remark': remark
-            }
-        }
-    ));
+exports.approvePerformanceRecord = async function (
+  db,
+  sid,
+  year,
+  approvalStatus,
+  remark
+) {
+  return await db.collection("salesmen").updateOne(
+    { sid: sid, "performance.year": year },
+    {
+      $set: {
+        "performance.$.approvalStatus": approvalStatus,
+        "performance.$.remark": remark,
+      },
+    }
+  );
 };
 
 /**
@@ -209,4 +216,93 @@ exports.deletePerformanceRecord = async function (db, sid, year) {
   return await db
     .collection("salesmen")
     .updateOne({ sid: sid }, { $pull: { performance: { year: year } } });
+};
+
+exports.getBonusDistribution = async function (db) {
+  const result = await db
+    .collection("salesmen")
+    .aggregate([
+      { $unwind: "$performance" },
+      {
+        $match: {
+          "performance.approvalStatus": ApprovalStatus.Approved,
+        },
+      },
+      {
+        $bucket: {
+          groupBy: "$performance.totalBonus",
+          boundaries: [0, 500, 1000, 1500, Infinity],
+          default: "Other",
+          output: {
+            count: { $sum: 1 },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          range: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$_id", 0] }, then: "0-500€" },
+                { case: { $eq: ["$_id", 500] }, then: "501-1000€" },
+                { case: { $eq: ["$_id", 1000] }, then: "1001-1500€" },
+                { case: { $eq: ["$_id", 1500] }, then: "1500€+" },
+              ],
+            },
+          },
+          count: 1,
+        },
+      },
+    ])
+    .toArray();
+
+  // Convert to object format needed by the chart
+  const distribution = {};
+  result.forEach((item) => {
+    distribution[item.range] = item.count;
+  });
+
+  return distribution;
+};
+
+exports.getYearlyBonusStats = async function (db) {
+  const result = await db
+    .collection("salesmen")
+    .aggregate([
+      { $unwind: "$performance" },
+      {
+        $match: {
+          "performance.approvalStatus": ApprovalStatus.Approved,
+        },
+      },
+      {
+        $group: {
+          _id: "$performance.year",
+          averageBonus: { $avg: "$performance.totalBonus" },
+          totalCount: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { _id: 1 }
+      },
+      {
+        $project: {
+          _id: 0,
+          year: "$_id",
+          averageBonus: { $round: ["$averageBonus", 2] }
+        }
+      }
+    ])
+    .toArray();
+
+  // Convert to format needed by the chart
+  const stats = {};
+  result.forEach(item => {
+    stats[item.year] = {
+      average: item.averageBonus
+    };
+  });
+
+  return stats;
 };
