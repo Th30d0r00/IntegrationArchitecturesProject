@@ -32,7 +32,13 @@ export class MenuBarComponent implements OnInit {
         {
             title: 'My Records',
             routerLink: 'my-performance-records',
-            roles: ['Sales']},
+            roles: ['Sales'],
+        },
+        {
+            title: 'Statistics',
+            routerLink: 'statistics',
+            roles: ['admin', 'Leader'],
+        },
     ];
 
     /**
