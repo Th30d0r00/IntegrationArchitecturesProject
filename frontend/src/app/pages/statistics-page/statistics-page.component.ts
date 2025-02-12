@@ -16,40 +16,42 @@ export class StatisticsPageComponent implements OnInit {
         Chart.register(...registerables);
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.loadBonusDistribution();
         this.loadYearlyBonusStats();
     }
 
-    private loadBonusDistribution() {
+    private loadBonusDistribution(): void {
         this.statisticsService.getBonusDistribution().subscribe({
-            next: (response) => {
+            next: (response): void => {
                 const distribution = response.body;
                 if (distribution) {
                     this.createBonusDistributionChart(distribution);
                 }
             },
-            error: (error) => {
+            error: (error): void => {
                 console.error('Error loading bonus distribution:', error);
             },
         });
     }
 
-    private loadYearlyBonusStats() {
+    private loadYearlyBonusStats(): void {
         this.statisticsService.getYearlyBonusStats().subscribe({
-            next: (response) => {
+            next: (response): void => {
                 const stats = response.body;
                 if (stats) {
                     this.createYearlyBonusChart(stats);
                 }
             },
-            error: (error) => {
+            error: (error): void => {
                 console.error('Error loading yearly bonus stats:', error);
             },
         });
     }
 
-    private createBonusDistributionChart(distribution: BonusDistribution) {
+    private createBonusDistributionChart(
+        distribution: BonusDistribution
+    ): void {
         const ctx = document.getElementById(
             'bonusDistributionChart'
         ) as HTMLCanvasElement;
@@ -81,12 +83,12 @@ export class StatisticsPageComponent implements OnInit {
         });
     }
 
-    private createYearlyBonusChart(stats: YearlyBonusStats) {
+    private createYearlyBonusChart(stats: YearlyBonusStats): void {
         const ctx = document.getElementById(
             'yearlyBonusChart'
         ) as HTMLCanvasElement;
         const years = Object.keys(stats);
-        const averages = years.map((year) => stats[year].average);
+        const averages = years.map((year): number => stats[year].average);
 
         new Chart(ctx, {
             type: 'line',
