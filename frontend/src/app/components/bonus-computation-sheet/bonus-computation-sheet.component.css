@@ -99,18 +99,28 @@ button:hover {
 }
 
 .waiting {
-    background-color: #D32F2F;
+    background-color: #ffd500;
     color: white;
 }
 
 .ceo-approved {
-    background-color: #4CAF50;
+    background-color: #3f51b5;
     color: white;
 }
 
 .employee-approved {
-    background-color: #3f51b5;
+    background-color: #4CAF50;
     color: white;
+}
+
+.employee-rejected,
+.ceo-rejected {
+    background-color: #e53935;
+    color: white;
+}
+
+.flex {
+    display: flex;
 }
 
 .placeholder-black::placeholder {

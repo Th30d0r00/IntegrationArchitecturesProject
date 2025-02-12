@@ -17,7 +17,11 @@
 
     <div class="performance-records">
         <div class="performance-cards">
-            <mat-card *ngFor="let perf of performanceData" class="performance-card">
+            <mat-card *ngFor="let perf of performanceData" class="performance-card"
+                      [ngClass]="{
+                      'rejected-ceo-card': perf.approvalStatus === ApprovalStatus.RejectedByCEO,
+                      'rejected-employee-card': perf.approvalStatus === ApprovalStatus.RejectedByEmployee
+                       }">
                 <mat-card-header>
                     <mat-card-title>Year: {{ perf.year }}</mat-card-title>
                 </mat-card-header>

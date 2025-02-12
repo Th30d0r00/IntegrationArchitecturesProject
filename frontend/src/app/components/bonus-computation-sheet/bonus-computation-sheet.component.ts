@@ -75,7 +75,7 @@ export class BonusComputationSheetComponent implements OnInit {
                 this.remark = this.performanceData.remark;
             }
 
-            this.salesmenService.approvePerformanceRecord(sid, year, approvalStatus, this.remark).subscribe(
+            this.salesmenService.updateApprovalStatusPerformanceRecord(sid, year, approvalStatus, this.remark).subscribe(
                 (response: HttpResponse<any>): void => {
                     if (approvalStatus === ApprovalStatus.ApprovedByCEO) {
                         console.log(approvalStatus);
@@ -86,6 +86,36 @@ export class BonusComputationSheetComponent implements OnInit {
                         console.log(approvalStatus);
                         console.log('Record approved by Employee:', response);
                         alert('Performance Record confirmed!');
+                        void this.router.navigate(['/my-performance-records']);
+                    }
+                },
+                (error): void => {
+                    console.error('Error approving record:', error);
+                }
+            );
+        }
+    }
+
+    rejectRecord(approvalStatus: ApprovalStatus): void {
+        if (this.salesman && this.performanceData) {
+            const { sid } = this.salesman;
+            const { year } = this.performanceData;
+
+            if (ApprovalStatus.RejectedByEmployee === approvalStatus) {
+                this.remark = this.performanceData.remark;
+            }
+
+            this.salesmenService.updateApprovalStatusPerformanceRecord(sid, year, approvalStatus, this.remark).subscribe(
+                (response: HttpResponse<any>): void => {
+                    if (approvalStatus === ApprovalStatus.RejectedByCEO) {
+                        console.log(approvalStatus);
+                        console.log('Record rejected by CEO:', response);
+                        alert('Performance Record rejected!');
+                        void this.router.navigate(['/approval-list']);
+                    } else if (approvalStatus === ApprovalStatus.RejectedByEmployee) {
+                        console.log(approvalStatus);
+                        console.log('Record rejected by Employee:', response);
+                        alert('Performance Record rejected!');
                         void this.router.navigate(['/my-performance-records']);
                     }
                 },

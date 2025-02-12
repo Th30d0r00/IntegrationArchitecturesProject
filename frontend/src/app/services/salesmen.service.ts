@@ -51,7 +51,8 @@ export class SalesmenService {
         return this.http.get<SalesmenDatapointWithPerformanceYear[]>(url, { observe: 'response', withCredentials: true });
     }
 
-    approvePerformanceRecord(sid: number, year: number, approvalStatus: ApprovalStatus, remark: string): Observable<HttpResponse<any>> {
+    updateApprovalStatusPerformanceRecord(
+        sid: number, year: number, approvalStatus: ApprovalStatus, remark: string): Observable<HttpResponse<any>> {
         const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance/${year}`;
         const record = { approvalStatus, remark };
         return this.http.put<any>(url, record, { observe: 'response' });

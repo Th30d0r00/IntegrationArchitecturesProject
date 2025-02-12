@@ -111,3 +111,10 @@
 .view-record-link:hover {
     text-decoration: underline;
 }
+
+.rejected-ceo-card,
+.rejected-employee-card {
+    background-color: #e53935;
+    color: white;
+}
+

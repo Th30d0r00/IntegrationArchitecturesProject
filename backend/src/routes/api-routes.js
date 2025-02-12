@@ -41,7 +41,7 @@ router.delete(
 );
 router.put(
   "/salesmen/:sid/performance/:year",
-  salesmenApi.approvePerformanceRecord
+  salesmenApi.updateApprovalStatusPerformanceRecord
 );
 router.get(
   "/unapprovedSalesmenRecords",

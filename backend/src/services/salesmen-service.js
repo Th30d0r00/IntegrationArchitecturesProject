@@ -116,6 +116,7 @@ exports.getPerformanceRecords = async function (db, sid) {
           department: 1,
           performance: 1,
           year: "$performance.year",
+          approvalStatus: "$performance.approvalStatus"
         },
       },
     ])
@@ -178,15 +179,15 @@ exports.getPerformanceRecordByYear = async function (db, sid, year) {
 };
 
 /**
- * updates a performance record of a salesman with CEO approval and remark
+ * updates a performance record of a salesman with the corresponding approval and remark
  * @param db target database
  * @param {string} sid salesman sid
  * @param {string} year year of the record
- * @param {string} approvalStatus CEO approval
+ * @param {string} approvalStatus approval Status
  * @param {string} remark remark
  */
 
-exports.approvePerformanceRecord = async function (
+exports.updateApprovalStatusPerformanceRecord = async function (
   db,
   sid,
   year,
