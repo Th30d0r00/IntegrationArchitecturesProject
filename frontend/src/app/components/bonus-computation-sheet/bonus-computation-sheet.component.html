@@ -1,15 +1,13 @@
 <div class="container">
-    <h1>{{ isApprovalPage ? 'Bonus Computation Sheet' : 'Performance Evaluation'
-        }}</h1>
+    <h1>{{ isApprovalPage ? 'Bonus Computation Sheet' : 'Performance Evaluation' }}</h1>
 
     <fieldset>
         <legend><strong>General Information</strong></legend>
         <div class="info-box">
             <div *ngIf="salesman">
-                <p><strong>Name: </strong>{{ salesman.firstname }} {{
-                    salesman.lastname }}</p>
-                <p><strong>Employee ID: </strong>{{ salesman.code }}</p>
-                <p><strong>Department: </strong>{{ salesman.department }}</p>
+                <p><strong>Name: </strong>{{ salesman?.firstname }} {{ salesman?.lastname }}</p>
+                <p><strong>Employee ID: </strong>{{ salesman?.code }}</p>
+                <p><strong>Department: </strong>{{ salesman?.department }}</p>
                 <p><strong>Year: </strong>{{ performanceData?.year }}</p>
             </div>
         </div>
@@ -19,33 +17,34 @@
         <legend><strong>A.) Orders Evaluation</strong></legend>
         <table>
             <thead>
-                <tr>
-                    <th>Name of Product</th>
-                    <th>Client</th>
-                    <th>Client Ranking</th>
-                    <th>Items</th>
-                    <th>Bonus</th>
-                </tr>
+            <tr>
+                <th>Name of Product</th>
+                <th>Client</th>
+                <th>Client Ranking</th>
+                <th>Items</th>
+                <th>Bonus</th>
+            </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let product of performanceData.productSales">
-                    <td style="vertical-align:top;">{{ product.productName }}</td>
-                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
-                            client.customerName }}</p></td>
-                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
-                            client.rating
-                            }}</p></td>
-                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
-                            client.quantity }}</p></td>
-                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
-                            client.bonus
-                            }}</p></td>
-                </tr>
+            <tr *ngFor="let product of performanceData?.productSales">
+                <td style="vertical-align:top;">{{ product?.productName }}</td>
+                <td style="vertical-align:top;">
+                    <p *ngFor="let client of product?.clients">{{ client?.customerName }}</p>
+                </td>
+                <td style="vertical-align:top;">
+                    <p *ngFor="let client of product?.clients">{{ client?.rating }}</p>
+                </td>
+                <td style="vertical-align:top;">
+                    <p *ngFor="let client of product?.clients">{{ client?.quantity }}</p>
+                </td>
+                <td style="vertical-align:top;">
+                    <p *ngFor="let client of product?.clients">{{ client?.bonus }}</p>
+                </td>
+            </tr>
             </tbody>
         </table>
         <div class="bonus-container">
-            <p><strong>Total Bonus for part A): </strong>{{
-                performanceData.bonusA }}</p>
+            <p><strong>Total Bonus for part A): </strong>{{ performanceData?.bonusA }}</p>
         </div>
     </fieldset>
 
@@ -53,31 +52,29 @@
         <legend><strong>B.) Social Performance Evaluation</strong></legend>
         <table>
             <thead>
-                <tr>
-                    <th>Competence</th>
-                    <th>Target Value</th>
-                    <th>Actual Value</th>
-                    <th>Bonus</th>
-                </tr>
+            <tr>
+                <th>Competence</th>
+                <th>Target Value</th>
+                <th>Actual Value</th>
+                <th>Bonus</th>
+            </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let competence of performanceData.competences">
-                    <td>{{ competence.name }}</td>
-                    <td>{{ competence.targetValue }}</td>
-                    <td>{{ competence.actualValue }}</td>
-                    <td>{{ competence.bonus }}</td>
-                </tr>
+            <tr *ngFor="let competence of performanceData?.competences">
+                <td>{{ competence?.name }}</td>
+                <td>{{ competence?.targetValue }}</td>
+                <td>{{ competence?.actualValue }}</td>
+                <td>{{ competence?.bonus }}</td>
+            </tr>
             </tbody>
         </table>
         <div class="bonus-container">
-            <p><strong>Total Bonus for part B): </strong>{{
-                performanceData.bonusB }}</p>
+            <p><strong>Total Bonus for part B): </strong>{{ performanceData?.bonusB }}</p>
         </div>
     </fieldset>
 
     <div class="bonus-container">
-        <p><strong>Total Bonus (parts A and B): </strong>{{
-            performanceData.totalBonus }}</p>
+        <p><strong>Total Bonus (parts A and B): </strong>{{ performanceData?.totalBonus }}</p>
     </div>
 
     <fieldset>
@@ -86,19 +83,19 @@
             [classList]="!isApprovalPage ? 'placeholder-black remark-input' : 'remark-input'"
             [disabled]="!isApprovalPage" type="text"
             [(ngModel)]="remark"
-            placeholder="{{ isApprovalPage ? 'Enter Remark' : performanceData.remark }}" />
+            placeholder="{{ isApprovalPage ? 'Enter Remark' : performanceData?.remark }}" />
     </fieldset>
 
     <fieldset *ngIf="!isApprovalPage" class="approval-container">
         <legend><strong>Status</strong></legend>
         <p class="approval-status" [ngClass]="{
-       'waiting': performanceData.approvalStatus === ApprovalStatus.Waiting,
-       'ceo-approved': performanceData.approvalStatus === ApprovalStatus.ApprovedByCEO,
-       'employee-approved': performanceData.approvalStatus === ApprovalStatus.ApprovedByEmployee,
-       'ceo-rejected': performanceData.approvalStatus === ApprovalStatus.RejectedByCEO,
-       'employee-rejected' : performanceData.approvalStatus === ApprovalStatus.RejectedByEmployee
+            'waiting': performanceData?.approvalStatus === ApprovalStatus.Waiting,
+            'ceo-approved': performanceData?.approvalStatus === ApprovalStatus.ApprovedByCEO,
+            'employee-approved': performanceData?.approvalStatus === ApprovalStatus.ApprovedByEmployee,
+            'ceo-rejected': performanceData?.approvalStatus === ApprovalStatus.RejectedByCEO,
+            'employee-rejected' : performanceData?.approvalStatus === ApprovalStatus.RejectedByEmployee
         }">
-            {{ performanceData.approvalStatus }}
+            {{ performanceData?.approvalStatus }}
         </p>
     </fieldset>
 
@@ -113,8 +110,6 @@
         <button *ngIf="isSalesmanView" mat-raised-button color="warn" (click)="rejectRecord(ApprovalStatus.RejectedByEmployee)"
                 [disabled]="performanceData?.approvalStatus === ApprovalStatus.ApprovedByEmployee">Reject Record</button>
     </div>
-
-
 </div>
 
 <div *ngIf="!performanceData">

@@ -27,7 +27,6 @@ export class UpdateRejectedPerformanceRecordPageComponent implements OnInit {
 
     async ngOnInit(): Promise<void> {
         this.initializeForm();
-        console.log(this.recordForm);
         const sid = this.route.snapshot.paramMap.get('sid');
         const year = this.route.snapshot.paramMap.get('year');
 

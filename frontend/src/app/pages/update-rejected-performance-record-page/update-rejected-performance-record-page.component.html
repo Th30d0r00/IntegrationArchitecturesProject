@@ -6,10 +6,9 @@
             <legend><strong>General Information</strong></legend>
             <div class="info-box">
                 <div *ngIf="salesman">
-                    <p><strong>Name: </strong>{{ salesman.firstname }} {{
-                            salesman.lastname }}</p>
-                    <p><strong>Employee ID: </strong>{{ salesman.code }}</p>
-                    <p><strong>Department: </strong>{{ salesman.department }}</p>
+                    <p><strong>Name: </strong>{{ salesman?.firstname }} {{ salesman?.lastname }}</p>
+                    <p><strong>Employee ID: </strong>{{ salesman?.code }}</p>
+                    <p><strong>Department: </strong>{{ salesman?.department }}</p>
                     <p><strong>Year: </strong>{{ performanceData?.year }}</p>
                 </div>
             </div>
@@ -28,31 +27,31 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let product of performanceData.productSales">
-                    <td style="vertical-align:top;">{{ product.productName }}</td>
-                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
-                            client.customerName }}</p></td>
-                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
-                            client.rating
-                        }}</p></td>
-                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
-                            client.quantity }}</p></td>
-                    <td style="vertical-align:top;"><p *ngFor="let client of product.clients">{{
-                            client.bonus
-                        }}</p></td>
+                <tr *ngFor="let product of performanceData?.productSales">
+                    <td style="vertical-align:top;">{{ product?.productName }}</td>
+                    <td style="vertical-align:top;">
+                        <p *ngFor="let client of product?.clients">{{ client?.customerName }}</p>
+                    </td>
+                    <td style="vertical-align:top;">
+                        <p *ngFor="let client of product?.clients">{{ client?.rating }}</p>
+                    </td>
+                    <td style="vertical-align:top;">
+                        <p *ngFor="let client of product?.clients">{{ client?.quantity }}</p>
+                    </td>
+                    <td style="vertical-align:top;">
+                        <p *ngFor="let client of product?.clients">{{ client?.bonus }}</p>
+                    </td>
                 </tr>
                 </tbody>
             </table>
             <div class="bonus-container">
-                <p><strong>Total Bonus for part A): </strong>{{
-                        performanceData.bonusA }}</p>
+                <p><strong>Total Bonus for part A): </strong>{{ performanceData?.bonusA }}</p>
             </div>
         </fieldset>
 
         <fieldset>
             <legend><strong>B.) Social Performance Evaluation</strong></legend>
-            <p>Fill in the actual values for each category to calculate the
-                bonus.</p>
+            <p>Fill in the actual values for each category to calculate the bonus.</p>
             <table>
                 <thead>
                 <tr>
@@ -62,52 +61,32 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr
-                    *ngFor="let competence of competencesControls; let i = index">
-                    <td>{{ competence.get('name')?.value }}</td>
+                <tr *ngFor="let competence of competencesControls; let i = index">
+                    <td>{{ competence?.get('name')?.value }}</td>
                     <td style="vertical-align:top;">
                         <input
-                            [formControl]="competence.get('targetValue')"
+                            [formControl]="competence?.get('targetValue')"
                             type="number"
                             placeholder="Enter target value"
                             min="1"
                             max="5" />
-                        <div
-                            *ngIf="competence.get('targetValue')?.invalid && competence.get('targetValue')?.touched"
-                            class="error">
-                            <small
-                                *ngIf="competence.get('targetValue')?.errors?.['required']">Target
-                                value
-                                is required.</small>
-                            <small
-                                *ngIf="competence.get('targetValue')?.errors?.['min']">Target
-                                value
-                                must be 1 or greater.</small>
-                            <small
-                                *ngIf="competence.get('targetValue')?.errors?.['max']">Target
-                                value
-                                must be 5 or less.</small>
+                        <div *ngIf="competence?.get('targetValue')?.invalid && competence?.get('targetValue')?.touched" class="error">
+                            <small *ngIf="competence?.get('targetValue')?.errors?.['required']">Target value is required.</small>
+                            <small *ngIf="competence?.get('targetValue')?.errors?.['min']">Target value must be 1 or greater.</small>
+                            <small *ngIf="competence?.get('targetValue')?.errors?.['max']">Target value must be 5 or less.</small>
                         </div>
                     </td>
                     <td style="vertical-align:top;">
                         <input
-                            [formControl]="competence.get('actualValue')"
+                            [formControl]="competence?.get('actualValue')"
                             type="number"
                             placeholder="Enter actual value"
                             min="0"
                             max="5" />
-                        <div
-                            *ngIf="competence.get('actualValue')?.invalid && competence.get('actualValue')?.touched"
-                            class="error">
-                            <small
-                                *ngIf="competence.get('actualValue')?.errors?.['required']">Value
-                                is required.</small>
-                            <small
-                                *ngIf="competence.get('actualValue')?.errors?.['min']">Value
-                                must be 0 or greater.</small>
-                            <small
-                                *ngIf="competence.get('actualValue')?.errors?.['max']">Value
-                                must be 5 or less.</small>
+                        <div *ngIf="competence?.get('actualValue')?.invalid && competence?.get('actualValue')?.touched" class="error">
+                            <small *ngIf="competence?.get('actualValue')?.errors?.['required']">Value is required.</small>
+                            <small *ngIf="competence?.get('actualValue')?.errors?.['min']">Value must be 0 or greater.</small>
+                            <small *ngIf="competence?.get('actualValue')?.errors?.['max']">Value must be 5 or less.</small>
                         </div>
                     </td>
                 </tr>
@@ -118,24 +97,23 @@
         <fieldset>
             <legend><strong>Remarks</strong></legend>
             <div class="remark-container">
-                <p>{{performanceData.remark}}</p>
+                <p>{{ performanceData?.remark }}</p>
             </div>
         </fieldset>
 
         <fieldset class="approval-container">
             <legend><strong>Status</strong></legend>
             <p class="approval-status" [ngClass]="{
-       'waiting': performanceData.approvalStatus === ApprovalStatus.Waiting,
-       'ceo-approved': performanceData.approvalStatus === ApprovalStatus.ApprovedByCEO,
-       'employee-approved': performanceData.approvalStatus === ApprovalStatus.ApprovedByEmployee,
-       'ceo-rejected': performanceData.approvalStatus === ApprovalStatus.RejectedByCEO,
-       'employee-rejected' : performanceData.approvalStatus === ApprovalStatus.RejectedByEmployee
-        }">
-                {{ performanceData.approvalStatus }}
+                'waiting': performanceData?.approvalStatus === ApprovalStatus.Waiting,
+                'ceo-approved': performanceData?.approvalStatus === ApprovalStatus.ApprovedByCEO,
+                'employee-approved': performanceData?.approvalStatus === ApprovalStatus.ApprovedByEmployee,
+                'ceo-rejected': performanceData?.approvalStatus === ApprovalStatus.RejectedByCEO,
+                'employee-rejected' : performanceData?.approvalStatus === ApprovalStatus.RejectedByEmployee
+            }">
+                {{ performanceData?.approvalStatus }}
             </p>
         </fieldset>
 
-        <button mat-raised-button color="primary" type="submit"
-                [disabled]="recordForm.invalid">Update</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="recordForm.invalid">Update</button>
     </form>
 </div>
