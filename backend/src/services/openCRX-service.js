@@ -1,5 +1,4 @@
 const axios = require('axios');
-const {getProductBySalesOrderId} = require("../apis/openCRX-api");
 
 const baseURL = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX';
 const credentials = {
