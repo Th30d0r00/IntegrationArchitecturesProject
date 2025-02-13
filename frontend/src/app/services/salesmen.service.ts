@@ -46,6 +46,12 @@ export class SalesmenService {
         return this.http.post<any>(url, record, { observe: 'response' });
     }
 
+    updatePerformanceRecord(
+        sid: number, record: { sid: number; year: number; competences: Competence[] }): Observable<HttpResponse<any>> {
+        const url = `${environment.apiEndpoint}/api/salesmen/${sid}/performance`;
+        return this.http.put<any>(url, record, { observe: 'response' });
+    }
+
     getSalesmenWithUnapprovedRecords(): Observable<HttpResponse<SalesmenDatapointWithPerformanceYear[]>> {
         const url = `${environment.apiEndpoint}/api/unapprovedSalesmenRecords`;
         return this.http.get<SalesmenDatapointWithPerformanceYear[]>(url, { observe: 'response', withCredentials: true });

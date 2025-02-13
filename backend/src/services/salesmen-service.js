@@ -52,6 +52,7 @@ exports.getAllUnapprovedRecords = async function (db) {
           firstname: 1,
           lastname: 1,
           sid: 1,
+          code: 1,
           department: 1,
           year: "$performance.year",
         },
@@ -80,9 +81,16 @@ exports.delete = async function (db, sid) {
  */
 
 exports.addPerformanceRecord = async function (db, sid, record) {
-  return await db
-    .collection("salesmen")
-    .updateOne({ sid: sid }, { $push: { performance: record } });
+    return await db
+        .collection("salesmen")
+        .updateOne({ sid: sid }, { $push: { performance: record } });
+};
+
+exports.updatePerformanceRecord = async function (db, sid, record) {
+    return await db.collection("salesmen").updateOne(
+        { sid: sid, "performance.year": record.year },
+        { $set: { "performance.$": record } }
+    );
 };
 
 exports.checkForExistingPerformanceRecord = async function (db, sid, year) {
@@ -140,7 +148,7 @@ exports.getApprovedPerformanceRecords = async function (db, sid) {
         $match: {
           sid: sid,
           "performance.approvalStatus": {
-            $in: [ApprovalStatus.Approved, ApprovalStatus.ApprovedByEmployee],
+            $in: [ApprovalStatus.ApprovedByCEO, ApprovalStatus.ApprovedByEmployee],
           },
         },
       },
@@ -152,6 +160,7 @@ exports.getApprovedPerformanceRecords = async function (db, sid) {
           lastname: 1,
           sid: 1,
           department: 1,
+          approvalStatus: "$performance.approvalStatus",
           year: "$performance.year",
         },
       },
@@ -226,7 +235,7 @@ exports.getBonusDistribution = async function (db) {
       { $unwind: "$performance" },
       {
         $match: {
-          "performance.approvalStatus": ApprovalStatus.Approved,
+          "performance.approvalStatus": ApprovalStatus.ApprovedByEmployee,
         },
       },
       {
@@ -274,7 +283,7 @@ exports.getYearlyBonusStats = async function (db) {
       { $unwind: "$performance" },
       {
         $match: {
-          "performance.approvalStatus": ApprovalStatus.Approved,
+          "performance.approvalStatus": ApprovalStatus.ApprovedByEmployee,
         },
       },
       {

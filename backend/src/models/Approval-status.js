@@ -1,7 +1,9 @@
 const ApprovalStatus = Object.freeze({
     Waiting: 'Waiting for CEO Approval',
-    Approved: 'CEO approved',
+    ApprovedByCEO: 'CEO approved',
     ApprovedByEmployee: 'Employee approved',
+    RejectedByCEO: 'CEO rejected',
+    RejectedByEmployee: 'Employee Rejected'
 });
 
 module.exports = ApprovalStatus;

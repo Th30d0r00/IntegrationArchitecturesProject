@@ -20,14 +20,22 @@
             <mat-card *ngFor="let perf of performanceData" class="performance-card"
                       [ngClass]="{
                       'rejected-ceo-card': perf.approvalStatus === ApprovalStatus.RejectedByCEO,
-                      'rejected-employee-card': perf.approvalStatus === ApprovalStatus.RejectedByEmployee
+                      'rejected-employee-card': perf.approvalStatus === ApprovalStatus.RejectedByEmployee,
+                      'approved-employee-card': perf.approvalStatus === ApprovalStatus.ApprovedByEmployee
                        }">
                 <mat-card-header>
                     <mat-card-title>Year: {{ perf.year }}</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                     <p>
-                        <a *ngIf="isHrView" [routerLink]="['/performance-record', salesman.sid, perf.year]" class="view-record-link">
+                        <a *ngIf="isHrView && (perf.approvalStatus === ApprovalStatus.RejectedByEmployee ||
+                            perf.approvalStatus === ApprovalStatus.RejectedByCEO)"
+                           [routerLink]="['/update-rejected-performance-record', salesman.sid, perf.year]" class="view-record-link">
+                            🔍 View Record
+                        </a>
+                        <a *ngIf="isHrView && (perf.approvalStatus !== ApprovalStatus.RejectedByEmployee &&
+                            perf.approvalStatus !== ApprovalStatus.RejectedByCEO)"
+                           [routerLink]="['/performance-record', salesman.sid, perf.year]" class="view-record-link">
                             🔍 View Record
                         </a>
                         <a *ngIf="!isHrView" [routerLink]="['/my-performance-records', salesman.sid, perf.year]" class="view-record-link">

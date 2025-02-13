@@ -172,6 +172,42 @@ exports.addPerformanceRecord = async function (req, res) {
   }
 };
 
+exports.updatePerformanceRecord = async function (req, res) {
+    try {
+        const db = req.app.get("db");
+        const { year, competences, productSales, bonusA } = req.body;
+
+        const sid = parseInt(req.params.sid);
+
+        const { bonusB, competences: updatedCompetences } =
+        calculateBonusPartB(competences);
+
+        const totalBonus = bonusA + bonusB;
+
+        const record = new PerformanceRecord(
+        sid,
+        year,
+        bonusA,
+        bonusB,
+        totalBonus,
+        productSales,
+        updatedCompetences,
+        Waiting
+        );
+
+        console.log("PerformanceRecord with calculated Bonus:", record);
+
+        await salesmenService.updatePerformanceRecord(db, sid, record);
+        res.status(201).json({ message: "Performance record updated", record });
+    } catch (err) {
+        console.error("Error updating performance record:", err);
+        res.status(500).json({
+        message: "Failed to update performance record",
+        error: err.message,
+        });
+    }
+}
+
 /**
  * Endpoint, which retrieves all performance records for a specific salesman
  * @param req express request

@@ -18,6 +18,7 @@ import {
     PerformanceRecordSalesmanViewComponent
 } from './pages/performance-record-salesman-view/performance-record-salesman-view.component';
 import { StatisticsPageComponent } from './pages/statistics-page/statistics-page.component';
+import {UpdateRejectedPerformanceRecordPageComponent} from "./pages/update-rejected-performance-record-page/update-rejected-performance-record-page.component";
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -52,6 +53,9 @@ const routes: Routes = [
         data: { roles: ['Sales'] }},
     {path: 'my-performance-records/:sid/:year', component: PerformanceRecordSalesmanViewComponent, canActivate: [AuthGuardService],
         data: { roles: ['Sales'] }},
+    {path: 'update-rejected-performance-record/:sid/:year', component: UpdateRejectedPerformanceRecordPageComponent,
+        canActivate: [AuthGuardService],
+        data: { roles: ['admin', 'HR'] }},
     {path: 'unauthorized', component: UnauthorizedPageComponent},
     {path: '', redirectTo: '/salesmen', pathMatch: 'full'},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry

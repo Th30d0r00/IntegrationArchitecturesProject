@@ -89,10 +89,10 @@ async function createUsersFromEmployees(db) {
                 );
 
                 await add(db, user);
+
+                console.log('✅ User created:', user);
             }
         }
-
-        console.log('Users successfully created from Employees.');
     } catch (error) {
         console.error('Error when creating Users from Employees:', error.message);
         throw new Error(`Error when creating Users from Employees: ${error.message}`);

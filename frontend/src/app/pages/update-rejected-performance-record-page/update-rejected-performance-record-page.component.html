@@ -24,6 +24,7 @@
                     <th>Client</th>
                     <th>Client Ranking</th>
                     <th>Items</th>
+                    <th>Bonus</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -114,7 +115,27 @@
             </table>
         </fieldset>
 
+        <fieldset>
+            <legend><strong>Remarks</strong></legend>
+            <div class="remark-container">
+                <p>{{performanceData.remark}}</p>
+            </div>
+        </fieldset>
+
+        <fieldset class="approval-container">
+            <legend><strong>Status</strong></legend>
+            <p class="approval-status" [ngClass]="{
+       'waiting': performanceData.approvalStatus === ApprovalStatus.Waiting,
+       'ceo-approved': performanceData.approvalStatus === ApprovalStatus.ApprovedByCEO,
+       'employee-approved': performanceData.approvalStatus === ApprovalStatus.ApprovedByEmployee,
+       'ceo-rejected': performanceData.approvalStatus === ApprovalStatus.RejectedByCEO,
+       'employee-rejected' : performanceData.approvalStatus === ApprovalStatus.RejectedByEmployee
+        }">
+                {{ performanceData.approvalStatus }}
+            </p>
+        </fieldset>
+
         <button mat-raised-button color="primary" type="submit"
-                [disabled]="recordForm.invalid">Submit</button>
+                [disabled]="recordForm.invalid">Update</button>
     </form>
 </div>
