@@ -18,7 +18,9 @@ import {
     PerformanceRecordSalesmanViewComponent
 } from './pages/performance-record-salesman-view/performance-record-salesman-view.component';
 import { StatisticsPageComponent } from './pages/statistics-page/statistics-page.component';
-import {UpdateRejectedPerformanceRecordPageComponent} from "./pages/update-rejected-performance-record-page/update-rejected-performance-record-page.component";
+import {
+    UpdateRejectedPerformanceRecordPageComponent
+} from './pages/update-rejected-performance-record-page/update-rejected-performance-record-page.component';
 
 /*
   This array holds the relation of paths and components which angular router should resolve.

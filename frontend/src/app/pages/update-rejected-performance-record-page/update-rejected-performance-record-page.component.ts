@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {SalesmenDatapoint} from '../../interfaces/salesmen-datapoint';
-import {ProductSalesDatapoint} from '../../interfaces/productsSales-datapoint';
 import {SalesmenService} from '../../services/salesmen.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
