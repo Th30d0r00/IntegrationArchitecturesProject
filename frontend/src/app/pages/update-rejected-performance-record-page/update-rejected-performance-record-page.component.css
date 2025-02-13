@@ -1,7 +1,6 @@
 .container {
     width: 600px;
     margin: 0 auto;
-    font-family: Arial, sans-serif;
 }
 
 .info-box {
@@ -11,39 +10,24 @@
     background-color: #f9f9f9;
 }
 
-.info-box strong,
-.info-box p {
-    font-size: 14px;
-    font-family: Roboto, sans-serif;
-    letter-spacing: 0.0178571429em;
-}
-
-.info-box strong {
-    font-weight: 600;
-    line-height: 20px;
-}
-
-.info-box p {
-    font-weight: 400;
-    line-height: 20px;
-}
-
-
 fieldset {
     padding: 15px;
     margin-bottom: 20px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
+}
+
+fieldset legend {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    font-family: Arial,sans-serif;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
 }
 
-th,
-td {
+th, td {
     padding: 8px;
     text-align: left;
     border: 1px solid #ddd;
@@ -51,6 +35,12 @@ td {
 
 th {
     background-color: #f4f4f4;
+}
+
+input {
+    width: 130px;
+    padding: 5px;
+    margin: 5px 0;
 }
 
 .bonus-container {
@@ -62,27 +52,28 @@ th {
     border-radius: 5px;
 }
 
-.remark-input {
-    width: 96%;
-    height: 50px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
 button {
     display: block;
     margin: 20px auto 0;
     padding: 10px 15px;
     color: white;
-    background-color: #ff9800;
     border: none;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #e68900;
+    background-color: #ff9800;
+}
+
+button:disabled {
+    background-color: #ccc;
+}
+
+.remark-container {
+    border: 2px solid #ddd;
+    padding: 10px;
+    height: 50px;
+    border-radius: 5px;
 }
 
 .approval-container {
@@ -119,18 +110,3 @@ button:hover {
     color: white;
 }
 
-.flex {
-    display: flex;
-}
-
-.placeholder-black::placeholder {
-    color: black;
-}
-
-.placeholder-black::-moz-placeholder {
-    color: black;
-}
-
-.placeholder-black::-webkit-input-placeholder {
-    color: black;
-}

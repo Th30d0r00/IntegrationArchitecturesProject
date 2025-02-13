@@ -111,3 +111,15 @@
 .view-record-link:hover {
     text-decoration: underline;
 }
+
+.rejected-ceo-card mat-card-header,
+.rejected-employee-card mat-card-header{
+    background-color: #e53935;
+    color: white;
+}
+
+.approved-employee-card mat-card-header {
+    background-color: #4caf50;
+    color: white;
+}
+

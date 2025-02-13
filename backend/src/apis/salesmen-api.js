@@ -172,6 +172,42 @@ exports.addPerformanceRecord = async function (req, res) {
   }
 };
 
+exports.updatePerformanceRecord = async function (req, res) {
+    try {
+        const db = req.app.get("db");
+        const { year, competences, productSales, bonusA } = req.body;
+
+        const sid = parseInt(req.params.sid);
+
+        const { bonusB, competences: updatedCompetences } =
+        calculateBonusPartB(competences);
+
+        const totalBonus = bonusA + bonusB;
+
+        const record = new PerformanceRecord(
+        sid,
+        year,
+        bonusA,
+        bonusB,
+        totalBonus,
+        productSales,
+        updatedCompetences,
+        Waiting
+        );
+
+        console.log("PerformanceRecord with calculated Bonus:", record);
+
+        await salesmenService.updatePerformanceRecord(db, sid, record);
+        res.status(201).json({ message: "Performance record updated", record });
+    } catch (err) {
+        console.error("Error updating performance record:", err);
+        res.status(500).json({
+        message: "Failed to update performance record",
+        error: err.message,
+        });
+    }
+}
+
 /**
  * Endpoint, which retrieves all performance records for a specific salesman
  * @param req express request
@@ -287,13 +323,13 @@ exports.getSalesmenWithUnapprovedPerformanceRecords = async function (
 };
 
 /**
- * Endpoint which approves a performance record for a specific salesman with remarks
+ * Endpoint which updates the approval Status of a performance record for a specific salesman with remarks
  * @param req express request
  * @param res express response
  * @return {Promise<void>}
  */
 
-exports.approvePerformanceRecord = async function (req, res) {
+exports.updateApprovalStatusPerformanceRecord = async function (req, res) {
   const db = req.app.get("db");
   const sid = parseInt(req.params.sid, 10);
   const year = parseInt(req.params.year, 10);
@@ -303,7 +339,7 @@ exports.approvePerformanceRecord = async function (req, res) {
   console.log("Approval Status:", approvalStatus);
 
   try {
-    const result = await salesmenService.approvePerformanceRecord(
+    const result = await salesmenService.updateApprovalStatusPerformanceRecord(
       db,
       sid,
       year,
@@ -312,14 +348,14 @@ exports.approvePerformanceRecord = async function (req, res) {
     );
 
     if (result.modifiedCount > 0) {
-      res.json({ message: "Performance record approved" });
+      res.json({ message: "Performance record updated" });
     } else {
       res.status(404).json({ message: "Performance record not found" });
     }
   } catch (err) {
-    console.error("Error approving performance record:", err);
+    console.error("Error updating performance record:", err);
     res.status(500).json({
-      message: "Failed to approve performance record",
+      message: "Failed to update performance record",
       error: err.message,
     });
   }

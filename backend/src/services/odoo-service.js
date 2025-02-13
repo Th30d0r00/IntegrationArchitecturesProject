@@ -180,7 +180,7 @@ async function getBonusesFromOdoo() {
             const state = bonus.struct[0].member.find(m => m.name[0] === 'state').value[0].string[0] || 'unknown';
 
             // Determine approval status
-            let approvalStatus = state.includes("manager_approved") ? ApprovalStatus.Approved : ApprovalStatus.Waiting;
+            let approvalStatus = state.includes("manager_approved") ? ApprovalStatus.ApprovedByCEO : ApprovalStatus.Waiting;
 
             // Extract the year from the bonus reason (assume format contains YYYY somewhere)
             const yearMatch = bonusReason.match(/\b(19|20)\d{2}\b/);

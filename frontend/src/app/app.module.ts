@@ -32,6 +32,8 @@ import { PerformanceRecordsViewComponent } from './components/performance-record
 import { SalesmanViewPageComponent } from './pages/salesman-view-page/salesman-view-page.component';
 // eslint-disable-next-line max-len
 import { PerformanceRecordSalesmanViewComponent } from './pages/performance-record-salesman-view/performance-record-salesman-view.component';
+// eslint-disable-next-line max-len
+import { UpdateRejectedPerformanceRecordPageComponent } from './pages/update-rejected-performance-record-page/update-rejected-performance-record-page.component';
 
 @NgModule({
     declarations: [
@@ -53,6 +55,7 @@ import { PerformanceRecordSalesmanViewComponent } from './pages/performance-reco
         PerformanceRecordsViewComponent,
         SalesmanViewPageComponent,
         PerformanceRecordSalesmanViewComponent,
+        UpdateRejectedPerformanceRecordPageComponent,
     ],
     imports: [
         BrowserModule,

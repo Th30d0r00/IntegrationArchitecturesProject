@@ -23,6 +23,7 @@ router.get("/salesmen/:sid", salesmenApi.getSalesmanBySid);
 router.get("/salesmen", salesmenApi.getAllSalesmen);
 router.delete("/salesmen/:sid", salesmenApi.deleteSalesman);
 router.post("/salesmen/:sid/performance", salesmenApi.addPerformanceRecord);
+router.put("/salesmen/:sid/performance", salesmenApi.updatePerformanceRecord);
 router.get(
   "/salesmen/:sid/performance",
   salesmenApi.getPerformanceRecordsBySalesmanId
@@ -41,7 +42,7 @@ router.delete(
 );
 router.put(
   "/salesmen/:sid/performance/:year",
-  salesmenApi.approvePerformanceRecord
+  salesmenApi.updateApprovalStatusPerformanceRecord
 );
 router.get(
   "/unapprovedSalesmenRecords",
