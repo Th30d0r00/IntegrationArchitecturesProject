@@ -1,57 +1,121 @@
 {
   "openapi": "3.1.0",
-    "info": {
-      "title": "Salesman API",
-      "version": "1.0.0",
-      "description": "API documentation"
-    },
-    "servers": [
-      {
-        "url": "http://localhost:8080"
-      }
-    ],
-  "apis": ["./routes/*.js"],
-  "components": {
+  "info": {
+    "title": "Salesman API",
+    "version": "1.0.0",
+    "description": "API documentation"
   },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "apis": ["./routes/*.js"],
+  "components": {},
   "paths": {
-    "/api/salesmen": {
+    "/api/login": {
       "post": {
-        "summary": "Create a new salesman",
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "summary": "Retrieve all salesmen",
-        "responses": {
-          "200": {
-            "description": "List of salesmen",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
+        "summary": "Login user",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "password"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "User's username"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User's password",
+                    "format": "password"
                   }
                 }
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Logout user",
+        "tags": ["Authentication"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful logout"
+          }
+        }
+      },
+      "get": {
+        "summary": "Check if user is logged in",
+        "tags": ["Authentication"],
+        "responses": {
+          "200": {
+            "description": "Login status"
+          }
+        }
+      }
+    },
+    "/api/user": {
+      "get": {
+        "summary": "Get current user information",
+        "tags": ["User"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "User information"
+          }
+        }
+      }
+    },
+    "/api/people": {
+      "get": {
+        "summary": "Get people",
+        "tags": ["People"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "List of people"
+          }
+        }
+      }
+    },
+    "/api/salesmen": {
+      "post": {
+        "summary": "Create new salesman",
+        "tags": ["Salesmen"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "201": {
+            "description": "Salesman created"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all salesmen",
+        "tags": ["Salesmen"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "List of salesmen"
           }
         }
       }
     },
     "/api/salesmen/{sid}": {
       "get": {
-        "summary": "Get salesman details by SID",
+        "summary": "Get salesman by ID",
+        "tags": ["Salesmen"],
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "sid",
@@ -64,19 +128,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Salesman details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+            "description": "Salesman information"
           }
         }
       },
       "delete": {
-        "summary": "Delete a salesman by SID",
+        "summary": "Delete salesman",
+        "tags": ["Salesmen"],
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "sid",
@@ -89,21 +148,36 @@
         ],
         "responses": {
           "200": {
-            "description": "Deletion result",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+            "description": "Salesman deleted"
           }
         }
       }
     },
     "/api/salesmen/{sid}/performance": {
       "post": {
-        "summary": "Add a new performance record for a salesman",
+        "summary": "Add performance record",
+        "tags": ["Performance"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Performance record added"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update performance record",
+        "tags": ["Performance"],
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "sid",
@@ -116,19 +190,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Performance record added",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+            "description": "Performance record updated"
           }
         }
       },
       "get": {
-        "summary": "Retrieve performance records for a salesman",
+        "summary": "Get all performance records for salesman",
+        "tags": ["Performance"],
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "sid",
@@ -141,24 +210,38 @@
         ],
         "responses": {
           "200": {
-            "description": "Performance records",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
+            "description": "List of performance records"
+          }
+        }
+      }
+    },
+    "/api/salesmen/{sid}/performance/approved": {
+      "get": {
+        "summary": "Get approved performance records",
+        "tags": ["Performance"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of approved performance records"
           }
         }
       }
     },
     "/api/salesmen/{sid}/performance/{year}": {
       "get": {
-        "summary": "Get performance record for a specific year",
+        "summary": "Get performance record by year",
+        "tags": ["Performance"],
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "sid",
@@ -179,19 +262,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Performance record for specific year",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+            "description": "Performance record"
           }
         }
       },
       "delete": {
-        "summary": "Delete performance record for a specific year",
+        "summary": "Delete performance record",
+        "tags": ["Performance"],
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "sid",
@@ -212,41 +290,92 @@
         ],
         "responses": {
           "200": {
-            "description": "Performance record deleted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
+            "description": "Performance record deleted"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update approval status",
+        "tags": ["Performance"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Approval status updated"
+          }
+        }
+      }
+    },
+    "/api/unapprovedSalesmenRecords": {
+      "get": {
+        "summary": "Get salesmen with unapproved records",
+        "tags": ["Performance"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "List of salesmen with unapproved records"
+          }
+        }
+      }
+    },
+    "/api/statistics/bonus-distribution": {
+      "get": {
+        "summary": "Get bonus distribution statistics",
+        "tags": ["Statistics"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Bonus distribution statistics"
+          }
+        }
+      }
+    },
+    "/api/statistics/yearly-bonus": {
+      "get": {
+        "summary": "Get yearly bonus statistics",
+        "tags": ["Statistics"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Yearly bonus statistics"
           }
         }
       }
     },
     "/api/employees": {
       "get": {
-        "summary": "Retrieve all employees",
+        "summary": "Get all employees",
+        "tags": ["Employees"],
+        "security": [{ "BearerAuth": [] }],
         "responses": {
           "200": {
-            "description": "List of employees",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
+            "description": "List of employees"
           }
         }
       }
     },
     "/api/employees/{sid}": {
       "get": {
-        "summary": "Get employee details by SID",
+        "summary": "Get employee by ID",
+        "tags": ["Employees"],
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "sid",
@@ -259,21 +388,36 @@
         ],
         "responses": {
           "200": {
-            "description": "Employee details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+            "description": "Employee information"
           }
         }
       }
     },
     "/api/employees/{sid}/bonus": {
+      "post": {
+        "summary": "Add bonus for employee",
+        "tags": ["Employees"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Bonus added"
+          }
+        }
+      },
       "get": {
-        "summary": "Retrieve bonuses for an employee",
+        "summary": "Get all bonuses for employee",
+        "tags": ["Employees"],
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "sid",
@@ -286,64 +430,40 @@
         ],
         "responses": {
           "200": {
-            "description": "Employee bonuses",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
+            "description": "List of bonuses"
           }
         }
       }
     },
     "/api/accounts": {
       "get": {
-        "summary": "Retrieve all accounts",
+        "summary": "Get all accounts",
+        "tags": ["CRM"],
+        "security": [{ "BearerAuth": [] }],
         "responses": {
           "200": {
-            "description": "List of accounts",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
+            "description": "List of accounts"
           }
         }
       }
     },
     "/api/salesorders": {
       "get": {
-        "summary": "Retrieve sales orders",
+        "summary": "Get sales orders by user ID",
+        "tags": ["CRM"],
+        "security": [{ "BearerAuth": [] }],
         "responses": {
           "200": {
-            "description": "Sales orders",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
+            "description": "List of sales orders"
           }
         }
       }
     },
     "/api/products/{uid}": {
       "get": {
-        "summary": "Get product details by UID",
+        "summary": "Get product by sales order ID",
+        "tags": ["CRM"],
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "uid",
@@ -356,21 +476,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Product details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+            "description": "Product information"
           }
         }
       }
     },
     "/api/products/{uid}/name": {
       "get": {
-        "summary": "Get product name by UID",
+        "summary": "Get product name by ID",
+        "tags": ["CRM"],
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "uid",
@@ -383,21 +498,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Product name",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Product name"
           }
         }
       }
     },
     "/api/ratings/{uid}": {
       "get": {
-        "summary": "Retrieve ratings by account UID",
+        "summary": "Get ratings by account",
+        "tags": ["CRM"],
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           {
             "name": "uid",
@@ -410,17 +520,37 @@
         ],
         "responses": {
           "200": {
-            "description": "Ratings by account",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
+            "description": "List of ratings"
+          }
+        }
+      }
+    },
+    "/api/salesorders/{governmentId}/{year}": {
+      "get": {
+        "summary": "Get sales orders by account and year",
+        "tags": ["CRM"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "governmentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of sales orders"
           }
         }
       }
