@@ -84,9 +84,7 @@ export class SalesmenService {
         });
     }
 
-    getSalesmenWithUnapprovedRecords(): Observable<
-        HttpResponse<SalesmenDatapointWithPerformanceYear[]>
-    > {
+    getSalesmenWithUnapprovedRecords(): Observable<HttpResponse<SalesmenDatapointWithPerformanceYear[]>> {
         const url = `${environment.apiEndpoint}/api/unapprovedSalesmenRecords`;
         return this.http.get<SalesmenDatapointWithPerformanceYear[]>(url, {
             observe: 'response',

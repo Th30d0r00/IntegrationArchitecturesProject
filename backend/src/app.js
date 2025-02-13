@@ -8,8 +8,6 @@ const cookieSession = require("cookie-session");
 const multer = require("multer");
 const upload = multer();
 const app = express();
-const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger.json");
 
 const crypto = require("crypto");
 const cors = require("cors");
@@ -29,7 +27,10 @@ app.set("environment", environment);
 app.use(express.json()); //adds support for json encoded bodies
 app.use(express.urlencoded({ extended: true })); //adds support url encoded bodies
 app.use(upload.array()); //adds support multipart/form-data bodies
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+app.use("/team_4/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(
   cookieSession({
@@ -89,8 +90,11 @@ async function initDb(db) {
     const userService = require("./services/user-service");
     const User = require("./models/User");
 
-        const adminPassword = environment.defaultAdminPassword;
-        await userService.add(db, new User('admin',1111, '', 'admin', '', adminPassword, true, 'admin'));
+    const adminPassword = environment.defaultAdminPassword;
+    await userService.add(
+      db,
+      new User("admin", 1111, "", "admin", "", adminPassword, true, "admin")
+    );
 
     console.log("created admin user with password: " + adminPassword);
   }

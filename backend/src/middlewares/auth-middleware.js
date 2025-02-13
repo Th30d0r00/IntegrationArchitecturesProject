@@ -30,12 +30,6 @@ exports.checkAuthorizationWithRolesAndSid = (roles, roleWithSid) => {
   return (req, res, next) => {
     if (req.session.authenticated) {
       //check if session was marked as authenticated
-      console.log(
-        req.session.user.role,
-        roleWithSid,
-        req.session.user.sid,
-        req.params.sid
-      );
       if (
         roles.includes(req.session.user.role) &&
         (!(req.session.user.role === roleWithSid) ||

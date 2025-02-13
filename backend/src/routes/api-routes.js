@@ -25,7 +25,7 @@ router.post(
   "/salesmen",
   checkAuthorizationWithRolesAndSid(["admin"]),
   salesmenApi.createSalesman
-); //FIXME: DEFINE ROLES ??? wofür
+);
 router.get(
   "/salesmen/:sid",
   checkAuthorizationWithRolesAndSid(
@@ -43,7 +43,7 @@ router.delete(
   "/salesmen/:sid",
   checkAuthorizationWithRolesAndSid(["admin"]),
   salesmenApi.deleteSalesman
-); //FIXME: DEFINE ROLES ??? wofür
+);
 router.post(
   "/salesmen/:sid/performance",
   checkAuthorizationWithRolesAndSid(["admin", "HR"]),
@@ -79,7 +79,7 @@ router.delete(
   "/salesmen/:sid/performance/:year",
   checkAuthorizationWithRolesAndSid(["admin"]),
   salesmenApi.deletePerformanceRecord
-); //FIXME: DEFINE ROLES ??? wofür
+);
 router.put(
   "/salesmen/:sid/performance/:year",
   checkAuthorizationWithRolesAndSid(["admin", "Leader", "Sales"], "Sales"),
@@ -106,12 +106,12 @@ router.get(
   "/employees",
   checkAuthorizationWithRolesAndSid(["admin"]),
   orangeHRMApi.getAllEmployees
-); //FIXME: DEFINE ROLES ??? wofür
+);
 router.get(
   "/employees/:sid",
   checkAuthorizationWithRolesAndSid(["admin"]),
   orangeHRMApi.getEmployeeById
-); //FIXME: DEFINE ROLES ??? wofür
+);
 router.post(
   "/employees/:sid/bonus",
   checkAuthorizationWithRolesAndSid(["Leader", "admin"]),
@@ -121,34 +121,34 @@ router.get(
   "/employees/:sid/bonus",
   checkAuthorizationWithRolesAndSid(["admin"]),
   orangeHRMApi.getAllBonuses
-); //FIXME: DEFINE ROLES ??? wofür
+);
 
 const openCRXApi = require("../apis/openCRX-api");
 router.get(
   "/accounts",
   checkAuthorizationWithRolesAndSid(["admin"]),
   openCRXApi.getAccounts
-); //FIXME: DEFINE ROLES ??? wofür
+);
 router.get(
   "/salesorders",
   checkAuthorizationWithRolesAndSid(["admin"]),
   openCRXApi.getSalesOrdersByUid
-); //FIXME: DEFINE ROLES ??? wofür
+);
 router.get(
   "/products/:uid",
   checkAuthorizationWithRolesAndSid(["admin"]),
   openCRXApi.getProductBySalesOrderId
-); //FIXME: DEFINE ROLES ??? wofür
+);
 router.get(
   "/products/:uid/name",
   checkAuthorizationWithRolesAndSid(["admin"]),
   openCRXApi.getProductNameById
-); //FIXME: DEFINE ROLES ??? wofür
+);
 router.get(
   "/ratings/:uid",
   checkAuthorizationWithRolesAndSid(["admin"]),
   openCRXApi.getRatingsByAccount
-); //FIXME: DEFINE ROLES ??? wofür
+);
 router.get(
   "/salesorders/:governmentId/:year",
   checkAuthorizationWithRolesAndSid(["admin", "HR"]),
