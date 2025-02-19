@@ -24,7 +24,7 @@ Das Projekt wurde mit den folgenden Technologien entwickelt:
 ## Installation
 
 Die Anwendung kann über die IDE **IntelliJ IDEA** gestartet werden. Dazu muss das Projekt in IntelliJ geöffnet werden.  
-Zusätzlich wird eine aktive **VPN-Verbindung zur Hochschule Bonn-Rhein-Sieg** benötigt.  
+Zusätzlich wird eine aktive VPN-Verbindung zur Hochschule Bonn-Rhein-Sieg benötigt.  
 
 Nach dem Start ist die Anwendung unter folgender Adresse abrufbar:  
 
